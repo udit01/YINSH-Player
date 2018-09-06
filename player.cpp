@@ -17,16 +17,23 @@ int main( int argc, char **argv){
     cin >> player;
     cin >> n;
     cin >> time;
-    cout << "P 5 7";
+    cout << "P 5 7"<< endl;
 
     string move;
 
     while(true){
         
         // This will wait till a move from opponent
+        // cin >> move;
         getline(cin, move);
+
+        // why is blank output coming twice ?
         //decompose move according to game.cpp and play move
-        cout << move;
+        cerr << "Opponent played : " <<  move << endl;
+        // cout << move << endl;
+
+        // cout << "P 4 7"<< endl;
+
 
 
     }
