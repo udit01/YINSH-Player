@@ -15,6 +15,7 @@ int main( int argc, char **argv){
     // cin >> server_string;
     // getline(cin, server_string);
     // cout << server_string;
+    
     cin >> player;
     cin >> n;
     cin >> time;

@@ -1,3 +1,8 @@
+/*
+    board.h
+    Author : udit01
+*/
+
 #ifndef BOARD_H
 #define BOARD_H
 
@@ -39,7 +44,7 @@ public:
     j 9  ->   0 - 6 
     k 10 ->   0 - 3 
     */
-   
+
     
 	
 };
