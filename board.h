@@ -28,7 +28,8 @@ class Node{
 class Board
 {
 private:
-
+	int whiteRings,BlackRings; //no. of rings currently present
+	int white_pos[2][5],black_pos[2][5];	// stores the current ring positions
 public:
 	Board();
     /*
@@ -47,7 +48,7 @@ public:
     k 10 ->   0 - 3 
     */
 
-    
+    // call to poss_moves format string *moves = poss_moves(node,color,ringsOfColor,positionOfRingsOfColor);
 	
 };
 
