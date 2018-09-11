@@ -21,6 +21,8 @@ class Node{
       /* Ring can have 0 1 or 2 corresponding to 
           no ring, player 1 ring or player 2 ring
        */ 
+	int valid;
+	//(0 or 1)the node is in specified range or not
 };
 
 class Board
