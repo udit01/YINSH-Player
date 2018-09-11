@@ -21,13 +21,15 @@ class Node{
       /* Ring can have 0 1 or 2 corresponding to 
           no ring, player 1 ring or player 2 ring
        */ 
-      
+	int valid;
+	//(0 or 1)the node is in specified range or not
 };
 
 class Board
 {
 private:
-
+	int whiteRings,BlackRings; //no. of rings currently present
+	int white_pos[2][5],black_pos[2][5];	// stores the current ring positions
 public:
 	Board();
     /*

@@ -16,6 +16,8 @@ Game::Game(int id,int n,int time)
 	
 string Game::playmove(string opp_move)
 {
+	
+	//opp_move=board.convert(opp_move
 	string my_move;
 		//our code
 	return my_move;
@@ -23,3 +25,6 @@ string Game::playmove(string opp_move)
 
 // take the input from your player file and make it available here
 
+//node class - row coloumn colour ring --2darray
+
+//board class - read move and convert it to opposite format
