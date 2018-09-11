@@ -8,3 +8,5 @@
 Board::Board(){
     
 }
+
+// call to poss_moves format string *moves = poss_moves(node,color,ringsOfColor,positionOfRingsOfColor);
