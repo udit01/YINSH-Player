@@ -125,6 +125,7 @@ int possMove::poss_moves(int color)
 			exit(1);
 	}
 	
+	
 }
 
 
