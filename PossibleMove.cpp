@@ -42,6 +42,20 @@ void possMove:: setNode(int row,int coloumn,Node node)
 	exit(1);
 }
 
+pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int marks,int pos[][2])
+{
+	int i;
+	for(i=0;i<marks;i++)
+	{
+		if(node[pos[i][0]][pos[i][1]].getcolor != color)
+		{
+			cerr<<"some error in marker colouring or finding markers"<<endl;
+			exit(1);
+		}
+		
+	}
+}
+
 int possMove::poss_moves(int color)
 {
 	if(flag)
