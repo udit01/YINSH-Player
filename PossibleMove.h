@@ -14,12 +14,12 @@ class PossMove
 	public:
 		Move();	//sets pointers to null
 		Move(Node **curr_nodes);	//set pointers to null and sets nodes
-		~Move();	//frees all memory allocated
+		~Move();	//frees all memory allocated If any
 		Node node getNode(int row,int coloumn);
 		void setNode(int row,int coloumn,Node node);	//sets particular configuration at specified row coloumn node and moves to null
 		int poss_moves(int color);
 		//find possible moves of given color and return no. of moves found
-		string getNextMove();	//returns next move in array
+		vector<Move> getNextMove();	//returns next move in array
 }
 
 #endif
