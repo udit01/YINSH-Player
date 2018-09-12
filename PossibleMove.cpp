@@ -1,6 +1,6 @@
-#include<move.h>
+#include<PossibleMove.h>
 
-void Move::init()
+void PossMove::init()
 {
 	int i;
 	flag=0;
@@ -8,7 +8,7 @@ void Move::init()
 	currmove=0;
 }
 
-Move::Move()
+PossMove::PossMove()
 {
 	init();
 }
