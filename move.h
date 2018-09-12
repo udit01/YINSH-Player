@@ -6,9 +6,12 @@
 
 class move
 {
+		Node nodes[11][11];		//scenerio for moves
+		char ** moves;			//strings of moves
+		int totalMoves,currmove;
 	public:
-		char ** poss_moves(Node **nodes,int color,int ringsOfColor, int **positionOfRingsOfColor,int total_rows,int total_cols);
-		// gets a scenerio of board in arguments and find possible moves of given color for given rings
+		char ** poss_moves(int color);
+		//find possible moves of given color
 }
 
 #endif
