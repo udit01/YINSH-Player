@@ -7,11 +7,12 @@
 class Move
 {
 		Node nodes[11][11];		//scenerio for moves
-		char ** moves;			//strings of moves
-		int Max_moves;	//to get dynamic array of pointers to moves
+		char * singlemove;		//single possible next move
+		char ** moves;			//array of moves
+		int Max_moves,Max_length_move;	//to get dynamic array of pointers to moves
 		int totalMoves,currmove;
 		int flag;	//nodes set or not
-		void init();	// called by constructors
+		void init();	// called by constructors and some functions
 	public:
 		move();	//sets pointers to null
 		move(Node **curr_nodes);	//set pointers to null and sets nodes
