@@ -23,6 +23,8 @@ class Node{
        */ 
 	int valid;
 	//(0 or 1)the node is in specified range or not
+	
+	//methods for getvalid,getcolor,getring required
 };
 
 class Board
