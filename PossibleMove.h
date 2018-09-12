@@ -14,8 +14,7 @@ class PossMove
 	public:
 		PossMove();	//sets pointers to null
 		PossMove(Node **curr_nodes);	//set pointers to null and sets nodes
-		~PossMove();	//frees all memory allocated If any
-		Node node getNode(int row,int coloumn);
+		Node getNode(int row,int coloumn);
 		void setNode(int row,int coloumn,Node node);	//sets particular configuration at specified row coloumn node and moves to null
 		int poss_moves(int color);
 		//find possible moves of given color and return no. of moves found
