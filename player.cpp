@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-#include<game.cpp>
+#include"game.cpp"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ int main( int argc, char **argv){
         // This will wait till a move from opponent
         // cin >> move;
         getline(cin, opp_move);
-	my_move=game.playmove(opp_move)// a call to a fuction of Game
+	    my_move=game.playmove(opp_move);// a call to a fuction of Game
 
         // why is blank output coming twice ?
         //decompose move according to game.cpp and play move

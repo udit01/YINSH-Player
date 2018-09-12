@@ -5,8 +5,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include<board.h>
 #include<vector.h>
+#include"board.h"
 
 
 /*Can also put the moves in an array, then no need to iterate over vector every time*/
@@ -20,7 +20,7 @@ class Move{
         RE - Remove a row End   4
         X - Remove a ring       5
         */
-        int moveType: 
+        int moveType; 
 
         int  row, col;
         /*MoveType move from start to end
