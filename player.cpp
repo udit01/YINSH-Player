@@ -1,5 +1,7 @@
 #include<iostream>
 #include<string>
+
+#include"utils.h"
 #include"game.cpp"
 
 using namespace std;
@@ -19,26 +21,34 @@ int main( int argc, char **argv){
     cin >> player;
     cin >> n;
     cin >> time;
-    cout << "P 5 7"<< endl;
+
+    // cout << "P 5 7"<< endl;
+
 	Game game(player,n,time); //creates an object of game class
+    
     string opp_move,my_move;
+    
+    if (player == 1){
+        my_move = Move.convertToHexagonal(game.getMove());
+        cout << my_move;        
+    }
 
     while(true){
         
         // This will wait till a move from opponent
         // cin >> move;
         getline(cin, opp_move);
-	    my_move=game.playmove(opp_move);// a call to a fuction of Game
+	    
+        game.playmove(Move.convertToStd(opp_move));// a call to a fuction of Game
+
+        my_move = Move.convertToHexagonal(game.getMove());
+        
+        cout << my_move;  
 
         // why is blank output coming twice ?
         //decompose move according to game.cpp and play move
         cerr << "Opponent played : " <<  opp_move << endl;
         // cout << move << endl;
-
-        // cout << "P 4 7"<< endl;
-
-
-
     }
     return 0;
 }

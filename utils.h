@@ -31,7 +31,7 @@ class Move{
 
         static vector<Move> convertToStd(String s);
 
-       /*Converts a Move vector to Standard string */
+       /*Converts a Move vector to Standard string with \n included */
         static string convertToHexagonal( vector<Move> moves);
 
 };
