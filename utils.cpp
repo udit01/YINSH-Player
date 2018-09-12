@@ -4,21 +4,158 @@
 #include <algorithm>
 #include <iterator>
 
-void split(const std::string& str, Container& cont, char delim = ' ')
-{
-    std::stringstream ss(str);
-    std::string token;
-    while (std::getline(ss, token, delim)) {
-        cont.push_back(token);
-    }
+
+using namespace std;
+
+vector<string> moveCodes = {"P", "S", "M", "RS", "RE", "X"};
+int flag = 0;
+
+//change according to size of board
+pair<int, int> mapping[6][36];
+
+
+Move::Move(int mt, int r, int c){
+    this.moveType = mt; 
+    this.row = r;
+    this.col = c;
 }
 
+
+
+void formMap( int boardSize  ) {
+    /*
+    Docs Keeping in mind boardsize = 5
+    Rows and Columns from 0...b....2*b 
+    Hexagons number (h) from 0 ... b 
+    and pos from 0 .... 6*h - 1 
+    */
+    int central = boardSize; // central square 
+    int minlimit = 0, maxlimit = 0;
+    int itr1 = 0, itr2 = 0;
+    int limitcounter = 0;
+
+    // tc.insert( make_pair(0, 0), make_pair(central, central) );
+    
+    mapping[0][0] = make_pair(central, central);
+
+    for(int hexNum = 1 ; hexNum <= boardSize; hexNum++ ){
+        
+        //these must be repeated (hexNum+1) times
+        minlimit = central - hexNum;
+        maxlimit = central + hexNum;
+        
+        itr1 = central;
+        itr2 = maxlimit;
+        limitcounter = hexNum + 1 ;
+
+        int counter1 = limitcounter;
+        int counter2 = limitcounter;
+        int dir1 = +1; 
+        int dir2 = -1;
+
+        for(int pos = 0 ; pos < 6 * hexNum; pos++){
+        
+            mapping[hexNum][pos] = make_pair(itr1, itr2);
+
+            if(itr1 == minlimit){
+                counter1--;
+                if(counter1 == 0){
+                    dir1 = +1; counter1 = limitcounter; itr1 += dir1;
+                }
+            }else if(itr1 == maxlimit){
+                counter1--;
+                if(counter1 == 0){
+                    dir1 = -1; counter1 = limitcounter; itr1 += dir1;
+                }
+            }else{
+                itr1 += dir1;
+            }
+
+            if(itr2 == minlimit){
+                counter2--;
+                if(counter2 == 0){
+                    dir2 = +1; counter2 = limitcounter; itr2 += dir2;
+                }
+            }else if(itr2 == maxlimit){
+                counter2--;
+                if(counter2 == 0){
+                    dir2 = -1; counter2 = limitcounter; itr2 += dir2;
+                }
+            }else{
+                itr2 += dir2;
+            }
+
+        }
+    }
+} 
+
+/*
+Returns Move in the transformed standard coordinates
+
+Do casewise in case of moves with start and end both
+
+*/
+// Move transformCoord( int moveType, int hexNum, int pos ){
+    
+//     Move* start = new Move()
+
+// }
+
+//INIT mapping once
+
 static vector<Move> Move::convertToStd(string move){
-    vector<string> splices;
-    split(move, splices);
+
+    if(flag == 0){
+        formMap(5); flag = 1;
+    }
+
+    stringstream moveStream(str);
+    string token;
+    char delim = ' ';
+    
+    int counter = 0;
+    int moveNumber = 0;
+    int hexNum = 0;
+    int position = 0;
+
+    vector<Move> moveVector;
+
+    while (getline(moveStream, token, delim)) {
+        switch (token){
+
+            case "P" : moveNumber = 0; counter = (counter + 1) % 3; break;
+            case "S" : moveNumber = 1; counter = (counter + 1) % 3; break;
+            case "M" : moveNumber = 2; counter = (counter + 1) % 3; break;
+            case "RS": moveNumber = 3; counter = (counter + 1) % 3; break;
+            case "RE": moveNumber = 4; counter = (counter + 1) % 3; break;
+            case "X" : moveNumber = 5; counter = (counter + 1) % 3; break;
+            //otherwise it's a number
+            default : 
+                number = stoi(token);
+                if(counter % 3 == 1 ){ 
+                    // it's the hexagon number or the first number after movetype
+                    hexNum = number;
+
+                }else if(counter % 3 == 2){
+                    // it's position number , 2nd after the move type
+                    position = number;
+                    pair<int, int> p = mapping[hexNum][position];
+                    moveVector.push_back(Move(moveNumber, p.first, p.second));
+                }
+                else{
+                    //some error in parsing
+                    cerr << "Some error in parsing " << token << " : from : " << moveStream ;
+                }
+
+                counter = (counter + 1) % 3;
+
+        }
+    }
+
+    return moveVector;
 
 }
 
 static string Move::convertToHexagonal( vector<Move> moves){
-
+    
 }

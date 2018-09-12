@@ -17,7 +17,7 @@ class Node{
        /* Color can have 0 1 or 2 corresponding to 
           no marker, player 1 marker or player 2 marker
        */
-      int ring;
+        int ring;
       /* Ring can have 0 1 or 2 corresponding to 
           no ring, player 1 ring or player 2 ring
        */ 
