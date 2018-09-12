@@ -4,6 +4,9 @@
 
 #include "node.h"	// define it seperately
 #include "utils.h"
+#include <vector>
+#include <utility>
+
 class PossMove
 {
 		Node nodes[11][11];		//scenerio for moves
@@ -11,6 +14,7 @@ class PossMove
 		int totalMoves,currmove;
 		int flag;	//nodes set or not
 		void init();	// called by constructors and some functions
+		pair < pair<int,int> , pair<int,int> > removableMarkers(int color,int marks,int pos[][2]);//checks if a row of markers exist
 	public:
 		PossMove();	//sets pointers to null
 		PossMove(Node **curr_nodes);	//set pointers to null and sets nodes

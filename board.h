@@ -6,7 +6,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-class Node{
+class Node{			//make seperate file as needed to be included at different places
     public:
         int row, col;
         /*
