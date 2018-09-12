@@ -2,7 +2,11 @@
 
 using namespace std;
 
-void formMap( int boardSize , pair<int, int> mapping[][36] ) {
+pair<int, int> mapping[6][36];
+pair<int, int> reverseMapping[11][11];
+
+
+void formMap( int boardSize  ) {
     /*
     Docs Keeping in mind boardsize = 5
     Rows and Columns from 0...b....2*b 
@@ -17,6 +21,7 @@ void formMap( int boardSize , pair<int, int> mapping[][36] ) {
     // tc.insert( make_pair(0, 0), make_pair(central, central) );
     
     mapping[0][0] = make_pair(central, central);
+    reverseMapping[central][central] = make_pair(0, 0);
 
     for(int hexNum = 1 ; hexNum <= boardSize; hexNum++ ){
         
@@ -36,6 +41,7 @@ void formMap( int boardSize , pair<int, int> mapping[][36] ) {
         for(int pos = 0 ; pos < 6 * hexNum; pos++){
         
             mapping[hexNum][pos] = make_pair(itr1, itr2);
+            reverseMapping[itr1][itr2] = make_pair(hexNum, pos);
 
             if(itr1 == minlimit){
                 counter1--;
@@ -72,9 +78,8 @@ void formMap( int boardSize , pair<int, int> mapping[][36] ) {
 int main(int argc, char** argv){
 
     int boardSize = 5;
-    pair<int, int> mapping[6][36];
 
-    formMap(boardSize, mapping);
+    formMap(boardSize);
 
     pair<int, int> p = mapping[0][0];
 

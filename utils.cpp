@@ -12,6 +12,7 @@ int flag = 0;
 
 //change according to size of board
 pair<int, int> mapping[6][36];
+pair<int, int> reverseMapping[11][11];
 
 
 Move::Move(int mt, int r, int c){
@@ -19,8 +20,6 @@ Move::Move(int mt, int r, int c){
     this.row = r;
     this.col = c;
 }
-
-
 
 void formMap( int boardSize  ) {
     /*
@@ -37,6 +36,7 @@ void formMap( int boardSize  ) {
     // tc.insert( make_pair(0, 0), make_pair(central, central) );
     
     mapping[0][0] = make_pair(central, central);
+    reverseMapping[central][central] = make_pair(0, 0);
 
     for(int hexNum = 1 ; hexNum <= boardSize; hexNum++ ){
         
@@ -56,6 +56,7 @@ void formMap( int boardSize  ) {
         for(int pos = 0 ; pos < 6 * hexNum; pos++){
         
             mapping[hexNum][pos] = make_pair(itr1, itr2);
+            reverseMapping[itr1][itr2] = make_pair(hexNum, pos);
 
             if(itr1 == minlimit){
                 counter1--;
@@ -157,5 +158,30 @@ static vector<Move> Move::convertToStd(string move){
 }
 
 static string Move::convertToHexagonal( vector<Move> moves){
-    
+    if(flag == 0){
+        formMap(5); flag = 1;
+    }
+
+    stringstream cmoves;
+    string type;
+    pair<int, int> p;
+    vector<Move>::iterator itr ;
+
+    for(itr = moves.begin(); itr != moves.end(); itr++){
+        switch(itr->moveType){
+            case 0 : type = "P" ; break;
+            case 1 : type = "S" ; break;
+            case 2 : type = "M" ; break;
+            case 3 : type = "RS" ; break;
+            case 4 : type = "RE" ; break;
+            // case 5 : type = "P" ; break;
+            default : type = "X"
+        }
+        p = reverseMapping[itr->row][itr->col];
+        cmoves << type << " " << p.first << " " << p.second << " " ;
+        // I am adding a trailing space above, test that it doesn't affect 
+    }
+
+    cmoves << "\n";
+    return cmoves.str();
 }
