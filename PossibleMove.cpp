@@ -110,6 +110,7 @@ int possMove::poss_moves(int color)
 							cerr<<"markers not properly assigned to nodes"<<endl;
 							exit(1);
 					}
+					break;
 				default :
 					cerr<<"rings not properly assigned to nodes"<<endl;
 					exit(1);
@@ -117,6 +118,7 @@ int possMove::poss_moves(int color)
 			
 		}
 	}
+	//is it possible that we need to remove markers before move
 	pair < pair<int,int> , pair<int,int> > remove;
 	switch (color)
 	{
@@ -145,6 +147,7 @@ int possMove::poss_moves(int color)
 				blackRings--;
 				break;
 		}
+		//ring movements need to be added to each move
 		totalMoves=1;	//need to be considered while all rings possible to remove
 		possiblemoves.push_back(poss_move);
 		return totalMoves;
