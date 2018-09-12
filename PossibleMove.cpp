@@ -12,3 +12,8 @@ void Move::init()
 	totalMoves=0;
 	currmove=0;
 }
+
+Move::Move()
+{
+	init();
+}
