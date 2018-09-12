@@ -14,7 +14,7 @@ class PossMove
 		int totalMoves,currmove;
 		int flag;	//nodes set or not
 		void init();	// called by constructors and some functions
-		pair < pair<int,int> , pair<int,int> > removableMarkers(int color,int marks,int pos[][2]);//checks if a row of markers exist
+		pair < pair<int,int> , pair<int,int> > removableMarkers(int color,int marks,int pos[121][2]);//checks if a row of markers exist
 	public:
 		PossMove();	//sets pointers to null
 		PossMove(Node **curr_nodes);	//set pointers to null and sets nodes

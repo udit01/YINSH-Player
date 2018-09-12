@@ -42,7 +42,7 @@ void possMove:: setNode(int row,int coloumn,Node node)
 	exit(1);
 }
 
-pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int marks,int pos[][2])
+pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int marks,int pos[121][2])
 {
 	int i;
 	for(i=0;i<marks;i++)
@@ -52,7 +52,7 @@ pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int 
 			cerr<<"some error in marker colouring or finding markers"<<endl;
 			exit(1);
 		}
-		
+		// code to find removable markers is under process
 	}
 }
 
@@ -86,25 +86,43 @@ int possMove::poss_moves(int color)
 					blackringPos[blackRings][1]=j;
 					blackRings++;
 					break;
-				default :
-				// case 0 : rings and markers can't be true together hence here is possiblity of marker
+				case 0 :
+				//rings and markers can't be true together hence here is possiblity of marker
 					switch(nodes[i][j].getcolor())
 					{
 						case 1 :
-							whiteMarkpos[whiteMarks][0]=i;
-							whiteMarkpos[whiteMarks][1]=j;
+							whiteMarkPos[whiteMarks][0]=i;
+							whiteMarkPos[whiteMarks][1]=j;
 							whiteMarks++;
 							break;
 						case 2 :
-							blackMarkpos[blackMarks][0]=i;
-							blackMarkpos[blackMarks][1]=j;
+							blackMarkPos[blackMarks][0]=i;
+							blackMarkPos[blackMarks][1]=j;
 							blackMarks++;
 							break;
-						default : ;
+						default :
+							cerr<<"markers not properly assigned to nodes"<<endl;
+							exit(1);
 					}
+				default :
+					cerr<<"rings not properly assigned to nodes"<<endl;
+					exit(1);
 			}
 			
 		}
+	}
+	pair < pair<int,int> , pair<int,int> > remove;
+	switch (color)
+	{
+		case 1 :
+			remove=removableMarkers(1,whiteMarks,whiteMarkPos);
+			break;
+		case 2 :
+			remove=removableMarkers(2,blackMarks,blackMarkPos);
+			break;
+		default :
+			cerr<<"wrong color passed to poss_moves()"<<endl;
+			exit(1);
 	}
 	
 }
