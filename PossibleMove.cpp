@@ -36,8 +36,13 @@ Node possMove:: getNode(int row,int coloumn)
 void possMove:: setNode(int row,int coloumn,Node node)
 {
 	if((row<11)&&(coloumn<11))
+	{
+		totalMoves=0;
+		currmove=0;			//vectors also needed to be emptied
 		nodes[row][coloumn]=node;
-	//else
+		return;
+	}
+	//else					
 	cerr<<"setting node out of range"<<endl;
 	exit(1);
 }
@@ -65,6 +70,7 @@ int possMove::poss_moves(int color)
 	}
 	//else
 	int i,j;
+	vector<move> poss_move;		//single possible move
 	int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringpos[5][2];		//considering white as player1 black as player2
 	int whiteMarks=0,blackMarks=0,whiteMarkPos[121][2],blackMarkPos[121][2];	//no issues of this outside this class
 	for(i=0;i<11;i++)
@@ -124,8 +130,27 @@ int possMove::poss_moves(int color)
 			cerr<<"wrong color passed to poss_moves()"<<endl;
 			exit(1);
 	}
-	
-	
+	if(remove.first.first != -1)
+	{
+		poss_move.push_back(Move(3,remove.first.first,remove.first.second));
+		poss_move.push_back(Move(4,remove.second.first,remove.second.second));
+		switch (color)
+		{
+			case 1 :
+				poss_move.push_back(Move(5,whiteringPos[whiteRings-1][0],whiteringPos[whiteRings-1][1]));//need to make it for all rings, right now removing only last one
+				whiteRings--;
+				break;
+			case 2 :
+			poss_move.push_back(Move(5,blackringPos[blackRings-1][0],blackringPos[blackRings-1][1]));//need to make it for all rings, right now removing only last one
+				blackRings--;
+				break;
+		}
+		totalMoves=1;	//need to be considered while all rings possible to remove
+		possiblemoves.push_back(poss_move);
+		return totalMoves;
+	}
+	//else
+	//other moves - movement of rings
 }
 
 
