@@ -50,6 +50,16 @@ Board::Board(int boardSize){
     //marking validity of nodes
     this->markValidity(); // currently only for size 5
 
+    this->p1ringsRem = 5; this->p1ringsDone = 0;
+    this->p2ringsRem = 5; this->p2ringsDone = 0;
+    
+    // initialize to zeros although not zeros, better than random garbage
+    for(int i = 0; i < 5; i++){
+        this->white_pos[i][0] = 0;
+        this->white_pos[i][1] = 0;
+        this->black_pos[i][0] = 0;
+        this->black_pos[i][1] = 0;
+    }
 }
 
 

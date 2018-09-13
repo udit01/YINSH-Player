@@ -33,7 +33,7 @@ public:
     int boardSize;
 	int p1ringsRem, p2ringsRem; //no. of rings currently remaining
     int p1ringsDone, p2ringsDone;// no. of rings completed
-	int white_pos[2][5],black_pos[2][5];	// stores the current ring positions
+	int white_pos[5][2],black_pos[5][2];	// stores the current ring positions
     Node** nodes;
     
 	Board(int boardSize);
