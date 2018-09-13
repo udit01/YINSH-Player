@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <utility>
-#include "board.h"	// define it seperately
+#include "board.h"	
 #include "utils.h"
 
 class PossMove
@@ -25,6 +25,6 @@ class PossMove
 		//find possible moves of given color and return no. of moves found
 		//we have three kinds of move - [i][j++],[++][j],[++][++]
 		vector<Move> getNextMove();	//returns next move in array
-}
+};
 
 #endif

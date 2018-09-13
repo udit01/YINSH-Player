@@ -1,4 +1,4 @@
-#include<PossibleMove.h>
+#include "PossibleMove.h"
 
 void PossMove::init()
 {
@@ -38,7 +38,8 @@ void possMove:: setNode(int row,int coloumn,Node node)
 	if((row<11)&&(coloumn<11))
 	{
 		totalMoves=0;
-		currmove=0;			//vectors also needed to be emptied
+		currmove=0;
+		possiblemoves.clear();			
 		nodes[row][coloumn]=node;
 		return;
 	}
@@ -60,13 +61,17 @@ pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int 
 		// code to find removable markers is under process	//need to be generic removal has been fixed
 		for(j=1;node[(pos[i][0])-j][pos[i][1]].color==color,j++);
 		for(k=1;node[(pos[i][0])+k][pos[i][1]].color==color,k++);
-		if(j+k-1 >= 5) return pair<pair<((pos[i][0])-j+1),pos[i][1]>,pair<((pos[i][0])-j+5),pos[i][1]>>
+		if(j+k-1 >= 5) return pair<pair<((pos[i][0])-j+1),pos[i][1]>,pair<((pos[i][0])-j+5),pos[i][1]>>;
 		//else
 		for(j=1;node[pos[i][0]][(pos[i][1])-j].color==color,j++);
 		for(k=1;node[pos[i][0]][(pos[i][1])+k].color==color,k++);
-		if(j+k-1 >= 5) return pair<pair<pos[i][0],((pos[i][1])-j+1)>,pair<pos[i][0],((pos[i][1])-j+1)>>
+		if(j+k-1 >= 5) return pair<pair<pos[i][0],((pos[i][1])-j+1)>,pair<pos[i][0],((pos[i][1])-j+1)>>;
 		//else
-		
+		for(j=1;node[(pos[i][0])-j][(pos[i][1])-j].color==color,j++);
+		for(k=1;node[(pos[i][0])+k][(pos[i][1])+k].color==color,k++);
+		if(j+k-1 >= 5) return pair<pair<((pos[i][0])-j+1),((pos[i][1])-j+1)>,pair<((pos[i][0])-j+5),((pos[i][1])-j+1)>>;
+		//else
+		return pair<pair<-1,0>,pair<0,0>>;
 	}
 }
 
@@ -163,6 +168,15 @@ int possMove::poss_moves(int color)
 	}
 	//else
 	//other moves - movement of rings
+	int j;
+	if(color==1)
+	{
+		for(i=0;i<whiteRings;i++)
+		{
+			int ringposi=whiteringPos[whiteRings][0];
+			int ringposj=whiteringPos[whiteRings][1];
+		}
+	}
 }
 
 
