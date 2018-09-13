@@ -72,7 +72,7 @@ pair < pair<int,int> , pair<int,int> > PossMove::removableMarkers(int color,int 
 		for(k=1;nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
 		//else
-		return pair<pair<-1,0>,pair<0,0>>;
+		return make_pair(make_pair(-1,0),make_pair(0,0));
 	}
 }
 
@@ -85,8 +85,8 @@ int PossMove::poss_moves(int color)
 	}
 	//else
 	int i,j;
-	vector<move> poss_move;		//single possible move
-	int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringpos[5][2];		//considering white as player1 black as player2
+	vector<Move> poss_move;		//single possible move
+	int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringPos[5][2];		//considering white as player1 black as player2
 	int whiteMarks=0,blackMarks=0,whiteMarkPos[121][2],blackMarkPos[121][2];	//no issues of this outside this class
 	for(i=0;i<11;i++)
 	{
@@ -169,7 +169,6 @@ int PossMove::poss_moves(int color)
 	}
 	//else
 	//other moves - movement of rings
-	int j;
 	if(color==1)
 	{
 		for(i=0;i<whiteRings;i++)
