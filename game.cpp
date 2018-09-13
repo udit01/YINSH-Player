@@ -1,4 +1,5 @@
 #include "game.h"
+#include "PossibleMove.h"
 
 Game::Game()
 {
@@ -12,10 +13,17 @@ Game::Game(int id,int n,int time)
 	this->player_id=id;
 	this->no_of_rings=n;
 	this->time=time;
+	this->b = new Board(5);
+	this->pm = new PossMove(this->b->nodes);
+
 }
 	
 void Game::playmove(vector<Move> move)
 { 
+
+	//object of possible mmove
+
+	// this->pm->setNode();
 	//play the move in the game
 	
 	//opp_move=board.convert(opp_move
