@@ -60,16 +60,16 @@ pair < pair<int,int> , pair<int,int> > PossMove::removableMarkers(int color,int 
 			exit(1);
 		}
 		// code to find removable markers is under process	//need to be generic removal has been fixed
-		for(j=1;nodes[(pos[i][0])-j][pos[i][1]].color==color;j++);
-		for(k=1;nodes[(pos[i][0])+k][pos[i][1]].color==color;k++);
+		for(j=1; (nodes[pos[i][0]-j][pos[i][1]].valid) && nodes[(pos[i][0])-j][pos[i][1]].color==color;j++);
+		for(k=1; (nodes[pos[i][0]+k][pos[i][1]].valid) && nodes[(pos[i][0])+k][pos[i][1]].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),pos[i][1]),make_pair(((pos[i][0])-j+5),pos[i][1]));
 		//else
-		for(j=1;nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
-		for(k=1;nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
+		for(j=1; (nodes[pos[i][0]][pos[i][1]-j].valid) && nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
+		for(k=1; (nodes[pos[i][0]][pos[i][1]+k].valid) && nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(pos[i][0],((pos[i][1])-j+1)),make_pair(pos[i][0],((pos[i][1])-j+1)));
 		//else
-		for(j=1;nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
-		for(k=1;nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
+		for(j=1; (nodes[pos[i][0]-j][pos[i][1]-j].valid) && nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
+		for(k=1; (nodes[pos[i][0]+k][pos[i][1]+k].valid) && nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
 		//else
 		return make_pair(make_pair(-1,0),make_pair(0,0));
