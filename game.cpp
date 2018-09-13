@@ -14,13 +14,14 @@ Game::Game(int id,int n,int time)
 	this->time=time;
 }
 	
-string Game::playmove(string opp_move)
-{
+void Game::playmove(vector<Move> move)
+{ 
+	//play the move in the game
 	
 	//opp_move=board.convert(opp_move
-	string my_move;
+	// string my_move;
 		//our code
-	return my_move;
+	// return my_move;
 }
 
 // take the input from your player file and make it available here

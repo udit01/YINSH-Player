@@ -2,6 +2,7 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
+#include <iostream>
 #include "utils.h"
 
 
@@ -16,9 +17,9 @@ pair<int, int> reverseMapping[11][11];
 
 
 Move::Move(int mt, int r, int c){
-    this.moveType = mt; 
-    this.row = r;
-    this.col = c;
+    this->moveType = mt; 
+    this->row = r;
+    this->col = c;
 }
 
 void formMap( int boardSize  ) {
@@ -103,6 +104,11 @@ Do casewise in case of moves with start and end both
 // }
 
 //INIT mapping once
+constexpr unsigned int str2int(const char* str, int h = 0)
+{
+    return !str[h] ? 5381 : (str2int(str, h+1) * 33) ^ str[h];
+}
+
 
 static vector<Move> Move::convertToStd(string move){
 
@@ -110,10 +116,11 @@ static vector<Move> Move::convertToStd(string move){
         formMap(5); flag = 1;
     }
 
-    stringstream moveStream(str);
+    stringstream moveStream(move);
     string token;
     char delim = ' ';
     
+    int number = 0;
     int counter = 0;
     int moveNumber = 0;
     int hexNum = 0;
@@ -122,14 +129,15 @@ static vector<Move> Move::convertToStd(string move){
     vector<Move> moveVector;
 
     while (getline(moveStream, token, delim)) {
-        switch (token){
+        
+        switch (str2int(token.c_str())){
 
-            case "P" : moveNumber = 0; counter = (counter + 1) % 3; break;
-            case "S" : moveNumber = 1; counter = (counter + 1) % 3; break;
-            case "M" : moveNumber = 2; counter = (counter + 1) % 3; break;
-            case "RS": moveNumber = 3; counter = (counter + 1) % 3; break;
-            case "RE": moveNumber = 4; counter = (counter + 1) % 3; break;
-            case "X" : moveNumber = 5; counter = (counter + 1) % 3; break;
+            case str2int("P") : moveNumber = 0; counter = (counter + 1) % 3; break;
+            case str2int("S") : moveNumber = 1; counter = (counter + 1) % 3; break;
+            case str2int("M") : moveNumber = 2; counter = (counter + 1) % 3; break;
+            case str2int("RS"): moveNumber = 3; counter = (counter + 1) % 3; break;
+            case str2int("RE"): moveNumber = 4; counter = (counter + 1) % 3; break;
+            case str2int("X") : moveNumber = 5; counter = (counter + 1) % 3; break;
             //otherwise it's a number
             default : 
                 number = stoi(token);
@@ -145,7 +153,7 @@ static vector<Move> Move::convertToStd(string move){
                 }
                 else{
                     //some error in parsing
-                    cerr << "Some error in parsing " << token << " : from : " << moveStream ;
+                    cerr << "Some error in parsing " << token << " : from : " << moveStream.str() ;
                 }
 
                 counter = (counter + 1) % 3;
@@ -172,10 +180,10 @@ static string Move::convertToHexagonal( vector<Move> moves){
             case 0 : type = "P" ; break;
             case 1 : type = "S" ; break;
             case 2 : type = "M" ; break;
-            case 3 : type = "RS" ; break;
-            case 4 : type = "RE" ; break;
+            case 3 : type = "RS"; break;
+            case 4 : type = "RE"; break;
             // case 5 : type = "P" ; break;
-            default : type = "X"
+            default: type = "X" ;
         }
         p = reverseMapping[itr->row][itr->col];
         cmoves << type << " " << p.first << " " << p.second << " " ;
