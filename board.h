@@ -21,7 +21,7 @@ class Node{			//make seperate file as needed to be included at different places
       /* Ring can have 0 1 or 2 corresponding to 
           no ring, player 1 ring or player 2 ring
        */ 
-	int valid;
+	bool valid;
 	//(0 or 1)the node is in specified range or not
 	
 	//methods for getvalid,getcolor,getring required
@@ -29,26 +29,32 @@ class Node{			//make seperate file as needed to be included at different places
 
 class Board
 {
-private:
-	int whiteRings,BlackRings; //no. of rings currently present
-	int white_pos[2][5],black_pos[2][5];	// stores the current ring positions
 public:
-	Board();
+    int boardSize;
+	int p1ringsRem, p2ringsRem; //no. of rings currently remaining
+    int p1ringsDone, p2ringsDone;// no. of rings completed
+	int white_pos[2][5],black_pos[2][5];	// stores the current ring positions
+    Node** nodes;
+    
+	Board(int boardSize);
+	void markValidity();
     /*
     Nodes have the following ranges
     Col  ->   Row-range
-    a 0  ->   0 - 3 
-    b 1  ->   0 - 6 
-    c 2  ->   0 - 7 
-    d 3  ->   0 - 8 
-    e 4  ->   0 - 9 
-    f 5  ->   0 - 8  // central col
-    g 6  ->   0 - 9 
-    h 7  ->   0 - 8 
-    i 8  ->   0 - 7 
-    j 9  ->   0 - 6 
-    k 10 ->   0 - 3 
+    a 0  ->   1 - 4  (3)
+    b 1  ->   0 - 6  (6)
+    c 2  ->   0 - 7  (7)
+    d 3  ->   0 - 8  (8)
+    e 4  ->   0 - 9  (9)
+    f 5  ->   1 - 9  (8)// central col
+    g 6  ->   1 - 10 (9)
+    h 7  ->   2 - 10 (8)
+    i 8  ->   3 - 10 (7)
+    j 9  ->   4 - 10 (6)
+    k 10 ->   6 - 9  (3)
     */
+
+
 
     
 	
