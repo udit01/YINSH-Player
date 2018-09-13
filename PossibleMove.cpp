@@ -47,17 +47,26 @@ void possMove:: setNode(int row,int coloumn,Node node)
 	exit(1);
 }
 
-pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int marks,int pos[121][2])
+pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int &marks,int pos[121][2])
 {
-	int i;
+	int i,j,k;
 	for(i=0;i<marks;i++)
 	{
-		if(node[pos[i][0]][pos[i][1]].getcolor != color)
+		if(node[pos[i][0]][pos[i][1]].color != color)
 		{
 			cerr<<"some error in marker colouring or finding markers"<<endl;
 			exit(1);
 		}
-		// code to find removable markers is under process
+		// code to find removable markers is under process	//need to be generic removal has been fixed
+		for(j=1;node[(pos[i][0])-j][pos[i][1]].color==color,j++);
+		for(k=1;node[(pos[i][0])+k][pos[i][1]].color==color,k++);
+		if(j+k-1 >= 5) return pair<pair<((pos[i][0])-j+1),pos[i][1]>,pair<((pos[i][0])-j+5),pos[i][1]>>
+		//else
+		for(j=1;node[pos[i][0]][(pos[i][1])-j].color==color,j++);
+		for(k=1;node[pos[i][0]][(pos[i][1])+k].color==color,k++);
+		if(j+k-1 >= 5) return pair<pair<pos[i][0],((pos[i][1])-j+1)>,pair<pos[i][0],((pos[i][1])-j+1)>>
+		//else
+		
 	}
 }
 
@@ -77,10 +86,10 @@ int possMove::poss_moves(int color)
 	{
 		for(j=0;j<11;j++)
 		{
-			if(nodes[i][j].getvalid()==0)
+			if(nodes[i][j].valid==0)
 				continue;
 			//else
-			switch(nodes[i][j].getring())
+			switch(nodes[i][j].ring)
 			{
 				case 1 :
 					whiteringPos[whiteRings][0]=i;
@@ -94,7 +103,7 @@ int possMove::poss_moves(int color)
 					break;
 				case 0 :
 				//rings and markers can't be true together hence here is possiblity of marker
-					switch(nodes[i][j].getcolor())
+					switch(nodes[i][j].color)
 					{
 						case 1 :
 							whiteMarkPos[whiteMarks][0]=i;
