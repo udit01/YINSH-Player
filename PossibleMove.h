@@ -2,9 +2,10 @@
 #ifndef POSSIBLEMOVE_H
 #define POSSIBLEMOVE_H
 
+
 #include <vector>
 #include <utility>
-#include "node.h"	// define it seperately
+#include "board.h"	// define it seperately
 #include "utils.h"
 
 class PossMove
@@ -25,6 +26,6 @@ class PossMove
 		//find possible moves of given color and return no. of moves found
 		//we have three kinds of move - [i][j++],[++][j],[++][++]
 		vector<Move> getNextMove();	//returns next move in array
-}
+};
 
 #endif

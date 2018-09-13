@@ -1,8 +1,8 @@
 #include<iostream>
 #include<string>
 
-#include"utils.h"
-#include"game.cpp"
+#include "utils.h"
+#include "game.cpp"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ int main( int argc, char **argv){
     string opp_move,my_move;
     
     if (player == 1){
-        my_move = Move.convertToHexagonal(game.getMove());
+        my_move = convertToHexagonal(game.getMove());
         cout << my_move;        
     }
 
@@ -39,9 +39,9 @@ int main( int argc, char **argv){
         // cin >> move;
         getline(cin, opp_move);
 	    
-        game.playmove(Move.convertToStd(opp_move));// a call to a fuction of Game
+        game.playmove(convertToStd(opp_move));// a call to a fuction of Game
 
-        my_move = Move.convertToHexagonal(game.getMove());
+        my_move = convertToHexagonal(game.getMove());
         
         cout << my_move;  
 

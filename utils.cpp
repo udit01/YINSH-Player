@@ -110,7 +110,7 @@ constexpr unsigned int str2int(const char* str, int h = 0)
 }
 
 
-static vector<Move> Move::convertToStd(string move){
+vector<Move> convertToStd(string move){
 
     if(flag == 0){
         formMap(5); flag = 1;
@@ -165,7 +165,7 @@ static vector<Move> Move::convertToStd(string move){
 
 }
 
-static string Move::convertToHexagonal( vector<Move> moves){
+string convertToHexagonal( vector<Move> moves){
     if(flag == 0){
         formMap(5); flag = 1;
     }

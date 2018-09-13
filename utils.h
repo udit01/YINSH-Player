@@ -31,12 +31,15 @@ class Move{
        /*Converts the move from hexagonal to standard coordinates*/
         Move(int mt, int r, int c);
 
-        static vector<Move> convertToStd(string s);
+        // static vector<Move> convertToStd(string s);
 
        /*Converts a Move vector to Standard string with \n included */
-        static string convertToHexagonal( vector<Move> moves);
+        // static string convertToHexagonal( vector<Move> moves);
 
 };
 
+
+vector<Move> convertToStd(string s);
+string convertToHexagonal( vector<Move> moves);
 
 #endif

@@ -1,7 +1,7 @@
 # Makefile
 # Author : udit01
 
-all: board.cpp utils.cpp game.cpp player.cpp 
+all: board.cpp utils.cpp game.cpp player.cpp PossibleMove.cpp
 	g++ -std=c++11 -o player  board.cpp utils.cpp game.cpp player.cpp PossibleMove.cpp
 
 opt: board.cpp utils.cpp game.cpp player.cpp 

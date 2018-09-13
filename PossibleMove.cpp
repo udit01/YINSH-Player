@@ -1,4 +1,5 @@
-#include<PossibleMove.h>
+#include <iostream>
+#include "PossibleMove.h"
 
 void PossMove::init()
 {
@@ -12,7 +13,7 @@ PossMove::PossMove()
 	init();
 }
 
-possMove::PossMove(Node **curr_nodes)
+PossMove::PossMove(Node **curr_nodes)
 {
 	init();
 	int i,j;
