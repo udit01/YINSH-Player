@@ -23,7 +23,7 @@ class Node{			//make seperate file as needed to be included at different places
         */ 
         bool valid;
         //(0 or 1)the node is in specified range or not
-
+        Node* deepCopy();
         //methods for getvalid,getcolor,getring required
 };
 
@@ -36,6 +36,7 @@ public:
 	int white_pos[5][2],black_pos[5][2];	// stores the current ring positions
     Node** nodes;
     
+    Board();
 	Board(int boardSize);
 	void markValidity();
     /*
@@ -54,9 +55,7 @@ public:
     k 10 ->   6 - 9  (3)
     */
 
-
-
-    
+    Board* deepCopy();
 	
 };
 
