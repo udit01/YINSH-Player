@@ -13,18 +13,18 @@ class Node{			//make seperate file as needed to be included at different places
         Row varies from 1- 11 (ie 0 to 10 max) 
         Col varies from a - k (ie 0 to 10 max)
         */
-       int color; 
-       /* Color can have 0 1 or 2 corresponding to 
-          no marker, player 1 marker or player 2 marker
-       */
+        int color; 
+        /* Color can have 0 1 or 2 corresponding to 
+            no marker, player 1 marker or player 2 marker
+        */
         int ring;
-      /* Ring can have 0 1 or 2 corresponding to 
-          no ring, player 1 ring or player 2 ring
-       */ 
-	bool valid;
-	//(0 or 1)the node is in specified range or not
-	
-	//methods for getvalid,getcolor,getring required
+        /* Ring can have 0 1 or 2 corresponding to 
+            no ring, player 1 ring or player 2 ring
+        */ 
+        bool valid;
+        //(0 or 1)the node is in specified range or not
+
+        //methods for getvalid,getcolor,getring required
 };
 
 class Board

@@ -5,9 +5,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include<vector.h>
-#include"board.h"
+#include <string>
+#include <vector>
+#include "board.h"
 
+using namespace std;
 
 /*Can also put the moves in an array, then no need to iterate over vector every time*/
 class Move{
@@ -29,7 +31,7 @@ class Move{
        /*Converts the move from hexagonal to standard coordinates*/
         Move(int mt, int r, int c);
 
-        static vector<Move> convertToStd(String s);
+        static vector<Move> convertToStd(string s);
 
        /*Converts a Move vector to Standard string with \n included */
         static string convertToHexagonal( vector<Move> moves);

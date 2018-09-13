@@ -2,10 +2,10 @@
 #ifndef POSSIBLEMOVE_H
 #define POSSIBLEMOVE_H
 
-#include "board.h"	// define it seperately
-#include "utils.h"
 #include <vector>
 #include <utility>
+#include "board.h"	// define it seperately
+#include "utils.h"
 
 class PossMove
 {
