@@ -5,8 +5,6 @@ import time
 
 class RandomPlayer:
 
-
-
 	def __init__(self):
 		data = sys.stdin.readline().strip().split() # Initialize Environment
 		self.player = int(data[0]) - 1 # player can have values 0 and 1
