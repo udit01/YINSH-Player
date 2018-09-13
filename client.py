@@ -237,7 +237,6 @@ def game_loop(args):
 	print '***********************************\n'
 	game = Game(board_size, args.mode, game_timer)        
 
-	# print(server_string)
 	client.SendData2Process(server_string) ## Initialize Process
 
 	''' Execute Game Moves '''
