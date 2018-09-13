@@ -2,7 +2,7 @@
 #include<string>
 
 #include "utils.h"
-#include "game.cpp"
+#include "game.h"
 
 using namespace std;
 
@@ -24,12 +24,12 @@ int main( int argc, char **argv){
 
     // cout << "P 5 7"<< endl;
 
-	Game game(player,n,time); //creates an object of game class
+	Game* game= new Game(player,n,time); //creates an object of game class
     
     string opp_move,my_move;
     
     if (player == 1){
-        my_move = convertToHexagonal(game.getMove());
+        my_move = convertToHexagonal(game->getMove());
         cout << my_move;        
     }
 
@@ -39,9 +39,9 @@ int main( int argc, char **argv){
         // cin >> move;
         getline(cin, opp_move);
 	    
-        game.playmove(convertToStd(opp_move));// a call to a fuction of Game
+        game->playmove(convertToStd(opp_move));// a call to a fuction of Game
 
-        my_move = convertToHexagonal(game.getMove());
+        my_move = convertToHexagonal(game->getMove());
         
         cout << my_move;  
 

@@ -9,8 +9,8 @@ Game::Game()
 
 Game::Game(int id,int n,int time)
 {
-	player_id=id;
-	no_of_rings=n;
+	this->player_id=id;
+	this->no_of_rings=n;
 	this->time=time;
 }
 	
@@ -24,8 +24,7 @@ void Game::playmove(vector<Move> move)
 	// return my_move;
 }
 
-// take the input from your player file and make it available here
-
-//node class - row coloumn colour ring --2darray
-
-//board class - read move and convert it to opposite format
+vector<Move> Game::getMove(){
+	vector<Move> move;
+	return move;
+}
