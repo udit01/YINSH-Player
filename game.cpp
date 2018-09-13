@@ -39,6 +39,9 @@ vector<Move> Game::getMove(){
 	this->origBoard = this->board->deepCopy();
 
 	vector<Move> move;
+	//get the next move by min max or something
+
+
 	return move;
 }
 
