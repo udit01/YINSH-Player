@@ -1,3 +1,4 @@
+#include <iostream>
 #include "PossibleMove.h"
 
 void PossMove::init()
@@ -12,7 +13,7 @@ PossMove::PossMove()
 	init();
 }
 
-possMove::PossMove(Node **curr_nodes)
+PossMove::PossMove(Node **curr_nodes)
 {
 	init();
 	int i,j;
@@ -24,7 +25,7 @@ possMove::PossMove(Node **curr_nodes)
 	flag=0;
 }
 
-Node possMove:: getNode(int row,int coloumn)
+Node PossMove:: getNode(int row,int coloumn)
 {
 	if((row<11)&&(coloumn<11))
 		return nodes[row][coloumn];
@@ -33,7 +34,7 @@ Node possMove:: getNode(int row,int coloumn)
 	exit(1);
 }
 
-void possMove:: setNode(int row,int coloumn,Node node)
+void PossMove:: setNode(int row,int coloumn,Node node)
 {
 	if((row<11)&&(coloumn<11))
 	{
@@ -48,34 +49,34 @@ void possMove:: setNode(int row,int coloumn,Node node)
 	exit(1);
 }
 
-pair < pair<int,int> , pair<int,int> > possMove::removableMarkers(int color,int &marks,int pos[121][2])
+pair < pair<int,int> , pair<int,int> > PossMove::removableMarkers(int color,int &marks,int pos[121][2])
 {
 	int i,j,k;
 	for(i=0;i<marks;i++)
 	{
-		if(node[pos[i][0]][pos[i][1]].color != color)
+		if(nodes[pos[i][0]][pos[i][1]].color != color)
 		{
 			cerr<<"some error in marker colouring or finding markers"<<endl;
 			exit(1);
 		}
 		// code to find removable markers is under process	//need to be generic removal has been fixed
-		for(j=1;node[(pos[i][0])-j][pos[i][1]].color==color,j++);
-		for(k=1;node[(pos[i][0])+k][pos[i][1]].color==color,k++);
-		if(j+k-1 >= 5) return pair<pair<((pos[i][0])-j+1),pos[i][1]>,pair<((pos[i][0])-j+5),pos[i][1]>>;
+		for(j=1;nodes[(pos[i][0])-j][pos[i][1]].color==color;j++);
+		for(k=1;nodes[(pos[i][0])+k][pos[i][1]].color==color;k++);
+		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),pos[i][1]),make_pair(((pos[i][0])-j+5),pos[i][1]));
 		//else
-		for(j=1;node[pos[i][0]][(pos[i][1])-j].color==color,j++);
-		for(k=1;node[pos[i][0]][(pos[i][1])+k].color==color,k++);
-		if(j+k-1 >= 5) return pair<pair<pos[i][0],((pos[i][1])-j+1)>,pair<pos[i][0],((pos[i][1])-j+1)>>;
+		for(j=1;nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
+		for(k=1;nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
+		if(j+k-1 >= 5) return make_pair(make_pair(pos[i][0],((pos[i][1])-j+1)),make_pair(pos[i][0],((pos[i][1])-j+1)));
 		//else
-		for(j=1;node[(pos[i][0])-j][(pos[i][1])-j].color==color,j++);
-		for(k=1;node[(pos[i][0])+k][(pos[i][1])+k].color==color,k++);
-		if(j+k-1 >= 5) return pair<pair<((pos[i][0])-j+1),((pos[i][1])-j+1)>,pair<((pos[i][0])-j+5),((pos[i][1])-j+1)>>;
+		for(j=1;nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
+		for(k=1;nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
+		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
 		//else
 		return pair<pair<-1,0>,pair<0,0>>;
 	}
 }
 
-int possMove::poss_moves(int color)
+int PossMove::poss_moves(int color)
 {
 	if(flag)
 	{

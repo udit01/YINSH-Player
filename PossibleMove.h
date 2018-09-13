@@ -2,6 +2,7 @@
 #ifndef POSSIBLEMOVE_H
 #define POSSIBLEMOVE_H
 
+
 #include <vector>
 #include <utility>
 #include "board.h"	
