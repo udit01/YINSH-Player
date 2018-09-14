@@ -238,7 +238,7 @@ double Game::evaluate(int playerid)
 double Game::minmax(int playerid)
 {
 	Board* b1 = this->board->deepCopy();
-	static int depth=1;
+	static int depth=0;
 	if (depth==6)
 	{
 		depth=1;
@@ -252,8 +252,9 @@ double Game::minmax(int playerid)
 	auto best_move=possMove.begin();
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
-		playmove(*i,changingid);
-		local_score=evaluate(changingid);
+		playmove(*i,playerid);
+		depth++;
+		local_score=minmax()
 		
 	}
 	
