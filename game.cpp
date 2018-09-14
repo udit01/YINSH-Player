@@ -249,25 +249,43 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta)
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;
 	double score,local_score;
-	if(playerid==origplayer) score=-3000;
-	else score=3000;
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
 		depth++;
-		local_score=minmax(3-playerid,origplayer);
 		if(playerid==origplayer)
 		{
+			score=-4500;
+			local_score=minmax(3-playerid,origplayer,alpha,beta);
 			if(local_score>score)
 			{
 				score=local_score;
 			}
+			if(alpha<score)
+			{
+				alpha=score;
+			}
+			if(beta<=alpha)
+			{
+				this->board = b1->deepCopy();
+				depth--;
+				return score;
+			}
 		}
 		else
 		{
+			score=4500;
+			local_score=minmax(3-playerid,origplayer,alpha,beta);
 			if(local_score<score)
 			{
 				score=local_score;
+			}
+			if(score<beta)	beta=score;
+			if(beta<=alpha)
+			{
+				this->board = b1->deepCopy();
+				depth--;
+				return score;
 			}
 		}
 		this->board = b1->deepCopy();
