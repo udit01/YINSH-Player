@@ -15,6 +15,7 @@ public:
 	Game();
 	Game(int id,int n,int time);
 	void playmove(vector<Move>, int player);
+	void changeLine(int player, int r1, int c1, int r2, int c2, bool remove);
 	vector<Move> getMove();
 
 	// Possible Moves adaptives: Will make a board copy 

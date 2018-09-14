@@ -5,22 +5,124 @@
 
 Game::Game()
 {
-	player_id=1;
-	no_of_rings=5;
 	time=150;
 	initPossibleMoves();
 }
 
 Game::Game(int id,int n,int time)
 {
-	this->player_id=id;
-	this->no_of_rings=n;
 	this->time=time;
 	this->board = new Board(5);
 	// this->pm = new PossMove(this->b->nodes);
 
 }
+
+void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	
+	//assert that unequal blocks
+	assert( !( (r1 == r2) && (c1 == c2) ));
+
+	//assert start and end points valid
+	Node n = this->board->nodes[r1][c1];
+	
+	assert(n.valid);
+	if(remove){
+		//color is being checked in the loops 
+		// assert(n.color == player);
+		assert(n.ring == player); 
+		//also check if ring pos is the appropriate thing ?
+	}
+	n = this->board->nodes[r2][c2];
+	
+	assert(n.valid);
+	// if(remove){
+	// 	assert(n.color == player);
+	// }
+	
+	int minIdx, maxIdx;
+	
+	
+	//same row , or same col jump or both changeing equally
+	if(r1 == r2){
+		minIdx = (c1 > c2) ? c2:c1;
+		maxIdx = (c2 + c1) - minIdx;
+		
+		for(int i = minIdx; i <= maxIdx; i++){
+		
+			n = this->board->nodes[r2][i];
+
+			assert(n.valid); // all should be valid by default
+			if(remove){
+				assert(n.color == player);
+				n.color = 0;
+			}
+			else{
+				n.color = (n.color == 0) ? 0 : (3 - n.color); // Flipping the colors in the path
+			}
+		}
+		
+	}else if(c1 == c2){
+		minIdx = (r1 > r2) ? r2:r1;
+		maxIdx = (r2 + r1) - minIdx;
+		
+		for(int i = minIdx; i <= maxIdx; i++){
+		
+			n = this->board->nodes[i][c2];
+
+			assert(n.valid); // all should be valid by default
+			if(remove){
+				assert(n.color == player);
+				n.color = 0;
+			}
+			else{
+				n.color = (n.color == 0) ? 0 : (3 - n.color); // Flipping the colors in the path
+			}
+
+		}
+	}else{
+		//both iterate
+
+		assert(abs(r1-r2) == abs(c1-c2));
+		int dir1 = (r2 - r1)/(abs(r2-r1));
+		int dir2 = (c2 - c1)/(abs(c2-c1));
+		//other complex logic here depeding on signs of r1-r2 and c2-c1
+		int j = c1 ;
+		for(int i = c1; i != r2; i+=dir1){
+			j += dir2;
+			n = this->board->nodes[i][r2];
+
+			assert(n.valid); // all should be valid by default
+			if(remove){
+				assert(n.color == player);
+				n.color = 0;
+			}
+			else{
+				n.color = (n.color == 0) ? 0 : (3 - n.color); // Flipping the colors in the path
+			}
+
+		}
+	}
+
+	if(remove){
+		//change the ring position 
+		n = this->board->nodes[r1][c1];
+		n.ring = 0;
+		n = this->board->nodes[r2][c2];
+		n.ring = player;
+
+		for(int k = 0 ; k < 5 ; k++ ){
+			if((this->board->ring_pos[player-1][k][0] == r1 ) && (this->board->ring_pos[player-1][k][1] == c1) ){
+				
+				this->board->ring_pos[player-1][k][0] = r2; 
+				this->board->ring_pos[player-1][k][1] = c2;
+
+			}
+		}
+
+	}
+}	
+
+
 void Game::playmove(vector<Move> move, int player)
 { 
 	/*We get a player's  move and we have to play it*/
@@ -63,41 +165,22 @@ void Game::playmove(vector<Move> move, int player)
 			case 2: /*Move ring comes after selection*/
 				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
-				int minIdx, maxIdx;
-				//same row , or same col jump or both changeing equally
-				if(rsr == row){
-					minIdx = (rsc > col)?col:rsc;
-					maxIdx = (col + rsc) - minIdx;
-					
-					for(int i = minIdx; i <= maxIdx; i++){
-					
-						n = this->board->nodes[row][i];
-
-						if(n.valid && (n.color!=0)){
-							n.color = 3 - n.color; // Flipping the colors in the path
-						}
-					}
-					
-				}else if(rsc == col){
-					minIdx = (rsr > row)?row:rsr;
-					maxIdx = (row + rsr) - minIdx;
-					
-					for(int i = minIdx; i <= maxIdx; i++){
-					
-						n = this->board->nodes[i][row];
-
-						if(n.valid && (n.color!=0)){
-							n.color = 3 - n.color; // Flipping the colors in the path
-						}
-					}
-				}else{
-					assert(abs(rsr-row) == abs(rsc-col));
-
-					//both iterate
-					//other complex logic here depeding on signs of rsr-row and col-rsc
-					
-				}
-
+				this->changeLine(me, rsr, rsc, row, col, false);
+				break;
+			case 3: /*RS may come standalone*/
+			//check the rings are in order
+				//set ring start row and column
+				rsr = row; rsc = col;
+				break;
+			case 4: /*RE ring comes after selection*/
+				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
+				//assert somehow that ringstartpos was evaluated
+				this->changeLine(me, rsr, rsc, row, col, true);
+				break;
+			case 5: /*X is remove ring do after appropirate checking*/
+				
+				break;
+			
 		}
 
 	/* std::cout << *it; ... */
