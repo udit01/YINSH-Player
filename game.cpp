@@ -126,6 +126,17 @@ double Game::evaluate(int playerid)
 }
 double Game::minmax()
 {
+	int changingid=2;
+	vector<Move> move;
+	//get the next move by min max or something
+	
+	double score,local_score;
+	auto best_move=possibleMoves.begin();
+	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
+	{
+		playmove(*i,changingid);
+		local_score=evaluate(changingid);
+	}
 	
 }
 vector<Move> Game::getMove(){
@@ -133,13 +144,13 @@ vector<Move> Game::getMove(){
 
 	vector<Move> move;
 	//get the next move by min max or something
-	int changingid=1;
+	
 	double score,local_score;
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
 	{
-		playmove(*i,changingid);
-		local_score=evaluate(changingid);
+		playmove(*i,1);
+		local_score=minmax();
 	}
 	
 
