@@ -63,16 +63,39 @@ void Game::playmove(vector<Move> move, int player)
 			case 2: /*Move ring comes after selection*/
 				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
-				for(int i = rsr; i <= row; i++){
+				int minIdx, maxIdx;
+				//same row , or same col jump or both changeing equally
+				if(rsr == row){
+					minIdx = (rsc > col)?col:rsc;
+					maxIdx = (col + rsc) - minIdx;
 					
-					//wrong logic for j 
-					int j = rsc + (i-rsr);
-					n = this->board->nodes[i][j];
+					for(int i = minIdx; i <= maxIdx; i++){
+					
+						n = this->board->nodes[row][i];
 
-					//all should be valid by default
-					if(n.valid && (n.color!=0)){
-						n.color = 3 - n.color; // Flipping the colors in the path
+						if(n.valid && (n.color!=0)){
+							n.color = 3 - n.color; // Flipping the colors in the path
+						}
 					}
+					
+				}else if(rsc == col){
+					minIdx = (rsr > row)?row:rsr;
+					maxIdx = (row + rsr) - minIdx;
+					
+					for(int i = minIdx; i <= maxIdx; i++){
+					
+						n = this->board->nodes[i][row];
+
+						if(n.valid && (n.color!=0)){
+							n.color = 3 - n.color; // Flipping the colors in the path
+						}
+					}
+				}else{
+					assert(abs(rsr-row) == abs(rsc-col));
+
+					//both iterate
+					//other complex logic here depeding on signs of rsr-row and col-rsc
+					
 				}
 
 		}
