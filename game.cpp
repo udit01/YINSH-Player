@@ -229,30 +229,51 @@ double Game::evaluate(int playerid)
 			}
 		}
 	}
+	if(this->board->ringsRem[playerid-1]==2) return 100.0;
+	//else
 	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
-double Game::minmax()
+double Game::minmax(int playerid)
 {
-	
-}
-vector<Move> Game::getMove(){
-	this->origBoard = this->board->deepCopy();
-
+	int changingid=playerid;
 	vector<Move> move;
 	//get the next move by min max or something
-	int changingid=1;
+	poss_moves(playerid);
 	double score,local_score;
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
 	{
 		playmove(*i,changingid);
 		local_score=evaluate(changingid);
+		
+	}
+	
+	
+}
+vector<Move> Game::getMove(int playerid){
+	this->origBoard = this->board->deepCopy();
+
+	vector<Move> move;
+	//get the next move by min max or something
+	
+	double score,local_score;
+	poss_moves(playerid);
+	auto best_move=possibleMoves.begin();
+	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
+	{
+		playmove(*i,playerid);
+		local_score=minmax(3-playerid);
+		if(local_score>score)
+		{
+			score=local_score;
+			best_move=i;
+		}
 	}
 	
 
-	return move;
+	return (*best_move);
 }
 
 /*
@@ -335,6 +356,7 @@ int Game::poss_moves(int color)
 		exit(1);
 	}
 	//else
+	possibleMoves.clear();
 	int i,j;
 	vector<Move> poss_move;		//single possible move
 	int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringPos[5][2];		//considering white as player1 black as player2
