@@ -1,126 +1,84 @@
 #include <iostream>
-#include "game.h"
 #include "PossibleMove.h"
 
-Game::Game()
+void PossMove::init()
 {
-	player_id=1;
-	no_of_rings=5;
-	time=150;
-	initPossibleMoves();
+	flag=1;
+	totalMoves=0;
+	currmove=0;
 }
 
-Game::Game(int id,int n,int time)
+PossMove::PossMove()
 {
-	this->player_id=id;
-	this->no_of_rings=n;
-	this->time=time;
-	this->board = new Board(5);
-	// this->pm = new PossMove(this->b->nodes);
-
-}
-	
-void Game::playmove(vector<Move> move)
-{ 
-
-	//object of possible mmove
-
-	// this->pm->setNode();
-	//play the move in the game
-	
-	//opp_move=board.convert(opp_move
-	// string my_move;
-		//our code
-	// return my_move;
-	
+	init();
 }
 
-vector<Move> Game::getMove(){
-	this->origBoard = this->board->deepCopy();
-
-	vector<Move> move;
-	//get the next move by min max or something
-	for(auto i=
-	
-
-	return move;
-}
-
-/*
-From the PossibleMoves class
-*/
-
-void Game::initPossibleMoves(){
-	this->flag = 1;
-	this->totalMoves = 0;
-	this->currMove = 0;
-}
-/*
-Instead of nodes copy , we'll work on a board's copy
-because we need the number of rings and other things preserverd
-*/
-//get set is unrequired 
-
-Node Game::getNode(int row,int coloumn)
+PossMove::PossMove(Node **curr_nodes)
 {
-	if((row<11)&&(coloumn<11)){
-		Node n = this->board->nodes[row][coloumn];
-		if (n.valid){
-			return n;
-		}
+	init();
+	int i,j;
+	for(i=0;i<11;i++)
+	{
+		for(j=0;j<11;j++)
+			nodes[i][j]=curr_nodes[i][j];
 	}
-	
-	cerr << "Trying to get an Invalid or out of range Node" << endl;
+	flag=0;
+}
+
+Node PossMove:: getNode(int row,int coloumn)
+{
+	if((row<11)&&(coloumn<11))
+		return nodes[row][coloumn];
+	//else
+	cerr<<"getting node out of range"<<endl;
 	exit(1);
 }
 
-void Game::setNode(int row,int coloumn,Node node)
+void PossMove:: setNode(int row,int coloumn,Node node)
 {
 	if((row<11)&&(coloumn<11))
 	{
-		this->totalMoves = 0;
-		this->currMove = 0;
-		this->possibleMoves.clear();			
-		this->board->nodes[row][coloumn] = node;
+		totalMoves=0;
+		currmove=0;
+		possiblemoves.clear();			
+		nodes[row][coloumn]=node;
 		return;
 	}
 	//else					
-	cerr << "Trying to set an out of bounds node" << endl;
+	cerr<<"setting node out of range"<<endl;
 	exit(1);
 }
 
-
-pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2])
+pair < pair<int,int> , pair<int,int> > PossMove::removableMarkers(int color,int &marks,int pos[121][2])
 {
 	int i,j,k;
 	for(i=0;i<marks;i++)
 	{
-		if(this->board->nodes[pos[i][0]][pos[i][1]].color != color)
+		if(nodes[pos[i][0]][pos[i][1]].color != color)
 		{
 			cerr<<"some error in marker colouring or finding markers"<<endl;
 			exit(1);
 		}
 		// code to find removable markers is under process	//need to be generic removal has been fixed
-		for(j=1;(this->board->nodes[(pos[i][0])-j][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])-j][pos[i][1]].color==color);j++);
-		for(k=1;(this->board->nodes[(pos[i][0])+k][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])+k][pos[i][1]].color==color);k++);
+		for(j=1;(nodes[(pos[i][0])-j][pos[i][1]].valid)&&(nodes[(pos[i][0])-j][pos[i][1]].color==color);j++);
+		for(k=1;(nodes[(pos[i][0])+k][pos[i][1]].valid)&&nodes[(pos[i][0])+k][pos[i][1]].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),pos[i][1]),make_pair(((pos[i][0])-j+5),pos[i][1]));
 		//else
-		for(j=1; (this->board->nodes[pos[i][0]][pos[i][1]-j].valid) && this->board->nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
-		for(k=1; (this->board->nodes[pos[i][0]][pos[i][1]+k].valid) && this->board->nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
+		for(j=1;nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
+		for(k=1;nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(pos[i][0],((pos[i][1])-j+1)),make_pair(pos[i][0],((pos[i][1])-j+1)));
 		//else
-		for(j=1; (this->board->nodes[pos[i][0]-j][pos[i][1]-j].valid) && this->board->nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
-		for(k=1; (this->board->nodes[pos[i][0]+k][pos[i][1]+k].valid) && this->board->nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
+		for(j=1;nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
+		for(k=1;nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
 		//else
 		return make_pair(make_pair(-1,0),make_pair(0,0));
 	}
 }
 
-
-int Game::poss_moves(int color)
+int PossMove::poss_moves(int color)
 {
-	if(this->flag)
+	if(flag)
 	{
 		cerr<<"nodes not set for possiblemoves"<<endl;
 		exit(1);
@@ -134,10 +92,10 @@ int Game::poss_moves(int color)
 	{
 		for(j=0;j<11;j++)
 		{
-			if(this->board->nodes[i][j].valid==0)
+			if(nodes[i][j].valid==0)
 				continue;
 			//else
-			switch(this->board->nodes[i][j].ring)
+			switch(nodes[i][j].ring)
 			{
 				case 1 :
 					whiteringPos[whiteRings][0]=i;
@@ -151,7 +109,7 @@ int Game::poss_moves(int color)
 					break;
 				case 0 :
 				//rings and markers can't be true together hence here is possiblity of marker
-					switch(this->board->nodes[i][j].color)
+					switch(nodes[i][j].color)
 					{
 						case 1 :
 							whiteMarkPos[whiteMarks][0]=i;
@@ -164,12 +122,12 @@ int Game::poss_moves(int color)
 							blackMarks++;
 							break;
 						default :
-							cerr<<"markers not properly assigned to this->board->nodes"<<endl;
+							cerr<<"markers not properly assigned to nodes"<<endl;
 							exit(1);
 					}
 					break;
 				default :
-					cerr<<"rings not properly assigned to this->board->nodes"<<endl;
+					cerr<<"rings not properly assigned to nodes"<<endl;
 					exit(1);
 			}
 			
@@ -206,7 +164,7 @@ int Game::poss_moves(int color)
 		}
 		//ring movements need to be added to each move
 		totalMoves=1;	//need to be considered while all rings possible to remove
-		possibleMoves.push_back(poss_move);
+		possiblemoves.push_back(poss_move);
 		return totalMoves;
 	}
 	//else
@@ -218,7 +176,29 @@ int Game::poss_moves(int color)
 			int ringposi=whiteringPos[whiteRings][0];
 			int ringposj=whiteringPos[whiteRings][1];
 			int x;
-			
+			for(x=1;(nodes[ringposi-x][ringposj].valid) && (nodes[ringposi-x][ringposj].color + nodes[ringposi-x][ringposj].ring)==0;x++)
+			{
+				
+			}
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
