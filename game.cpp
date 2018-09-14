@@ -104,9 +104,10 @@ void Game::playmove(vector<Move> move, int player)
 	}
 	
 }
-int Game::evaluate(int playerid)	
+double Game::evaluate(int playerid)	
 {
-	int i,j,score;
+	int i,j;
+	double score;
 	int markers[2]={0,0};
 	for(i=0;i<11;i++)
 	{
@@ -120,14 +121,20 @@ int Game::evaluate(int playerid)
 		}
 	}
 	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
+	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
+	return score;
 }
-
+double Game::minmax()
+{
+	
+}
 vector<Move> Game::getMove(){
 	this->origBoard = this->board->deepCopy();
 
 	vector<Move> move;
 	//get the next move by min max or something
-	int score,local_score,changingid=1;
+	int changingid=1;
+	double score,local_score;
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
 	{
