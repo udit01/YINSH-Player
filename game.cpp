@@ -212,7 +212,7 @@ void Game::playmove(vector<Move> move, int player){
 	
 }
 
-double Game::evaluate(int playerid)	
+double Game::evaluate(int playerid,int origplayer)	
 {
 	int i,j;
 	double score;
@@ -228,7 +228,8 @@ double Game::evaluate(int playerid)
 			}
 		}
 	}
-	if(this->board->ringsRem[playerid-1]==2) return 100.0;
+	if(this->board->ringsRem[origplayer-1]==2) return 100.0;
+	if(this->board->ringsRem[2-origplayer]==2) return -100.0;
 	//else
 	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
@@ -241,7 +242,7 @@ double Game::minmax(int playerid,int origplayer)
 	if (depth==6)
 	{
 		depth=1;
-		return evaluate(playerid);
+		return evaluate(playerid,origplayer);
 	}
 	//get the next move by min max or something
 	poss_moves(playerid);
@@ -271,14 +272,14 @@ double Game::minmax(int playerid,int origplayer)
 		}
 		this->board = b1->deepCopy();
 	}
-	
+	return score;
 	
 }
 vector<Move> Game::getMove(int playerid){
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
 	
-	double score-3000.0,local_score;
+	double score=-3000.0,local_score;
 	poss_moves(playerid);
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;

@@ -27,7 +27,7 @@ public:
 	
 	//checks if a row of markers exist if not then .first.first=-1
 	pair<pair<int,int>, pair<int,int>> removableMarkers(int color,int &marks,int pos[121][2]);
-	double evaluate(int playerid);
+	double evaluate(int playerid,int origplayer);
 	void initPossibleMoves();
 	Node getNode(int row, int col);
 	double minmax(int playerid,int origplayer);
