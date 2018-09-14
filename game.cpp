@@ -248,12 +248,14 @@ double Game::minmax(int playerid,int origplayer)
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;
 	double score,local_score;
+	if(playerid==origplayer) score=-3000;
+	else score=3000;
 	auto best_move=possMove.begin();
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
 		depth++;
-		local_score=minmax(3-playerid);
+		local_score=minmax(3-playerid,origplayer);
 		
 	}
 	
@@ -263,7 +265,7 @@ vector<Move> Game::getMove(int playerid){
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
 	
-	double score,local_score;
+	double score-3000.0,local_score;
 	poss_moves(playerid);
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;
