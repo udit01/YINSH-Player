@@ -212,7 +212,7 @@ double Game::minmax(int playerid)
 	int changingid=playerid;
 	vector<Move> move;
 	//get the next move by min max or something
-	
+	poss_moves(playerid);
 	double score,local_score;
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
@@ -321,6 +321,7 @@ int Game::poss_moves(int color)
 		exit(1);
 	}
 	//else
+	possibleMoves.clear();
 	int i,j;
 	vector<Move> poss_move;		//single possible move
 	int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringPos[5][2];		//considering white as player1 black as player2
