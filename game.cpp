@@ -110,7 +110,12 @@ vector<Move> Game::getMove(){
 
 	vector<Move> move;
 	//get the next move by min max or something
-	for(auto i=
+	int score;
+	auto best_move=possibleMoves.begin();
+	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
+	{
+
+	}
 	
 
 	return move;
