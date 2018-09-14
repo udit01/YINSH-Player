@@ -29,7 +29,7 @@ int main( int argc, char **argv){
     string opp_move,my_move;
     
     if (player == 1){
-        my_move = convertToHexagonal(game->getMove());
+        my_move = convertToHexagonal(game->getMove(1));
         cout << my_move;        
     }
 
@@ -41,7 +41,7 @@ int main( int argc, char **argv){
 	    
         game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
 
-        my_move = convertToHexagonal(game->getMove());
+        my_move = convertToHexagonal(game->getMove(player));
         
         cout << my_move;  
 

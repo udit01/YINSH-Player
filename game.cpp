@@ -122,6 +122,30 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	}
 }	
 
+void Game::removeRing(int player, int r, int c){
+	assert(this->board->ringsRem[player-1]>0);
+	//what if >= 3 ?
+	// assert(this->board->ringsDone[player-1]>3);
+	Node n = this->board->nodes[r][c];
+	assert(n.valid);
+	assert(n.ring == player);
+
+	//erase ring
+	n.ring = 0;
+
+	//erase ring from position base
+	for(int k = 0 ; k < 5 ; k++ ){
+			if((this->board->ring_pos[player-1][k][0] == r ) && (this->board->ring_pos[player-1][k][1] == c) ){
+				this->board->ring_pos[player-1][k][0] = 0; 
+				this->board->ring_pos[player-1][k][1] = 0;
+			}
+	}
+
+	//counter inc/dec of reamaining and done rings
+	this->board->ringsRem[player-1]--;
+	this->board->ringsDone[player-1]++;
+
+}
 
 void Game::playmove(vector<Move> move, int player)
 { 
@@ -129,6 +153,7 @@ void Game::playmove(vector<Move> move, int player)
 	int me = player;
 	int opp = 3 - me;
 	int type = 0, row = 0, col = 0;
+	
 	//ring start row and column
 	int rsr = 0, rsc = 0;
 
@@ -140,15 +165,13 @@ void Game::playmove(vector<Move> move, int player)
 	-> Remove a row start (marker put), then move (in general started by move seq)
 	When is it started from non move ?
 		S 1 2 M 2 4 RS 1 2 RE 4 16 X 3 4
-
-
 	*/
 
 	Node n;
 
 	//play the move in the game
 	for(std::vector<Move>::iterator it = move.begin(); it != move.end(); ++it) {
-		type = (*it).moveType; row = (*it).row; col = (*it).col;
+		type = it->moveType; row = it->row; col = it->col;
 
 		assert(this->board->nodes[row][col].valid);
 
@@ -178,15 +201,18 @@ void Game::playmove(vector<Move> move, int player)
 				this->changeLine(me, rsr, rsc, row, col, true);
 				break;
 			case 5: /*X is remove ring do after appropirate checking*/
-				
+				this->removeRing(me, row, col);
 				break;
-			
+			default:
+				cerr << "Some error in move type " << type << endl;
+				exit(1);
 		}
 
 	/* std::cout << *it; ... */
 	}
 	
 }
+
 double Game::evaluate(int playerid)	
 {
 	int i,j;
