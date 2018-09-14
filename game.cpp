@@ -221,7 +221,9 @@ double Game::minmax(int playerid)
 	{
 		playmove(*i,changingid);
 		local_score=evaluate(changingid);
+		
 	}
+	
 	
 }
 vector<Move> Game::getMove(int playerid){
@@ -237,10 +239,15 @@ vector<Move> Game::getMove(int playerid){
 	{
 		playmove(*i,playerid);
 		local_score=minmax(3-playerid);
+		if(local_score>score)
+		{
+			score=local_score;
+			best_move=i;
+		}
 	}
 	
 
-	return move;
+	return (*best_move);
 }
 
 /*
