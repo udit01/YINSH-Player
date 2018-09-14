@@ -104,17 +104,24 @@ void Game::playmove(vector<Move> move, int player)
 	}
 	
 }
+int Game::evaluate(int playerid)	
+{
+	int i,j;
+	int rings[2],markers[2];
+	this->board->nodes[i][j];
+}
 
 vector<Move> Game::getMove(){
 	this->origBoard = this->board->deepCopy();
 
 	vector<Move> move;
 	//get the next move by min max or something
-	int score;
+	int score,local_score,changingid=1;
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
 	{
-
+		playmove(*i,changingid);
+		local_score=evaluate(changingid);
 	}
 	
 
