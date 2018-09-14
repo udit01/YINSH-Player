@@ -16,6 +16,7 @@ public:
 	Game(int id,int n,int time);
 	void playmove(vector<Move>, int player);
 	void changeLine(int player, int r1, int c1, int r2, int c2, bool remove);
+	void removeRing(int player, int r, int c);
 	vector<Move> getMove();
 
 	// Possible Moves adaptives: Will make a board copy 
@@ -25,7 +26,7 @@ public:
 	
 	//checks if a row of markers exist if not then .first.first=-1
 	pair<pair<int,int>, pair<int,int>> removableMarkers(int color,int &marks,int pos[121][2]);
-	int evaluate(int playerid);
+	double evaluate(int playerid);
 	void initPossibleMoves();
 	Node getNode(int row, int col);
 	double minmax();
