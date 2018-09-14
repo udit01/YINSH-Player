@@ -8,12 +8,13 @@
 class Game
 {
 public:
-	int player_id,no_of_rings,time;
+	// int player_id,no_of_rings,time;
+	int time;
 	Board* board, origBoard;
 	// write the names of data members to be used and member functions required along with why/what to do in it
 	Game();
 	Game(int id,int n,int time);
-	void playmove(vector<Move>);
+	void playmove(vector<Move>, int player);
 	vector<Move> getMove();
 
 	// Possible Moves adaptives: Will make a board copy 
