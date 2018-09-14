@@ -235,7 +235,7 @@ double Game::evaluate(int playerid)
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
-double Game::minmax(int playerid)
+double Game::minmax(int playerid,int origplayer)
 {
 	Board* b1 = this->board->deepCopy();
 	static int depth=0;
@@ -254,7 +254,7 @@ double Game::minmax(int playerid)
 	{
 		playmove(*i,playerid);
 		depth++;
-		local_score=minmax()
+		local_score=minmax(3-playerid);
 		
 	}
 	
@@ -272,7 +272,7 @@ vector<Move> Game::getMove(int playerid){
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
-		local_score=minmax(3-playerid);
+		local_score=minmax(3-playerid,playerid);
 		if(local_score>score)
 		{
 			score=local_score;
