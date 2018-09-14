@@ -203,6 +203,8 @@ double Game::evaluate(int playerid)
 			}
 		}
 	}
+	if(this->board->ringsRem[playerid-1]==2) return 100.0;
+	//else
 	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
