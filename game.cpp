@@ -147,8 +147,7 @@ void Game::removeRing(int player, int r, int c){
 
 }
 
-void Game::playmove(vector<Move> move, int player)
-{ 
+void Game::playmove(vector<Move> move, int player){ 
 	/*We get a player's  move and we have to play it*/
 	int me = player;
 	int opp = 3 - me;
@@ -281,7 +280,6 @@ vector<Move> Game::getMove(int playerid){
 		this->board = this->origBoard->deepCopy();
 	}
 	
-
 	return (*best_move);
 }
 
