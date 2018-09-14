@@ -212,7 +212,7 @@ void Game::playmove(vector<Move> move, int player){
 	
 }
 
-double Game::evaluate(int playerid)	
+double Game::evaluate(int playerid,int origplayer)	
 {
 	int i,j;
 	double score;
@@ -228,41 +228,58 @@ double Game::evaluate(int playerid)
 			}
 		}
 	}
-	if(this->board->ringsRem[playerid-1]==2) return 100.0;
+	if(this->board->ringsRem[origplayer-1]==2) return 100.0;
+	if(this->board->ringsRem[2-origplayer]==2) return -100.0;
 	//else
 	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
-double Game::minmax(int playerid)
+double Game::minmax(int playerid,int origplayer)
 {
 	Board* b1 = this->board->deepCopy();
-	static int depth=1;
+	static int depth=0;
 	if (depth==6)
 	{
 		depth=1;
-		return evaluate(playerid);
+		return evaluate(playerid,origplayer);
 	}
 	//get the next move by min max or something
 	poss_moves(playerid);
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;
 	double score,local_score;
-	auto best_move=possMove.begin();
+	if(playerid==origplayer) score=-3000;
+	else score=3000;
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
-		playmove(*i,changingid);
-		local_score=evaluate(changingid);
-		
+		playmove(*i,playerid);
+		depth++;
+		local_score=minmax(3-playerid,origplayer);
+		if(playerid==origplayer)
+		{
+			if(local_score>score)
+			{
+				score=local_score;
+			}
+		}
+		else
+		{
+			if(local_score<score)
+			{
+				score=local_score;
+			}
+		}
+		this->board = b1->deepCopy();
 	}
-	
+	return score;
 	
 }
 vector<Move> Game::getMove(int playerid){
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
 	
-	double score,local_score;
+	double score=-3000.0,local_score;
 	poss_moves(playerid);
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;
@@ -270,7 +287,7 @@ vector<Move> Game::getMove(int playerid){
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
-		local_score=minmax(3-playerid);
+		local_score=minmax(3-playerid,playerid);
 		if(local_score>score)
 		{
 			score=local_score;
