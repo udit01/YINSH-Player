@@ -106,9 +106,20 @@ void Game::playmove(vector<Move> move, int player)
 }
 int Game::evaluate(int playerid)	
 {
-	int i,j;
-	int rings[2],markers[2];
-	this->board->nodes[i][j];
+	int i,j,score;
+	int markers[2]={0,0};
+	for(i=0;i<11;i++)
+	{
+		for(j=0;j<11;j++)
+		{
+			if(this->board->nodes[i][j].valid)
+			{
+				if(this->board->nodes[i][j].color==playerid) markers[playerid-1]++;
+				else if(this->board->nodes[i][j].color==(3-playerid)) markers[2-playerid]++;
+			}
+		}
+	}
+	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
 }
 
 vector<Move> Game::getMove(){
