@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 #include "game.h"
 #include "PossibleMove.h"
 
@@ -20,18 +21,64 @@ Game::Game(int id,int n,int time)
 
 }
 	
-void Game::playmove(vector<Move> move)
+void Game::playmove(vector<Move> move, int player)
 { 
+	/*We get a player's  move and we have to play it*/
+	int me = player;
+	int opp = 3 - me;
+	int type = 0, row = 0, col = 0;
+	//ring start row and column
+	int rsr = 0, rsc = 0;
 
-	//object of possible mmove
 
-	// this->pm->setNode();
+	/*
+	Types of sequences in the game : 
+	-> Place
+	-> Select ring(marker put), then move
+	-> Remove a row start (marker put), then move (in general started by move seq)
+	When is it started from non move ?
+		S 1 2 M 2 4 RS 1 2 RE 4 16 X 3 4
+
+
+	*/
+
+	Node n;
+
 	//play the move in the game
-	
-	//opp_move=board.convert(opp_move
-	// string my_move;
-		//our code
-	// return my_move;
+	for(std::vector<Move>::iterator it = move.begin(); it != move.end(); ++it) {
+		type = (*it).moveType; row = (*it).row; col = (*it).col;
+
+		assert(this->board->nodes[row][col].valid);
+
+		switch(type){
+			case 0: /* Placing a ring */
+				this->board->nodes[row][col].ring = me;
+				break;
+			case 1: /* Selecting a ring(and therefore putting the marker) */
+				// Put the marker on this node 
+				this->board->nodes[row][col].color = me;
+				//set ring start row and column
+				rsr = row; rsc = col;
+				break;
+			case 2: /*Move ring comes after selection*/
+				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
+				//assert somehow that ringstartpos was evaluated
+				for(int i = rsr; i <= row; i++){
+					
+					//wrong logic for j 
+					int j = rsc + (i-rsr);
+					n = this->board->nodes[i][j];
+
+					//all should be valid by default
+					if(n.valid && (n.color!=0)){
+						n.color = 3 - n.color; // Flipping the colors in the path
+					}
+				}
+
+		}
+
+	/* std::cout << *it; ... */
+	}
 	
 }
 

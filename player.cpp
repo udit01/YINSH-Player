@@ -39,7 +39,7 @@ int main( int argc, char **argv){
         // cin >> move;
         getline(cin, opp_move);
 	    
-        game->playmove(convertToStd(opp_move));// a call to a fuction of Game
+        game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
 
         my_move = convertToHexagonal(game->getMove());
         
