@@ -262,6 +262,14 @@ double Game::minmax(int playerid,int origplayer)
 				score=local_score;
 			}
 		}
+		else
+		{
+			if(local_score<score)
+			{
+				score=local_score;
+			}
+		}
+		this->board = b1->deepCopy();
 	}
 	
 	
