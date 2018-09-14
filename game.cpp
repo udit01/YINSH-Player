@@ -250,13 +250,18 @@ double Game::minmax(int playerid,int origplayer)
 	double score,local_score;
 	if(playerid==origplayer) score=-3000;
 	else score=3000;
-	auto best_move=possMove.begin();
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
 		depth++;
 		local_score=minmax(3-playerid,origplayer);
-		
+		if(playerid==origplayer)
+		{
+			if(local_score>score)
+			{
+				score=local_score;
+			}
+		}
 	}
 	
 	
