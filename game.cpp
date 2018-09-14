@@ -207,9 +207,9 @@ double Game::evaluate(int playerid)
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
-double Game::minmax()
+double Game::minmax(int playerid)
 {
-	int changingid=2;
+	int changingid=playerid;
 	vector<Move> move;
 	//get the next move by min max or something
 	
@@ -222,18 +222,19 @@ double Game::minmax()
 	}
 	
 }
-vector<Move> Game::getMove(){
+vector<Move> Game::getMove(int playerid){
 	this->origBoard = this->board->deepCopy();
 
 	vector<Move> move;
 	//get the next move by min max or something
 	
 	double score,local_score;
+	poss_moves(playerid);
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
 	{
-		playmove(*i,1);
-		local_score=minmax();
+		playmove(*i,playerid);
+		local_score=minmax(3-playerid);
 	}
 	
 

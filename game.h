@@ -16,7 +16,7 @@ public:
 	Game(int id,int n,int time);
 	void playmove(vector<Move>, int player);
 	void changeLine(int player, int r1, int c1, int r2, int c2, bool remove);
-	vector<Move> getMove();
+	vector<Move> getMove(int playerid);
 
 	// Possible Moves adaptives: Will make a board copy 
 	vector<vector<Move>> possibleMoves;
@@ -28,7 +28,7 @@ public:
 	int evaluate(int playerid);
 	void initPossibleMoves();
 	Node getNode(int row, int col);
-	double minmax();
+	double minmax(int playerid);
 	void setNode(int row,int coloumn,Node node);	//sets particular configuration at specified row coloumn node and moves to null
 	int poss_moves(int color);
 	//find possible moves of given color and return no. of moves found
