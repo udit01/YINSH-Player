@@ -176,7 +176,10 @@ int PossMove::poss_moves(int color)
 			int ringposi=whiteringPos[whiteRings][0];
 			int ringposj=whiteringPos[whiteRings][1];
 			int x;
-			
+			for(x=1;(nodes[ringposi-x][ringposj].valid) && (nodes[ringposi-x][ringposj].color + nodes[ringposi-x][ringposj].ring)==0;x++)
+			{
+				
+			}
 		}
 	}
 }
