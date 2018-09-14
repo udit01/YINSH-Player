@@ -211,10 +211,18 @@ double Game::evaluate(int playerid)
 }
 double Game::minmax(int playerid)
 {
-	int changingid=playerid;
+	Board* b1 = this->board->deepCopy();
+	static depth=1;
+	if (depth==6)
+	{
+		depth=1;
+		return evaluate(playerid);
+	}
 	vector<Move> move;
 	//get the next move by min max or something
 	poss_moves(playerid);
+	vector<vector<Move>> possMove;
+	possMove=possibleMoves;
 	double score,local_score;
 	auto best_move=possibleMoves.begin();
 	for(auto i=possibleMoves.begin();i!=possibleMoves.end();i++)
@@ -244,6 +252,7 @@ vector<Move> Game::getMove(int playerid){
 			score=local_score;
 			best_move=i;
 		}
+		this->board = this->origBoard->deepCopy();
 	}
 	
 
