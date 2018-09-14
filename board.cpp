@@ -20,16 +20,16 @@ Node* Node::deepCopy(){
 Board* Board::deepCopy(){
     Board *b = new Board();
     b->boardSize   = this->boardSize;
-    b->p1ringsRem  = this->p1ringsRem;
-    b->p2ringsRem  = this->p2ringsRem;
-    b->p1ringsDone = this->p1ringsDone;
-    b->p2ringsDone = this->p2ringsDone;
     
     for(int i = 0; i < 5; i++){
-        b->white_pos[i][0] = this->white_pos[i][0];
-        b->white_pos[i][1] = this->white_pos[i][1];
-        b->black_pos[i][0] = this->black_pos[i][0];
-        b->black_pos[i][1] = this->black_pos[i][1];
+        if(i < 2){
+            b->ringsRem[i]  = this->ringsRem[i];
+            b->ringsDone[i] = this->ringsDone[i];
+        }
+        b->ring_pos[0][i][0] = this->ring_pos[0][i][0];
+        b->ring_pos[0][i][1] = this->ring_pos[0][i][1];
+        b->ring_pos[1][i][0] = this->ring_pos[1][i][0];
+        b->ring_pos[1][i][1] = this->ring_pos[1][i][1];
     }
 
     int range = 2*this->boardSize + 1;
