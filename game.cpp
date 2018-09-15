@@ -29,7 +29,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	
 	assert(n.valid);
 	if(remove){
-		//color is being checked in the loops so no need to check again 
+		//player is being checked in the loops so no need to check again 
 		// assert(n.color == player);
 		assert(n.ring == player); 
 		//also check if ring pos is the appropriate thing ?
@@ -43,10 +43,10 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 			//because we're including both of edge points
 			// differnece in atleast 1 of them must be above removal threhold
 			assert((abs(r2 - r1) >= 4) || (abs(c2 - c1) >= 4));
+			//and check all between them are colored;
 	}
 
 	int minIdx, maxIdx;
-	
 	
 	//same row , or same col jump or both changeing equally
 	if(r1 == r2){
@@ -60,6 +60,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 
 			assert(n.valid); // all should be valid by default
 			if(remove){
+				// if any one node doesn't satisfy this then this line was not removable
 				assert(n.color == player);
 				n.color = 0;
 			}
@@ -130,7 +131,10 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 }	
 
 void Game::removeRing(int player, int r, int c){
-	assert(this->board->ringsRem[player-1]>0);
+	
+	//Rings remaining are the rings in hand, so in the middle game they'll be zero
+	// assert(this->board->ringsRem[player-1]>0);
+	
 	//what if >= 3 ?
 	// assert(this->board->ringsDone[player-1]>3);
 	Node n = this->board->nodes[r][c];
@@ -149,7 +153,7 @@ void Game::removeRing(int player, int r, int c){
 	}
 
 	//counter inc/dec of reamaining and done rings
-	this->board->ringsRem[player-1]--;
+	// this->board->ringsRem[player-1]--;
 	this->board->ringsDone[player-1]++;
 
 }
@@ -400,17 +404,48 @@ pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,
 		return make_pair(make_pair(-1,0),make_pair(0,0));
 	}
 }
+vector<Move> placeHandRing(int player){
+	// to place hand ring optimally
+}
+vector<Move> checkContigousMarkers(int player){
+	//to check for max possible markers
+}
+vector<vector<Move>> Game::allPossibleMoves(int player){
 
-int Game::poss_moves(int color){
-	if(this->flag)
-	{
-		cerr<<"nodes not set for possiblemoves"<<endl;
-		exit(1);
+	while(this->board->ringsHand[player-1] > 0){
+		this->placeHandRing(player);
 	}
+
+	// call if all 5 rings placed from hand to board
+
+	//will return the 1st max sequence found, otherwise NULL
+	vector<Move> ringRemovalSeq = this->checkContigousMarkers(player);
+	
+	//somehow check if it's a valid and not null case
+	// if (ringRemovalSeq){
+
+	// }
+
+	// if multiple contigous markers, then call possible moves again after removing the first set,
+	// as it could or couldn't disturb the 2nd config
+	
+	 
+
+
+	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
+	vector<vector<Move>> ringMoves;
+	for(int ringNumber = 0; ringNumber < 5; ringNumber++){
+		if((this->board->ring_pos[player-1][ringNumber][0]==0)&&(this->board->ring_pos[player-1][ringNumber][1]==0)){
+			continue; //as this index ring is not on board
+		}
+		
+		//call a function for each ring, returning a vector of vector of moves  possible and append them to the ringMoves set 
+		
+	}
+	
+	/*
 	//else
-	possibleMoves.clear();
 	int i,j;
-	vector<Move> poss_move;		//single possible move
 	// int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringPos[5][2];		//considering white as player1 black as player2
 	int whiteMarks=0,blackMarks=0,whiteMarkPos[121][2],blackMarkPos[121][2];	//no issues of this outside this class
 	for(i=0;i<11;i++)
@@ -421,7 +456,7 @@ int Game::poss_moves(int color){
 				continue;
 			//else
 				
-			switch(this->board->nodes[i][j].color)
+			switch(this->board->nodes[i][j].player)
 			{
 				case 1 :
 					whiteMarkPos[whiteMarks][0]=i;
@@ -445,7 +480,7 @@ int Game::poss_moves(int color){
 	//is it possible that we need to remove markers before move
 	pair < pair<int,int> , pair<int,int> > remove;
 	
-	switch(color){
+	switch(player){
 		case 1 :
 			remove=removableMarkers(1,whiteMarks,whiteMarkPos);
 			break;
@@ -453,14 +488,14 @@ int Game::poss_moves(int color){
 			remove=removableMarkers(2,blackMarks,blackMarkPos);
 			break;
 		default :
-			cerr<<"wrong color passed to poss_moves()"<<endl;
+			cerr<<"wrong player passed to poss_moves()"<<endl;
 			exit(1);
 	}
 	if(remove.first.first != -1)
 	{
 		poss_move.push_back(Move(3,remove.first.first,remove.first.second));
 		poss_move.push_back(Move(4,remove.second.first,remove.second.second));
-		switch (color)
+		switch (player)
 		{
 			case 1 :
 				poss_move.push_back(Move(5,whiteringPos[whiteRings-1][0],whiteringPos[whiteRings-1][1]));//need to make it for all rings, right now removing only last one
@@ -478,14 +513,16 @@ int Game::poss_moves(int color){
 	}
 	//else
 	//other moves - movement of rings
-	if(color==1)
+	if(player==1)
 	{
 		for(i=0;i<whiteRings;i++)
 		{
 			int ringposi=whiteringPos[whiteRings][0];
 			int ringposj=whiteringPos[whiteRings][1];
 			int x;
-			
 		}
 	}
+	 
+	 */
+			
 }

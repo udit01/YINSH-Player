@@ -31,10 +31,9 @@ class Board
 {
 public:
     int boardSize;
-	// int p1ringsRem, p2ringsRem; //no. of rings currently remaining
-	int ringsRem[2]; //no. of rings currently remaining
-    // int p1ringsDone, p2ringsDone;// no. of rings completed
-	int ringsDone[2]; //no. of rings currently remaining
+    
+	int ringsHand[2]; //no. of rings currently in hand
+	int ringsDone[2]; //no. of rings currently on board's side
 	// int white_pos[5][2],black_pos[5][2];	// stores the current ring positions
 	
     //contaitns positions of 2 players' 5 rings' row and col's
