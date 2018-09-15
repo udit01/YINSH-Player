@@ -573,6 +573,87 @@ vector<Move> Game::checkContigousMarkers(int player){
 		}
 	}
 
+	// Checking each 3rd Dimension 
+	/*
+	Start form { [5][0], [4][0], ... [0][0], [0][1], .... [0][5] } 
+	and increase both row and col from these to get the dimension
+	The end's pos have 4 along so skip them from counting
+	*/
+
+	//left index loop
+	for(int left_start = 4; left_start >= 0 ; left_start--){
+		int row = left_start;
+		int col = 0;
+
+		cont = false; 
+		startNodeRow = row; startNodeCol = col; //as the 0th and 10th row cant have contigous markers
+		endNodeRow = row; endNodeCol = col;
+		
+		for(int k = 0; k <= 10 ; k++){
+			if((row<11)&&(col<11)){
+				Node n = this->board->nodes[row][col];
+				//there will be a continous stream of valid nodes
+				if(n.valid){
+					if(n.color == player){
+						if(!cont){//first occurence
+							startNodeRow = row; startNodeCol = col;
+						}
+						endNodeRow = row; endNodeRow = col; 
+						cont = true;
+					}
+					else{//stream break
+						// both diff will be same
+						if((endNodeRow-startNodeRow) >= thresh){
+							save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+							//get the required move and return ? OR save this as a possibility and then decide 
+							return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+						}
+						cont = false;
+					}
+				}
+			}else{
+				break;
+			}
+			row++;	col++;
+		}
+	}
+	//RIGHT index loop // 0 already done
+	for(int right_start = 1; right_start <= 4 ; right_start++){
+		int row = 0;
+		int col = right_start;
+
+		cont = false; 
+		startNodeRow = row; startNodeCol = col; //as the 0th and 10th row cant have contigous markers
+		endNodeRow = row; endNodeCol = col;
+		
+		for(int k = 0; k <= 10 ; k++){
+			if((row<11)&&(col<11)){
+				Node n = this->board->nodes[row][col];
+				//there will be a continous stream of valid nodes
+				if(n.valid){
+					if(n.color == player){
+						if(!cont){//first occurence
+							startNodeRow = row; startNodeCol = col;
+						}
+						endNodeRow = row; endNodeRow = col; 
+						cont = true;
+					}
+					else{//stream break
+						// both diff will be same
+						if((endNodeRow-startNodeRow) >= thresh){
+							save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+							//get the required move and return ? OR save this as a possibility and then decide 
+							return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+						}
+						cont = false;
+					}
+				}
+			}else{
+				break;
+			}
+			row++;	col++;
+		}
+	}
 
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
