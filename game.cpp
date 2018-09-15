@@ -3,18 +3,15 @@
 #include "game.h"
 #include "PossibleMove.h"
 
-Game::Game()
-{
+Game::Game(){
 	time=150;
 	initPossibleMoves();
 }
 
-Game::Game(int id,int n,int time)
-{
+Game::Game(int id,int n,int time){
 	this->time=time;
 	this->board = new Board(5);
 	// this->pm = new PossMove(this->b->nodes);
-
 }
 
 void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
@@ -27,7 +24,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	
 	assert(n.valid);
 	if(remove){
-		//color is being checked in the loops 
+		//color is being checked in the loops so no need to check again 
 		// assert(n.color == player);
 		assert(n.ring == player); 
 		//also check if ring pos is the appropriate thing ?
@@ -35,10 +32,14 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	n = this->board->nodes[r2][c2];
 	
 	assert(n.valid);
-	// if(remove){
-	// 	assert(n.color == player);
-	// }
+
 	
+	if(remove){
+			//because we're including both of edge points
+			// differnece in atleast 1 of them must be above removal threhold
+			assert((abs(r2 - r1) >= 4) || (abs(c2 - c1) >= 4));
+	}
+
 	int minIdx, maxIdx;
 	
 	
@@ -46,6 +47,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	if(r1 == r2){
 		minIdx = (c1 > c2) ? c2:c1;
 		maxIdx = (c2 + c1) - minIdx;
+		
 		
 		for(int i = minIdx; i <= maxIdx; i++){
 		
@@ -212,8 +214,7 @@ void Game::playmove(vector<Move> move, int player){
 	
 }
 
-double Game::evaluate(int playerid,int origplayer)	
-{
+double Game::evaluate(int playerid,int origplayer){
 	int i,j;
 	double score;
 	int markers[2]={0,0};
@@ -235,8 +236,8 @@ double Game::evaluate(int playerid,int origplayer)
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
-double Game::minmax(int playerid,int origplayer,int alpha,int beta)
-{
+
+double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 	Board* b1 = this->board->deepCopy();
 	static int depth=0;
 	if (depth==6)
@@ -296,6 +297,7 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta)
 	return score;
 	
 }
+
 vector<Move> Game::getMove(int playerid){
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
@@ -335,8 +337,7 @@ because we need the number of rings and other things preserverd
 */
 //get set is unrequired 
 
-Node Game::getNode(int row,int coloumn)
-{
+Node Game::getNode(int row,int coloumn){
 	if((row<11)&&(coloumn<11)){
 		Node n = this->board->nodes[row][coloumn];
 		if (n.valid){
@@ -348,8 +349,7 @@ Node Game::getNode(int row,int coloumn)
 	exit(1);
 }
 
-void Game::setNode(int row,int coloumn,Node node)
-{
+void Game::setNode(int row,int coloumn,Node node){
 	if((row<11)&&(coloumn<11))
 	{
 		this->totalMoves = 0;
@@ -363,9 +363,7 @@ void Game::setNode(int row,int coloumn,Node node)
 	exit(1);
 }
 
-
-pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2])
-{
+pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2]){
 	int i,j,k;
 	for(i=0;i<marks;i++)
 	{
@@ -391,9 +389,7 @@ pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,
 	}
 }
 
-
-int Game::poss_moves(int color)
-{
+int Game::poss_moves(int color){
 	if(this->flag)
 	{
 		cerr<<"nodes not set for possiblemoves"<<endl;
@@ -432,12 +428,12 @@ int Game::poss_moves(int color)
 				
 			}
 			
-		}
 	}
+	
 	//is it possible that we need to remove markers before move
 	pair < pair<int,int> , pair<int,int> > remove;
-	switch(color)
-	{
+	
+	switch(color){
 		case 1 :
 			remove=removableMarkers(1,whiteMarks,whiteMarkPos);
 			break;
