@@ -2,7 +2,7 @@
 
 ## To run main.cpp
 if [ -e "player" ]; then
-    ./player
+    ./player w1.txt
 else
     echo "First run compile.sh to compile the code"
 fi

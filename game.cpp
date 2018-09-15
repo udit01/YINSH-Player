@@ -8,9 +8,14 @@ Game::Game(){
 	initPossibleMoves();
 }
 
-Game::Game(int id,int n,int time){
+Game::Game(int id,int n,int time,double w[]){
 	this->time=time;
 	this->board = new Board(5);
+	int i;
+	for(i=0;i<5;i++)
+	{
+		Weight[i]=w[i];
+	}
 	// this->pm = new PossMove(this->b->nodes);
 }
 
@@ -273,15 +278,13 @@ double Game::evaluate(int playerid,int origplayer){
 double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 	Board* b1 = this->board->deepCopy();
 	static int depth=0;
-	if (depth==6)
+	if (depth==5)
 	{
 		depth=1;
 		return evaluate(playerid,origplayer);
 	}
 	//get the next move by min max or something
-	poss_moves(playerid);
-	vector<vector<Move>> possMove;
-	possMove=possibleMoves;
+	vector<vector<Move>> possMove=this->allPossibleMoves(playerid);
 	double score,local_score;
 	double positivity=0.0;
 	if(possMove.empty())
@@ -357,9 +360,7 @@ vector<Move> Game::getMove(int playerid){
 	//get the next move by min max or something
 	
 	double score=-3000.0,local_score,alpha=-4000,beta=4000;
-	poss_moves(playerid);
-	vector<vector<Move>> possMove;
-	possMove=possibleMoves;
+	vector<vector<Move>> possMove=this->allPossibleMoves(playerid);
 	auto best_move=possMove.begin();
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
