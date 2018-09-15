@@ -4,8 +4,7 @@
 #include "utils.h"
 
 Game::Game(){
-	time=150;
-	initPossibleMoves();
+	time=120;
 }
 
 Game::Game(int id,int n,int time,double w[]){
@@ -266,10 +265,10 @@ double Game::evaluate(int playerid,int origplayer){
 			}
 		}
 	}
-	if(this->board->ringsRem[origplayer-1]==2) return Weight[0];	//our winning
-	if(this->board->ringsRem[2-origplayer]==2) return -1*(Weight[1]*Weight[0]);	//worsness of oppnonent's win
+	if(this->board->ringsHand[origplayer-1]==2) return Weight[0];	//our winning
+	if(this->board->ringsHand[2-origplayer]==2) return -1*(Weight[1]*Weight[0]);	//worsness of oppnonent's win
 	//else
-	score=(this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1])*Weight[2];//differnce in rings
+	score=(this->board->ringsHand[2-playerid]-this->board->ringsHand[playerid-1])*Weight[2];//differnce in rings
 	score+=Weight[3]*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
