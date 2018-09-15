@@ -24,8 +24,12 @@ int main( int argc, char **argv)
         getline(winner,w);
         ww=stod(w);
         diff=ww-lw;
-        rw=lw+diff;
+        rw=lw+(diff/10);
         result<<rw;
-        result<<
+        result<<rw;
+        result<<endl;
     }
+    result.close();
+    loser.close();
+    winner.close();
 }
