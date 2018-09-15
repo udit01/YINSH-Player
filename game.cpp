@@ -8,9 +8,14 @@ Game::Game(){
 	initPossibleMoves();
 }
 
-Game::Game(int id,int n,int time){
+Game::Game(int id,int n,int time,double w[]){
 	this->time=time;
 	this->board = new Board(5);
+	int i;
+	for(i=0;i<5;i++)
+	{
+		Weight[i]=w[i];
+	}
 	// this->pm = new PossMove(this->b->nodes);
 }
 
