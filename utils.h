@@ -41,5 +41,7 @@ class Move{
 
 vector<Move> convertToStd(string s);
 string convertToHexagonal( vector<Move> moves);
+void getStd(int hexNum, int pos, int coord[2] );
+void getHex(int row, int col, int coord[2] );
 
 #endif

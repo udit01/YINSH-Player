@@ -1,7 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include "game.h"
-#include "PossibleMove.h"
+#include "utils.h"
 
 Game::Game(){
 	time=150;
@@ -399,19 +399,62 @@ pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,
 		return make_pair(make_pair(-1,0),make_pair(0,0));
 	}
 }
-vector<Move> placeHandRing(int player){
+
+vector<Move> Game::placeHandRing(int player){
 	// to place hand ring optimally
+	// attempt to place ring at central positions and then check sourrounding 
+	assert(this->board->ringsHand[player-1] > 0);
+
+	vector<Move> seq;
+	int coord[2] = {0,0};
+	
+	getStd(0, 0, coord);
+	if(this->board->nodes[coord[0]][coord[1]].ring == 0){
+		//place ring at the center if possible and return
+		seq.push_back(Move(0, coord[0], coord[1]));
+		return seq;
+	}
+
+	for(int hexNum = 1; hexNum <= 5; hexNum++){
+		for(int pos = 0; pos < 6 * hexNum ; pos++){
+			getStd(hexNum, pos, coord);
+			if(this->board->nodes[coord[0]][coord[1]].ring == 0){
+				//place ring at this coordinate if possible and return
+				seq.push_back(Move(0, coord[0], coord[1]));
+				return seq;
+			}
+		}
+	}
+
+	// if unable then to find such a sequence, return an empty vector
+	return seq	;
 }
-vector<Move> checkContigousMarkers(int player){
+vector<Move> Game::checkContigousMarkers(int player){
 	//to check for max possible markers
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
-	while(this->board->ringsHand[player-1] > 0){
-		this->placeHandRing(player);
+	vector<vector<Move>> possibilities;
+
+	vector<Move> ringsPlacingSeq;
+
+	if(this->board->ringsHand[player-1] > 0){
+		ringsPlacingSeq = this->placeHandRing(player);
 	}
 
-	// call if all 5 rings placed from hand to board
+	if(!ringsPlacingSeq.empty()){
+		possibilities.push_back(ringsPlacingSeq);
+		return possibilities;
+	}
+
+	// Otherwise it's empty and move on to the next step
+	if(this->board->ringsDone[player-1] >= 3){
+		//return the empty vector
+		return possibilities;
+	}
+
+
+	// call if all 5 rings placed from hand to board and Done rings is still < 3
 
 	//will return the 1st max sequence found, otherwise NULL
 	vector<Move> ringRemovalSeq = this->checkContigousMarkers(player);
