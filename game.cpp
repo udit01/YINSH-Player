@@ -542,6 +542,38 @@ vector<Move> Game::checkContigousMarkers(int player){
 	}
 
 
+	// Checking each column 
+		//as the 0th and 10th col cant have contigous markers
+	for(int col = 1; col <= 9 ; col++){
+		cont = false; 
+		startNodeCol = col; startNodeRow = 0; 
+		endNodeCol = col; endNodeRow = 0;
+		
+		// col doesn't change in here
+		for(int row = 0; row <= 10 ; row++){
+			Node n = this->board->nodes[row][col];
+			//there will be a continous stream of valid nodes
+			if(n.valid){
+				if(n.color == player){
+					if(!cont){//first occurence
+						startNodeRow = row;
+					}
+					endNodeRow = row; 
+					cont = true;
+				}
+				else{//stream break
+					if((endNodeRow-startNodeRow) >= thresh){
+						save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+						//get the required move and return ? OR save this as a possibility and then decide 
+						return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+					}
+					cont = false;
+				}
+			}
+		}
+	}
+
+
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
