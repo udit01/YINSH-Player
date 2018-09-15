@@ -272,7 +272,7 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta)
 			{
 				this->board = b1->deepCopy();
 				depth--;
-				return score;
+				return score+positivity;
 			}
 		}
 		else
