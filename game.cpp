@@ -195,7 +195,6 @@ void Game::playmove(vector<Move> move, int player){
 	//ring start row and column
 	int rsr = 0, rsc = 0;
 
-
 	/*
 	Types of sequences in the game : 
 	-> Place
@@ -475,6 +474,7 @@ vector<Move> Game::placeHandRing(int player){
 }
 vector<Move> Game::checkContigousMarkers(int player){
 	//to check for max possible markers
+	
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
