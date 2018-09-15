@@ -255,9 +255,7 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 		return evaluate(playerid,origplayer);
 	}
 	//get the next move by min max or something
-	poss_moves(playerid);
-	vector<vector<Move>> possMove;
-	possMove=possibleMoves;
+	vector<vector<Move>> possMove=this->allPossibleMoves(playerid);
 	double score,local_score;
 	double positivity=0.0;
 	if(possMove.empty())
@@ -319,9 +317,7 @@ vector<Move> Game::getMove(int playerid){
 	//get the next move by min max or something
 	
 	double score=-3000.0,local_score,alpha=-4000,beta=4000;
-	poss_moves(playerid);
-	vector<vector<Move>> possMove;
-	possMove=possibleMoves;
+	vector<vector<Move>> possMove=this->allPossibleMoves(playerid);
 	auto best_move=possMove.begin();
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
