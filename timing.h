@@ -10,6 +10,7 @@ class timing
 {
     int flag;
     int totalTime;
+    thread *updater;
     time_point<system_clock> start,curr;
     duration<double> dur,loc_dur;
     void update();
