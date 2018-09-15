@@ -33,10 +33,6 @@ public:
 	//get possiblilites of move by perturbing specific ring
 	vector<vector<Move>> perturbRing(int player, int r, int c);
 
-	// Possible Moves adaptives: Will make a board copy 
-	// vector<vector<Move>> possibleMoves;
-	int totalMoves, currMove;
-	
 	//checks if a row of markers exist if not then .first.first=-1
 	pair<pair<int,int>, pair<int,int>> removableMarkers(int color,int &marks,int pos[121][2]);
 	double evaluate(int playerid,int origplayer);
