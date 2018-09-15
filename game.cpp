@@ -472,9 +472,76 @@ vector<Move> Game::placeHandRing(int player){
 	// if unable then to find such a sequence, return an empty vector
 	return seq	;
 }
+
+vector<Move> Game::makeContigousMove(int player, int r1, int c1, int r2, int c2){
+	vector<Move> seq;
+	
+	// push an RS move
+	seq.push_back(Move(3, r1, c1));
+
+	// push an RE move
+	seq.push_back(Move(4, r2, c2));
+
+	//select a ring to remove and remove it 
+	//changing the order of i could improve greatly
+
+	for(int i = 0; i < 5; i++){
+		int r = this->board->ring_pos[player-1][i][0];
+		int c = this->board->ring_pos[player-1][i][1];
+		if((r==0)&&(c==0)){
+			// an invalid ring to remove
+			continue; 
+		}
+		else{
+			seq.push_back(Move(5, r, c));
+			break;
+		}
+	}
+
+	return seq;
+}
+
 vector<Move> Game::checkContigousMarkers(int player){
 	//to check for max possible markers
-	
+
+	//check row-wise , column wise and then along 3rd dim
+	int startNodeRow = 0, startNodeCol = 0; //as the 0th and 10th row cant have contigous markers
+	int endNodeRow = 0, endNodeCol = 0; //as the 0th and 10th row cant have contigous markers
+	bool cont = false;
+	int thresh = 4; //as includsive of start and end
+	int save[2][2]; // 0-start, 1-end
+
+	// Checking each row 
+	for(int row = 1; row <= 9 ; row++){
+		cont = false; 
+		startNodeRow = row; startNodeCol = 0; //as the 0th and 10th row cant have contigous markers
+		endNodeRow = row; endNodeCol = 0;
+		
+		// row doen't change in here
+		for(int col = 0; col <= 10 ; col++){
+			Node n = this->board->nodes[row][col];
+			//there will be a continous stream of valid nodes
+			if(n.valid){
+				if(n.color == player){
+					if(!cont){//first occurence
+						startNodeCol = col;
+					}
+					endNodeCol = col; 
+					cont = true;
+				}
+				else{//stream break
+					if((endNodeCol-startNodeCol) >= thresh){
+						save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+						//get the required move and return ? OR save this as a possibility and then decide 
+						return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+					}
+					cont = false;
+				}
+			}
+		}
+	}
+
+
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
@@ -503,6 +570,8 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 	//will return the 1st max sequence found, otherwise NULL
 	vector<Move> ringRemovalSeq = this->checkContigousMarkers(player);
 	
+	//returns 'a' contigous sequence if exists
+
 	//somehow check if it's a valid and not null case
 	if (!ringRemovalSeq.empty()){
 		//if not empty then make
