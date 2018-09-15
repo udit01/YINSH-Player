@@ -664,6 +664,38 @@ vector<Move> Game::checkContigousMarkers(int player){
 
 vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 
+	//assert a valid node and RING ?
+	Node n = this->board->nodes[r][c];
+	assert(n.valid);
+	assert(n.ring == player);
+	assert(n.color == 0);
+	// After every possiblity, you'll have to make a copy of board play the move
+	// and check if RS RE , some row forming or not ?
+
+	// 6 directions to move along, move till something comes up
+	int directions[6][2] ={ {0,1}, {0,-1},
+							{1,0}, {-1,0},
+							{1,1}, {-1,-1} };
+
+	int row = r, col = c;
+	
+	for( int k = 0; k < 5 ; k++ ){
+		//Running variables
+		row = r; col = c;
+		//max possible displacement is 11
+		for(int counter = 0; counter <= 11; counter++){
+
+			if((row<0)||(row>10)||(col<0)||(col>11)){
+				break; 
+				//as new increments mean only disaster, 
+				//break off that direction loop
+			}
+
+			//Do for each valid node , generate possiblities
+
+			row += directions[k][0]; col += directions[k][1];
+		}
+	}
 }
 
 vector<vector<Move>> Game::allPossibleMoves(int player){
