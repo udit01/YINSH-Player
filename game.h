@@ -31,6 +31,8 @@ public:
 	vector<Move> makeContigousMove(int player, int r1, int c1, int r2, int c2);
 	//places the hand ring optimally for the given player
 	vector<Move> placeHandRing(int player);
+	//get possiblilites of move by perturbing specific ring
+	vector<vector<Move>> perturbRing(int player, int r, int c);
 
 	// Possible Moves adaptives: Will make a board copy 
 	// vector<vector<Move>> possibleMoves;
