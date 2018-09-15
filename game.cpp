@@ -249,7 +249,7 @@ double Game::evaluate(int playerid,int origplayer){
 double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 	Board* b1 = this->board->deepCopy();
 	static int depth=0;
-	if (depth==6)
+	if (depth==5)
 	{
 		depth=1;
 		return evaluate(playerid,origplayer);

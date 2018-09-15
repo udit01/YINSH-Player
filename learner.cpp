@@ -11,5 +11,21 @@ int main( int argc, char **argv)
         exit(0);
     }
     //else
-    
+    ifstream loser(argv[1]);
+    ifstream winner(argv[2]);
+    ofstream result(argv[3]);
+    string l,w;
+    int i;
+    double lw,ww,rw,diff;
+    for(i=0;i<5;i++)
+    {
+        getline(loser,l);
+        lw=stod(l);
+        getline(winner,w);
+        ww=stod(w);
+        diff=ww-lw;
+        rw=lw+diff;
+        result<<rw;
+        result<<
+    }
 }
