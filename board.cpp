@@ -23,7 +23,7 @@ Board* Board::deepCopy(){
     
     for(int i = 0; i < 5; i++){
         if(i < 2){
-            b->ringsRem[i]  = this->ringsRem[i];
+            b->ringsHand[i]  = this->ringsHand[i];
             b->ringsDone[i] = this->ringsDone[i];
         }
         b->ring_pos[0][i][0] = this->ring_pos[0][i][0];
@@ -67,22 +67,23 @@ Board::Board(int boardSize){
     //marking validity of nodes
     this->markValidity(); // currently only for size 5
 
-    this->p1ringsRem = 5; this->p1ringsDone = 0;
-    this->p2ringsRem = 5; this->p2ringsDone = 0;
-    
+    this->ringsHand[0] = 5; this->ringsDone[0] = 0;
+    this->ringsHand[1] = 5; this->ringsDone[1] = 0;
+
     // initialize to zeros although not zeros, better than random garbage
-    for(int i = 0; i < 5; i++){
-        this->white_pos[i][0] = 0;
-        this->white_pos[i][1] = 0;
-        this->black_pos[i][0] = 0;
-        this->black_pos[i][1] = 0;
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; i < 5; j++){
+            for(int k = 0; k < 2; k++){
+                this->ring_pos[i][j][k] = 0;
+            }
+        }
     }
 }
 
 void Board::markValidity(){
     //doing only for board size 5 right now 
 
-    int range = 2*this->boardSize + 1;
+    int range = (2*this->boardSize) + 1;
     //nodes are from 0....range-1
     int start = 0, end = 0;
     for(int i = 0; i < range; i++){
@@ -101,11 +102,12 @@ void Board::markValidity(){
             default: start = 6; end = 9 ; //for i == 10
         }
         for(int j = 0; j < range; j++){
-            if( (j>=start) && (j<=end) ){
-                this->nodes[i][j].valid = true ;
-            }else{
-                this->nodes[i][j].valid = false;
-            }
+            // if( (j>=start) && (j<=end) ){
+            //     this->nodes[i][j].valid = true ;
+            // }else{
+            //     this->nodes[i][j].valid = false;
+            // }
+            this->nodes[i][j].valid = ((j>=start) && (j<=end)) ? true : false;
         }
     }
 }
