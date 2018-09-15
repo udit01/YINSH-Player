@@ -4,18 +4,48 @@
 #include "utils.h"
 
 Game::Game(){
-	time=150;
-	initPossibleMoves();
+	time=120;
 }
-
-Game::Game(int id,int n,int time,double w[]){
+void Game::setWeights(int argc, char **argv)
+{
+	if(argc<2)
+    {
+        weights[0]=100; //winning score
+        weights[1]=1;   //worsness of opponents winning over our winning
+        weights[2]=1;   //ring differnce weight
+        weights[3]=0.01;    //marker difference weight
+        weights[4]=0.1; //winning probablity on a side
+    }
+    else
+    {
+         ifstream readfile;
+         readfile.open(argv[1]);
+         if(!readfile)
+         {
+            weights[0]=100; //winning score
+            weights[1]=1;   //worsness of opponents winning over our winning
+            weights[2]=1;   //ring differnce weight
+            weights[3]=0.01;    //marker difference weight
+            weights[4]=0.1; //winning probablity on a side
+         }
+         else
+         {
+             int i;
+             string w;
+             for(i=0;i<5;i++)
+             {
+                 getline(readfile,w);
+                 weights[i]=stod(w);
+             }
+         }
+         readfile.close();
+    }
+}
+Game::Game(int id,int n,int time,int argc, char **argv){
 	this->time=time;
 	this->board = new Board(5);
 	int i;
-	for(i=0;i<5;i++)
-	{
-		Weight[i]=w[i];
-	}
+	this->setWeights(argc,argv);
 	// this->pm = new PossMove(this->b->nodes);
 }
 
@@ -266,11 +296,11 @@ double Game::evaluate(int playerid,int origplayer){
 			}
 		}
 	}
-	if(this->board->ringsRem[origplayer-1]==2) return Weight[0];	//our winning
-	if(this->board->ringsRem[2-origplayer]==2) return -1*(Weight[1]*Weight[0]);	//worsness of oppnonent's win
+	if(this->board->ringsHand[origplayer-1]==2) return weights[0];	//our winning
+	if(this->board->ringsHand[2-origplayer]==2) return -1*(weights[1]*weights[0]);	//worsness of oppnonent's win
 	//else
-	score=(this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1])*Weight[2];//differnce in rings
-	score+=Weight[3]*(markers[playerid-1]-markers[2-playerid]);//marker difference;
+	score=(this->board->ringsHand[2-playerid]-this->board->ringsHand[playerid-1])*weights[2];//differnce in rings
+	score+=weights[3]*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
 
@@ -299,8 +329,8 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 		{
 			score=-4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
-			if (local_score>=0) positivity+=Weight[4];
-			else positivity-=Weight[4];
+			if (local_score>=0) positivity+=weights[4];
+			else positivity-=weights[4];
 			if(local_score>score)
 			{
 				score=local_score;
@@ -320,8 +350,8 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 		{
 			score=4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
-			if (local_score>=0) positivity+=Weight[4];
-			else positivity-=Weight[4];
+			if (local_score>=0) positivity+=weights[4];
+			else positivity-=weights[4];
 			if(local_score<score)
 			{
 				score=local_score;
@@ -390,32 +420,6 @@ Instead of nodes copy , we'll work on a board's copy
 because we need the number of rings and other things preserverd
 */
 //get set is unrequired 
-
-Node Game::getNode(int row,int coloumn){
-	if((row<11)&&(coloumn<11)){
-		Node n = this->board->nodes[row][coloumn];
-		if (n.valid){
-			return n;
-		}
-	}
-	
-	cerr << "Trying to get an Invalid or out of range Node" << endl;
-	exit(1);
-}
-
-void Game::setNode(int row,int coloumn,Node node){
-	if((row<11)&&(coloumn<11))
-	{
-		this->totalMoves = 0;
-		this->currMove = 0;
-		this->possibleMoves.clear();			
-		this->board->nodes[row][coloumn] = node;
-		return;
-	}
-	//else					
-	cerr << "Trying to set an out of bounds node" << endl;
-	exit(1);
-}
 
 pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2]){
 	int i,j,k;

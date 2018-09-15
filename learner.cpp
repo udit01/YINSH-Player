@@ -26,7 +26,6 @@ int main( int argc, char **argv)
         diff=ww-lw;
         rw=lw+(diff/10);
         result<<rw;
-        result<<rw;
         result<<endl;
     }
     result.close();
