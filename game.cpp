@@ -250,13 +250,13 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 	vector<vector<Move>> possMove;
 	possMove=possibleMoves;
 	double score,local_score;
+	double positivity=0.0;
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
 		depth++;
 		if(playerid==origplayer)
 		{
-			double positivity=0.0;
 			score=-4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
 			if (local_score>=0) positivity+=0.1;
@@ -280,6 +280,8 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 		{
 			score=4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
+			if (local_score>=0) positivity+=0.1;
+			else positivity-=0.1;
 			if(local_score<score)
 			{
 				score=local_score;
@@ -289,12 +291,12 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 			{
 				this->board = b1->deepCopy();
 				depth--;
-				return score;
+				return score+positivity;
 			}
 		}
 		this->board = b1->deepCopy();
 	}
-	return score;
+	return score+positivity;
 	
 }
 
