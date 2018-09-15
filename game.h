@@ -10,6 +10,7 @@ class Game
 public:
 	// int player_id,no_of_rings,time;
 	int time;
+	double Weight[5];
 	Board* board; 
 	Board* origBoard;
 	// write the names of data members to be used and member functions required along with why/what to do in it

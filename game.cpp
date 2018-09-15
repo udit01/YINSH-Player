@@ -232,8 +232,8 @@ double Game::evaluate(int playerid,int origplayer){
 	if(this->board->ringsRem[origplayer-1]==2) return Weight[0];	//our winning
 	if(this->board->ringsRem[2-origplayer]==2) return -1*(Weight[1]*Weight[0]);	//worsness of oppnonent's win
 	//else
-	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
-	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
+	score=(this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1])*Weight[2];//differnce in rings
+	score+=Weight[3]*(markers[playerid-1]-markers[2-playerid]);//marker difference;
 	return score;
 }
 
@@ -264,8 +264,8 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 		{
 			score=-4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
-			if (local_score>=0) positivity+=0.1;
-			else positivity-=0.1;
+			if (local_score>=0) positivity+=Weight[4];
+			else positivity-=Weight[4];
 			if(local_score>score)
 			{
 				score=local_score;
@@ -285,8 +285,8 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 		{
 			score=4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
-			if (local_score>=0) positivity+=0.1;
-			else positivity-=0.1;
+			if (local_score>=0) positivity+=Weight[4];
+			else positivity-=Weight[4];
 			if(local_score<score)
 			{
 				score=local_score;
