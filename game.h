@@ -26,6 +26,8 @@ public:
 	//checkes for >=5 contigually placed markers 
 	//will return the 1st max sequence found, otherwise NULL
 	vector<Move> checkContigousMarkers(int player);
+	//makes in a move format the start and end nodes
+	vector<Move> makeContigousMove(int player, int r1, int c1, int r2, int c2);
 	//places the hand ring optimally for the given player
 	vector<Move> placeHandRing(int player);
 

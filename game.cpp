@@ -125,9 +125,9 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		int dir2 = (c2 - c1)/(abs(c2-c1));
 		//other complex logic here depeding on signs of r1-r2 and c2-c1
 		int j = c1 ;
-		for(int i = c1; i != r2; i+=dir1){
+		for(int i = r1; i != r2; i+=dir1){
 			j += dir2;
-			n = this->board->nodes[i][r2];
+			n = this->board->nodes[i][j];
 
 			assert(n.valid); // all should be valid by default
 			if(remove){
@@ -476,9 +476,189 @@ vector<Move> Game::placeHandRing(int player){
 	// if unable then to find such a sequence, return an empty vector
 	return seq	;
 }
+
+vector<Move> Game::makeContigousMove(int player, int r1, int c1, int r2, int c2){
+	vector<Move> seq;
+	
+	// push an RS move
+	seq.push_back(Move(3, r1, c1));
+
+	// push an RE move
+	seq.push_back(Move(4, r2, c2));
+
+	//select a ring to remove and remove it 
+	//changing the order of i could improve greatly
+
+	for(int i = 0; i < 5; i++){
+		int r = this->board->ring_pos[player-1][i][0];
+		int c = this->board->ring_pos[player-1][i][1];
+		if((r==0)&&(c==0)){
+			// an invalid ring to remove
+			continue; 
+		}
+		else{
+			seq.push_back(Move(5, r, c));
+			break;
+		}
+	}
+
+	return seq;
+}
+
 vector<Move> Game::checkContigousMarkers(int player){
 	//to check for max possible markers
-	
+
+	//check row-wise , column wise and then along 3rd dim
+	int startNodeRow = 0, startNodeCol = 0; //as the 0th and 10th row cant have contigous markers
+	int endNodeRow = 0, endNodeCol = 0; //as the 0th and 10th row cant have contigous markers
+	bool cont = false;
+	int thresh = 4; //as includsive of start and end
+	int save[2][2]; // 0-start, 1-end
+
+	// Checking each row 
+	for(int row = 1; row <= 9 ; row++){
+		cont = false; 
+		startNodeRow = row; startNodeCol = 0; //as the 0th and 10th row cant have contigous markers
+		endNodeRow = row; endNodeCol = 0;
+		
+		// row doen't change in here
+		for(int col = 0; col <= 10 ; col++){
+			Node n = this->board->nodes[row][col];
+			//there will be a continous stream of valid nodes
+			if(n.valid){
+				if(n.color == player){
+					if(!cont){//first occurence
+						startNodeCol = col;
+					}
+					endNodeCol = col; 
+					cont = true;
+				}
+				else{//stream break
+					if((endNodeCol-startNodeCol) >= thresh){
+						save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+						//get the required move and return ? OR save this as a possibility and then decide 
+						return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+					}
+					cont = false;
+				}
+			}
+		}
+	}
+
+
+	// Checking each column 
+		//as the 0th and 10th col cant have contigous markers
+	for(int col = 1; col <= 9 ; col++){
+		cont = false; 
+		startNodeCol = col; startNodeRow = 0; 
+		endNodeCol = col; endNodeRow = 0;
+		
+		// col doesn't change in here
+		for(int row = 0; row <= 10 ; row++){
+			Node n = this->board->nodes[row][col];
+			//there will be a continous stream of valid nodes
+			if(n.valid){
+				if(n.color == player){
+					if(!cont){//first occurence
+						startNodeRow = row;
+					}
+					endNodeRow = row; 
+					cont = true;
+				}
+				else{//stream break
+					if((endNodeRow-startNodeRow) >= thresh){
+						save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+						//get the required move and return ? OR save this as a possibility and then decide 
+						return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+					}
+					cont = false;
+				}
+			}
+		}
+	}
+
+	// Checking each 3rd Dimension 
+	/*
+	Start form { [5][0], [4][0], ... [0][0], [0][1], .... [0][5] } 
+	and increase both row and col from these to get the dimension
+	The end's pos have 4 along so skip them from counting
+	*/
+
+	//left index loop
+	for(int left_start = 4; left_start >= 0 ; left_start--){
+		int row = left_start;
+		int col = 0;
+
+		cont = false; 
+		startNodeRow = row; startNodeCol = col; //as the 0th and 10th row cant have contigous markers
+		endNodeRow = row; endNodeCol = col;
+		
+		for(int k = 0; k <= 10 ; k++){
+			if((row<11)&&(col<11)){
+				Node n = this->board->nodes[row][col];
+				//there will be a continous stream of valid nodes
+				if(n.valid){
+					if(n.color == player){
+						if(!cont){//first occurence
+							startNodeRow = row; startNodeCol = col;
+						}
+						endNodeRow = row; endNodeRow = col; 
+						cont = true;
+					}
+					else{//stream break
+						// both diff will be same
+						if((endNodeRow-startNodeRow) >= thresh){
+							save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+							//get the required move and return ? OR save this as a possibility and then decide 
+							return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+						}
+						cont = false;
+					}
+				}
+			}else{
+				break;
+			}
+			row++;	col++;
+		}
+	}
+	//RIGHT index loop // 0 already done
+	for(int right_start = 1; right_start <= 4 ; right_start++){
+		int row = 0;
+		int col = right_start;
+
+		cont = false; 
+		startNodeRow = row; startNodeCol = col; //as the 0th and 10th row cant have contigous markers
+		endNodeRow = row; endNodeCol = col;
+		
+		for(int k = 0; k <= 10 ; k++){
+			if((row<11)&&(col<11)){
+				Node n = this->board->nodes[row][col];
+				//there will be a continous stream of valid nodes
+				if(n.valid){
+					if(n.color == player){
+						if(!cont){//first occurence
+							startNodeRow = row; startNodeCol = col;
+						}
+						endNodeRow = row; endNodeRow = col; 
+						cont = true;
+					}
+					else{//stream break
+						// both diff will be same
+						if((endNodeRow-startNodeRow) >= thresh){
+							save[0][0] = startNodeRow; save[0][1] = startNodeCol; save[1][0] = endNodeRow; save[1][1] = endNodeCol;
+							//get the required move and return ? OR save this as a possibility and then decide 
+							return this->makeContigousMove(player, startNodeRow, startNodeCol, endNodeRow, endNodeCol);
+						}
+						cont = false;
+					}
+				}
+			}else{
+				break;
+			}
+			row++;	col++;
+		}
+	}
+
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
@@ -507,6 +687,8 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 	//will return the 1st max sequence found, otherwise NULL
 	vector<Move> ringRemovalSeq = this->checkContigousMarkers(player);
 	
+	//returns 'a' contigous sequence if exists
+
 	//somehow check if it's a valid and not null case
 	if (!ringRemovalSeq.empty()){
 		//if not empty then make
@@ -547,87 +729,5 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 		//call a function for each ring, returning a vector of vector of moves  possible and append them to the possibilites set 
 		
 	}
-	
-	/*
-	//else
-	int i,j;
-	// int whiteRings=0,blackRings=0,whiteringPos[5][2],blackringPos[5][2];		//considering white as player1 black as player2
-	int whiteMarks=0,blackMarks=0,whiteMarkPos[121][2],blackMarkPos[121][2];	//no issues of this outside this class
-	for(i=0;i<11;i++)
-	{
-		for(j=0;j<11;j++)
-		{
-			if(this->board->nodes[i][j].valid==0)
-				continue;
-			//else
-				
-			switch(this->board->nodes[i][j].player)
-			{
-				case 1 :
-					whiteMarkPos[whiteMarks][0]=i;
-					whiteMarkPos[whiteMarks][1]=j;
-					whiteMarks++;
-					break;
-				case 2 :
-					blackMarkPos[blackMarks][0]=i;
-					blackMarkPos[blackMarks][1]=j;
-					blackMarks++;
-					break;
-				default :
-					cerr<<"markers not properly assigned to this->board->nodes"<<endl;
-					exit(1);
-			}
-				
-			}
-			
-	}
-	
-	//is it possible that we need to remove markers before move
-	pair < pair<int,int> , pair<int,int> > remove;
-	
-	switch(player){
-		case 1 :
-			remove=removableMarkers(1,whiteMarks,whiteMarkPos);
-			break;
-		case 2 :
-			remove=removableMarkers(2,blackMarks,blackMarkPos);
-			break;
-		default :
-			cerr<<"wrong player passed to poss_moves()"<<endl;
-			exit(1);
-	}
-	if(remove.first.first != -1)
-	{
-		poss_move.push_back(Move(3,remove.first.first,remove.first.second));
-		poss_move.push_back(Move(4,remove.second.first,remove.second.second));
-		switch (player)
-		{
-			case 1 :
-				poss_move.push_back(Move(5,whiteringPos[whiteRings-1][0],whiteringPos[whiteRings-1][1]));//need to make it for all rings, right now removing only last one
-				whiteRings--;
-				break;
-			case 2 :
-			poss_move.push_back(Move(5,blackringPos[blackRings-1][0],blackringPos[blackRings-1][1]));//need to make it for all rings, right now removing only last one
-				blackRings--;
-				break;
-		}
-		//ring movements need to be added to each move
-		totalMoves=1;	//need to be considered while all rings possible to remove
-		possibleMoves.push_back(poss_move);
-		return totalMoves;
-	}
-	//else
-	//other moves - movement of rings
-	if(player==1)
-	{
-		for(i=0;i<whiteRings;i++)
-		{
-			int ringposi=whiteringPos[whiteRings][0];
-			int ringposj=whiteringPos[whiteRings][1];
-			int x;
-		}
-	}
-	 
-	 */
 			
 }
