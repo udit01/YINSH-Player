@@ -47,6 +47,7 @@ int main( int argc, char **argv){
                  weights[i]=stod(w);
              }
          }
+         readfile.close();
     }
     cin >> player;
     cin >> n;
