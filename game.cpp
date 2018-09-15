@@ -255,8 +255,11 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta)
 		depth++;
 		if(playerid==origplayer)
 		{
+			double positivity=0.0;
 			score=-4500;
 			local_score=minmax(3-playerid,origplayer,alpha,beta);
+			if (local_score>=0) positivity+=0.1;
+			else positivity-=0.1;
 			if(local_score>score)
 			{
 				score=local_score;
