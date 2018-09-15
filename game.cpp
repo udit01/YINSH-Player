@@ -678,22 +678,53 @@ vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 							{1,1}, {-1,-1} };
 
 	int row = r, col = c;
-	
+	bool gotMarker = false;
+	int lastMarkerRow, lastMarkerCol;
+
 	for( int k = 0; k < 5 ; k++ ){
 		//Running variables
+		gotMarker = false;
 		row = r; col = c;
+		lastMarkerRow = row, lastMarkerCol= col; // dummy marker, not actually a marker here
 		//max possible displacement is 11
 		for(int counter = 0; counter <= 11; counter++){
 
-			if((row<0)||(row>10)||(col<0)||(col>11)){
+			row += directions[k][0]; col += directions[k][1];
+
+			if((row<0)||(row>10)||(col<0)||(col>10)){
 				break; 
 				//as new increments mean only disaster, 
 				//break off that direction loop
 			}
 
 			//Do for each valid node , generate possiblities
+			n = this->board->nodes[row][col];
+			if(n.valid){
+				if(n.ring != 0){
+					// just the possibilites till now were possible, not after this ring encounter
+					break;
+				}
+				if(n.color != 0){
+					//Encountered a marker 
+					if(((row-directions[k][0])==lastMarkerRow)&&((col-directions[k][1]) == lastMarkerCol)){
+						//safe, as found next contigous marker
+						lastMarkerRow = row; lastMarkerCol = col;
+						//but we cannot move here, we can only move outside
+					}
+					else if((lastMarkerRow == r)&&(lastMarkerCol == c)){
+						//this is the first marker encountered after some gap,
+						//go to just one more unit(if possible) to make possiblites then give up 
+					}
+					else{
+						//some other marker(discontigous) was encounterd and this is another
+						break;///should have broken at that previous time
+					}
+				}else{
+					//marker not found then check the status of last marker thingy
+				}
+				
+			}
 
-			row += directions[k][0]; col += directions[k][1];
 		}
 	}
 }
@@ -758,7 +789,12 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 
 
 	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
-	vector<vector<Move>> ringMoves;
+	// vector<vector<Move>> ringMoves;
+
+	cerr << "REACHED ring moves stage, for now returning NULL if no other move: " << endl;
+	
+	//UNCOMMENT FOLLOWING TO INCLUDING RING MOVE POSSIBILITIES
+	/*
 	for(int ringNumber = 0; ringNumber < 5; ringNumber++){
 		int r = this->board->ring_pos[player-1][ringNumber][0];
 		int c = this->board->ring_pos[player-1][ringNumber][1];
@@ -770,6 +806,7 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 		//call a function for each ring, returning a vector of vector of moves  possible and append them to the possibilites set 
 		possibilities.insert(possibilities.end(), temp.begin(), temp.end());
 	}
+	*/
 
 	return possibilities;
 }
