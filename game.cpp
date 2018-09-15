@@ -95,9 +95,9 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		int dir2 = (c2 - c1)/(abs(c2-c1));
 		//other complex logic here depeding on signs of r1-r2 and c2-c1
 		int j = c1 ;
-		for(int i = c1; i != r2; i+=dir1){
+		for(int i = r1; i != r2; i+=dir1){
 			j += dir2;
-			n = this->board->nodes[i][r2];
+			n = this->board->nodes[i][j];
 
 			assert(n.valid); // all should be valid by default
 			if(remove){
