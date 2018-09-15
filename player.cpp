@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-
+#include<fstream>
 #include "utils.h"
 #include "game.h"
 
@@ -24,6 +24,29 @@ int main( int argc, char **argv){
         weights[2]=1;   //ring differnce weight
         weights[3]=0.01;    //marker difference weight
         weights[4]=0.1; //winning probablity on a side
+    }
+    else
+    {
+         ifstream readfile;
+         readfile.open(argv[1]);
+         if(!readfile)
+         {
+            weights[0]=100; //winning score
+            weights[1]=1;   //worsness of opponents winning over our winning
+            weights[2]=1;   //ring differnce weight
+            weights[3]=0.01;    //marker difference weight
+            weights[4]=0.1; //winning probablity on a side
+         }
+         else
+         {
+             int i;
+             string w;
+             for(i=0;i<5;i++)
+             {
+                 getline(readfile,w);
+                 weights[i]=stod(w);
+             }
+         }
     }
     cin >> player;
     cin >> n;
