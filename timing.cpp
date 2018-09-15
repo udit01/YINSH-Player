@@ -43,5 +43,5 @@ void timing::resume()
     flag=1;
     start=system_clock::now();
     loc_dur=start-start;
-    this->update();
+    thread updater(this->update);
 }
