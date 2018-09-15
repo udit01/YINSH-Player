@@ -19,7 +19,7 @@ public:
 	void playmove(vector<Move>, int player);
 	void changeLine(int player, int r1, int c1, int r2, int c2, bool remove);
 	void removeRing(int player, int r, int c);
-	
+	void placeRing(int player, int r, int c);
 	//return the most optimal move for specified player
 	vector<Move> getMove(int playerid);
 	//checkes for >=5 contigually placed markers 
@@ -35,7 +35,7 @@ public:
 	//checks if a row of markers exist if not then .first.first=-1
 	pair<pair<int,int>, pair<int,int>> removableMarkers(int color,int &marks,int pos[121][2]);
 	double evaluate(int playerid,int origplayer);
-	void initPossibleMoves();
+	// void initPossibleMoves();
 	Node getNode(int row, int col);
 	double minmax(int playerid,int origplayer,int alpha,int beta);
 	void setNode(int row,int coloumn,Node node);	//sets particular configuration at specified row coloumn node and moves to null
