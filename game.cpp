@@ -39,6 +39,12 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	// 	assert(n.color == player);
 	// }
 	
+	if(remove){
+			//because we're including both of edge points
+			// differnece in atleast 1 of them must be above removal threhold
+			assert((abs(r2 - r1) >= 4) || (abs(c2 - c1) >= 4));
+	}
+
 	int minIdx, maxIdx;
 	
 	
@@ -46,6 +52,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	if(r1 == r2){
 		minIdx = (c1 > c2) ? c2:c1;
 		maxIdx = (c2 + c1) - minIdx;
+		
 		
 		for(int i = minIdx; i <= maxIdx; i++){
 		
