@@ -3,13 +3,14 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include <assert.h>
 #include "utils.h"
 
 
 using namespace std;
 
 vector<string> moveCodes = {"P", "S", "M", "RS", "RE", "X"};
-int flag = 0;
+int mapFormed = 0;
 
 //change according to size of board
 pair<int, int> mapping[6][36];
@@ -112,8 +113,8 @@ constexpr unsigned int str2int(const char* str, int h = 0)
 
 vector<Move> convertToStd(string move){
 
-    if(flag == 0){
-        formMap(5); flag = 1;
+    if(mapFormed == 0){
+        formMap(5); mapFormed = 1;
     }
 
     stringstream moveStream(move);
@@ -166,8 +167,8 @@ vector<Move> convertToStd(string move){
 }
 
 string convertToHexagonal( vector<Move> moves){
-    if(flag == 0){
-        formMap(5); flag = 1;
+    if(mapFormed == 0){
+        formMap(5); mapFormed = 1;
     }
 
     stringstream cmoves;
@@ -192,4 +193,25 @@ string convertToHexagonal( vector<Move> moves){
 
     cmoves << "\n";
     return cmoves.str();
+}
+
+void getStd(int hexNum, int pos,  int coord[2]){
+    if(mapFormed == 0){
+        formMap(5); mapFormed = 1;
+    }
+
+    //what if we don't assert this ? we'll get garbage
+    assert(pos <= 6 * hexNum);
+    pair<int, int> p = mapping[hexNum][pos];
+    coord[0] = p.first; coord[1] = p.second;  
+}
+
+void getHex(int row, int col,  int coord[2]){
+    if(mapFormed == 0){
+        formMap(5); mapFormed = 1;
+    }
+
+    //cannot check NODE validity here()
+    pair<int, int> p = mapping[row][col];
+    coord[0] = p.first; coord[1] = p.second; 
 }

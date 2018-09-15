@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include "game.h"
+#include "utils.h"
 
 Game::Game(){
 	time=150;
@@ -157,6 +158,34 @@ void Game::removeRing(int player, int r, int c){
 
 }
 
+void Game::placeRing(int player, int r, int c){
+	
+	//there must be something in hand to place
+	assert(this->board->ringsHand[player-1] > 0);
+	
+	//the position where you want to place must be valid and empty
+	Node n = this->board->nodes[r][c];
+	assert(n.valid);
+	assert(n.ring == 0);
+	
+	//place the ring
+	n.ring = player;
+	//dec remaining rings
+	this->board->ringsHand[player-1]--;
+	//log coordinates of the ring
+	//iteraing from opposite direction may be hugely benifical in other parts, because fist ring is preffered for evey movement 
+	// and if first ring is outermost then faster move generation
+	for(int i = 0 ; i < 5 ; i++){
+		//insert the ring at the first free position 
+		if((this->board->ring_pos[player-1][i][0] == 0) && (this->board->ring_pos[player-1][i][1] == 0) ){
+			this->board->ring_pos[player-1][i][0] = r;
+			this->board->ring_pos[player-1][i][1] = c;
+			break;
+		}
+	}
+
+}
+
 void Game::playmove(vector<Move> move, int player){ 
 	/*We get a player's  move and we have to play it*/
 	int me = player;
@@ -165,7 +194,6 @@ void Game::playmove(vector<Move> move, int player){
 	
 	//ring start row and column
 	int rsr = 0, rsc = 0;
-
 
 	/*
 	Types of sequences in the game : 
@@ -186,7 +214,8 @@ void Game::playmove(vector<Move> move, int player){
 
 		switch(type){
 			case 0: /* Placing a ring */
-				this->board->nodes[row][col].ring = me;
+				this->placeRing(me, row, col);
+				// this->board->nodes[row][col].ring = me;
 				break;
 			case 1: /* Selecting a ring(and therefore putting the marker) */
 				// Put the marker on this node 
@@ -312,6 +341,20 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 }
 
 vector<Move> Game::getMove(int playerid){
+
+	//if only 1 possible move then play that move, don't evaluate or anything just do it!
+	vector<vector<Move>> possiblies = this->allPossibleMoves(playerid);
+	if(possiblies.size() == 0){
+		cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
+		//don't exit instead return some sort of blank as we may have won
+		exit(1);
+	}else if(possiblies.size() == 1){
+		this->playmove(possiblies[0], playerid);
+		return possiblies[0];
+	}
+	// else
+	// Do something else
+
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
 	
@@ -337,11 +380,11 @@ vector<Move> Game::getMove(int playerid){
 From the PossibleMoves class
 */
 
-void Game::initPossibleMoves(){
-	this->flag = 1;
-	this->totalMoves = 0;
-	this->currMove = 0;
-}
+// void Game::initPossibleMoves(){
+// 	this->flag = 1;
+// 	this->totalMoves = 0;
+// 	this->currMove = 0;
+// }
 /*
 Instead of nodes copy , we'll work on a board's copy
 because we need the number of rings and other things preserverd
@@ -399,32 +442,95 @@ pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,
 		return make_pair(make_pair(-1,0),make_pair(0,0));
 	}
 }
-vector<Move> placeHandRing(int player){
+
+vector<Move> Game::placeHandRing(int player){
 	// to place hand ring optimally
+	// attempt to place ring at central positions and then check sourrounding 
+	assert(this->board->ringsHand[player-1] > 0);
+
+	vector<Move> seq;
+	int coord[2] = {0,0};
+	
+	getStd(0, 0, coord);
+	if(this->board->nodes[coord[0]][coord[1]].ring == 0){
+		//place ring at the center if possible and return
+		seq.push_back(Move(0, coord[0], coord[1]));
+		return seq;
+	}
+
+	for(int hexNum = 1; hexNum <= 5; hexNum++){
+		for(int pos = 0; pos < 6 * hexNum ; pos++){
+			getStd(hexNum, pos, coord);
+			if(this->board->nodes[coord[0]][coord[1]].ring == 0){
+				//place ring at this coordinate if possible and return
+				seq.push_back(Move(0, coord[0], coord[1]));
+				return seq;
+			}
+		}
+	}
+
+	// if unable then to find such a sequence, return an empty vector
+	return seq	;
 }
-vector<Move> checkContigousMarkers(int player){
+vector<Move> Game::checkContigousMarkers(int player){
 	//to check for max possible markers
+	
 }
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
-	while(this->board->ringsHand[player-1] > 0){
-		this->placeHandRing(player);
+	vector<vector<Move>> possibilities;
+
+	vector<Move> ringsPlacingSeq;
+
+	if(this->board->ringsHand[player-1] > 0){
+		ringsPlacingSeq = this->placeHandRing(player);
 	}
 
-	// call if all 5 rings placed from hand to board
+	if(!ringsPlacingSeq.empty()){
+		possibilities.push_back(ringsPlacingSeq);
+		return possibilities;
+	}
+
+	// Otherwise it's empty and move on to the next step
+	if(this->board->ringsDone[player-1] >= 3){
+		//return the empty vector
+		return possibilities;
+	}
+
+
+	// call if all 5 rings placed from hand to board and Done rings is still < 3
 
 	//will return the 1st max sequence found, otherwise NULL
 	vector<Move> ringRemovalSeq = this->checkContigousMarkers(player);
 	
 	//somehow check if it's a valid and not null case
-	// if (ringRemovalSeq){
+	if (!ringRemovalSeq.empty()){
+		//if not empty then make
+		Board* boardSave = this->board->deepCopy();
+		
+		//this modified this.board
+		this->playmove(ringRemovalSeq, player);
 
-	// }
+		vector<vector<Move>> deeperPoss = this->allPossibleMoves(player);
+
+		//prepend ringRemovalSeq to each vector to make and the return the possibilites vector
+		for(vector<vector<Move>>::iterator it = deeperPoss.begin() ; it != deeperPoss.end() ; it++ ){
+			//theis deepcopies the ringRemovalSeq
+			vector<Move> temp(ringRemovalSeq); 
+			//this inserts the deepPossiblites vector after (copy of) ringRemovalSeq vector and returns the final vector of vectors 
+			temp.insert(temp.end(), it->begin(), it->end());
+			possibilities.push_back(temp);
+		}
+
+		//now return the board to original state
+		this->board = boardSave;
+		//and return the possiblites ? without checking other normal moves because that won't be required
+		return possibilities;
+	}
 
 	// if multiple contigous markers, then call possible moves again after removing the first set,
 	// as it could or couldn't disturb the 2nd config
 	
-	 
 
 
 	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
@@ -434,7 +540,7 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 			continue; //as this index ring is not on board
 		}
 		
-		//call a function for each ring, returning a vector of vector of moves  possible and append them to the ringMoves set 
+		//call a function for each ring, returning a vector of vector of moves  possible and append them to the possibilites set 
 		
 	}
 	
