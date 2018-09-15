@@ -41,11 +41,12 @@ void Game::setWeights(int argc, char **argv)
          readfile.close();
     }
 }
-Game::Game(int id,int n,int time,int argc, char **argv){
+Game::Game(int id,int n,timing *timer,int argc, char **argv){
 	this->time=time;
 	this->board = new Board(5);
 	int i;
 	this->setWeights(argc,argv);
+	this->timer=timer;
 	// this->pm = new PossMove(this->b->nodes);
 }
 
