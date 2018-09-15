@@ -229,8 +229,8 @@ double Game::evaluate(int playerid,int origplayer){
 			}
 		}
 	}
-	if(this->board->ringsRem[origplayer-1]==2) return 100.0;
-	if(this->board->ringsRem[2-origplayer]==2) return -100.0;
+	if(this->board->ringsRem[origplayer-1]==2) return Weight[0];	//our winning
+	if(this->board->ringsRem[2-origplayer]==2) return -1*(Weight[1]*Weight[0]);	//worsness of oppnonent's win
 	//else
 	score=this->board->ringsRem[2-playerid]-this->board->ringsRem[playerid-1];//differnce in rings
 	score+=0.1*(markers[playerid-1]-markers[2-playerid]);//marker difference;
@@ -251,6 +251,11 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 	possMove=possibleMoves;
 	double score,local_score;
 	double positivity=0.0;
+	if(possMove.empty())
+	{
+		depth=1;
+		return evaluate(playerid,origplayer);
+	}
 	for(auto i=possMove.begin();i!=possMove.end();i++)
 	{
 		playmove(*i,playerid);
