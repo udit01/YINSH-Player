@@ -390,32 +390,6 @@ because we need the number of rings and other things preserverd
 */
 //get set is unrequired 
 
-Node Game::getNode(int row,int coloumn){
-	if((row<11)&&(coloumn<11)){
-		Node n = this->board->nodes[row][coloumn];
-		if (n.valid){
-			return n;
-		}
-	}
-	
-	cerr << "Trying to get an Invalid or out of range Node" << endl;
-	exit(1);
-}
-
-void Game::setNode(int row,int coloumn,Node node){
-	if((row<11)&&(coloumn<11))
-	{
-		this->totalMoves = 0;
-		this->currMove = 0;
-		this->possibleMoves.clear();			
-		this->board->nodes[row][coloumn] = node;
-		return;
-	}
-	//else					
-	cerr << "Trying to set an out of bounds node" << endl;
-	exit(1);
-}
-
 pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2]){
 	int i,j,k;
 	for(i=0;i<marks;i++)
