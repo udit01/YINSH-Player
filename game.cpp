@@ -1,7 +1,6 @@
 #include <iostream>
 #include <assert.h>
 #include "game.h"
-#include "PossibleMove.h"
 
 Game::Game(){
 	time=150;
