@@ -3,19 +3,20 @@
 #include<fstream>
 #include"utils.h"
 #include"board.h"
-
+#include"timing.h"
 
 class Game
 {
 public:
 	// int player_id,no_of_rings,time;
 	int time;
+	timing *timer;
 	double weights[5];
 	Board* board; 
 	Board* origBoard;
 	// write the names of data members to be used and member functions required along with why/what to do in it
 	Game();
-	Game(int id,int n,int time,int argc, char **argv);
+	Game(int id,int n,timing *timer,int argc, char **argv);
 	void setWeights(int argc, char **argv);
 	void playmove(vector<Move>, int player);
 	void changeLine(int player, int r1, int c1, int r2, int c2, bool remove);

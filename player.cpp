@@ -3,6 +3,7 @@
 
 #include "utils.h"
 #include "game.h"
+#include "timing.h"
 
 using namespace std;
 
@@ -22,12 +23,13 @@ int main( int argc, char **argv){
     cin >> time;
 
     // cout << "P 5 7"<< endl;
-
-	Game* game= new Game(player,n,time,argc,argv); //creates an object of game class
+    timing *timer=new timing(time);
+	Game* game= new Game(player,n,timer,argc,argv); //creates an object of game class
     
     string opp_move,my_move;
     
     if (player == 1){
+
         my_move = convertToHexagonal(game->getMove(1));
         cout << my_move;        
     }

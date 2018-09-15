@@ -9,9 +9,18 @@ timing::timing()
     loc_dur=dur;
 }
 
-double timing::getPassedTime()
+timing::timing(int totalTime)
 {
-    return ((dur+loc_dur).count());
+    flag=1;
+    time_point<system_clock> x;
+    x=system_clock::now();
+    dur=x-x;
+    loc_dur=dur;
+    this->totalTime=totalTime;
+}
+double timing::getRemTime()
+{
+    return(totalTime- ((dur+loc_dur).count()));
 }
 
 void timing::stop()
