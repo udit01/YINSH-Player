@@ -16,7 +16,7 @@ public:
 	Board* origBoard;
 	// write the names of data members to be used and member functions required along with why/what to do in it
 	Game();
-	Game(int id,int n,timing *timer,int argc, char **argv);
+	Game(int n,timing *timer,int argc, char **argv);
 	void setWeights(int argc, char **argv);
 	void playmove(vector<Move>, int player);
 	void changeLine(int player, int r1, int c1, int r2, int c2, bool remove);

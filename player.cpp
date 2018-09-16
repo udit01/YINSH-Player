@@ -25,7 +25,7 @@ int main( int argc, char **argv){
     // cout << "P 5 7"<< endl;
     timing *timer=new timing(time);
     // cerr<<"timer object created"<<endl;
-	Game* game= new Game(player,n,timer,argc,argv); //creates an object of game class
+	Game* game= new Game(n,timer,argc,argv); //creates an object of game class
     // cerr<<"game object created"<<endl;
     string opp_move,my_move;
     

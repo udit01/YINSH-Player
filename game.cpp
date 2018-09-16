@@ -41,12 +41,10 @@ void Game::setWeights(int argc, char **argv)
          readfile.close();
     }
 }
-Game::Game(int id,int n,timing *timer,int argc, char **argv){
+Game::Game(int n,timing *timer,int argc, char **argv){
 	this->time=time;
-	cerr<<"came into game constructor"<<endl;
+	// N is board size, wil go inside next line when we're ready 
 	this->board = new Board(5);
-	cerr<<"board created and we came back"<<endl;
-	int i;
 	this->setWeights(argc,argv);
 	this->timer=timer;
 	// this->pm = new PossMove(this->b->nodes);
@@ -54,6 +52,8 @@ Game::Game(int id,int n,timing *timer,int argc, char **argv){
 
 void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	
+	//process current node seperately and don't include that in for loops
+
 	//assert that unequal blocks
 	assert( !( (r1 == r2) && (c1 == c2) ));
 
@@ -65,6 +65,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		//player is being checked in the loops so no need to check again 
 		// assert(n->color == player);
 		assert(n->ring == player); 
+		n->color = 0;
 		//also check if ring pos is the appropriate thing ?
 	}
 	n = &(this->board->nodes[r2][c2]);
@@ -87,7 +88,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		maxIdx = (c2 + c1) - minIdx;
 		
 		
-		for(int i = minIdx; i <= maxIdx; i++){
+		for(int i = minIdx+1 ; i <= maxIdx; i++){
 		
 			n = &(this->board->nodes[r2][i]);
 
@@ -106,7 +107,7 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		minIdx = (r1 > r2) ? r2:r1;
 		maxIdx = (r2 + r1) - minIdx;
 		
-		for(int i = minIdx; i <= maxIdx; i++){
+		for(int i = minIdx+1; i <= maxIdx; i++){
 		
 			n = &(this->board->nodes[i][c2]);
 
@@ -128,7 +129,9 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		int dir2 = (c2 - c1)/(abs(c2-c1));
 		//other complex logic here depeding on signs of r1-r2 and c2-c1
 		int j = c1 ;
-		for(int i = r1; i != r2; i+=dir1){
+		j+= dir2;
+		
+		for(int i = r1+dir1; i != r2; i+=dir1){
 			j += dir2;
 			n = &(this->board->nodes[i][j]);
 
@@ -221,8 +224,6 @@ void Game::placeRing(int player, int r, int c){
 
 void Game::playmove(vector<Move> move, int player){ 
 	/*We get a player's  move and we have to play it*/
-	int me = player;
-	// int opp = 3 - me;
 	int type = 0, row = 0, col = 0;
 	
 	//ring start row and column
@@ -239,25 +240,25 @@ void Game::playmove(vector<Move> move, int player){
 
 	//play the move in the game
 	for(std::vector<Move>::iterator it = move.begin(); it != move.end(); ++it) {
+		
 		type = it->moveType; row = it->row; col = it->col;
-
 		assert(this->board->nodes[row][col].valid);
 
 		switch(type){
 			case 0: /* Placing a ring */
-				this->placeRing(me, row, col);
+				this->placeRing(player, row, col);
 				// this->board->nodes[row][col].ring = me;
 				break;
 			case 1: /* Selecting a ring(and therefore putting the marker) */
 				// Put the marker on this node 
-				this->board->nodes[row][col].color = me;
+				this->board->nodes[row][col].color = player;
 				//set ring start row and column
 				rsr = row; rsc = col;
 				break;
 			case 2: /*Move ring comes after selection*/
 				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
-				this->changeLine(me, rsr, rsc, row, col, false);
+				this->changeLine(player, rsr, rsc, row, col, false);
 				break;
 			case 3: /*RS may come standalone*/
 			//check the rings are in order
@@ -267,10 +268,10 @@ void Game::playmove(vector<Move> move, int player){
 			case 4: /*RE ring comes after selection*/
 				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
-				this->changeLine(me, rsr, rsc, row, col, true);
+				this->changeLine(player, rsr, rsc, row, col, true);
 				break;
 			case 5: /*X is remove ring do after appropirate checking*/
-				this->removeRing(me, row, col);
+				this->removeRing(player, row, col);
 				break;
 			default:
 				cerr << "Some error in move type " << type << endl;
