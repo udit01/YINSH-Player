@@ -40,6 +40,7 @@ int main( int argc, char **argv){
         // cin >> move;
         timer->stop();
         getline(cin, opp_move);
+        cerr<<opp_move<<endl;
 	    timer->resume();
         game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
 

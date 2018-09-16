@@ -27,7 +27,7 @@ double timing::getRemTime()
 {
     cerr<<"gettime"<<endl;
     cerr<<(dur+loc_dur).count()<<endl;
-    return((double)totalTime-dur.count()-loc_dur.count() );
+    return((double)totalTime-(dur.count()+loc_dur.count()) );
 }
 
 void timing::stop()
