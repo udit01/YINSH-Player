@@ -57,13 +57,13 @@ Board::Board(int boardSize){
     // rings from 0...b
     // rows and columns from 0 ... 2*b
     this->boardSize = boardSize;
-    cerr<<"came into board constructor"<<endl;
+   // cerr<<"came into board constructor"<<endl;
     int range = 2*boardSize + 1;
     this->nodes = new Node*[range];
     for(int i = 0; i < range; i++){
         this->nodes[i] = new Node[range];
     }
-    cerr<<"nodes of range created"<<endl;
+   // cerr<<"nodes of range created"<<endl;
     //marking validity of nodes
     this->markValidity(); // currently only for size 5
 

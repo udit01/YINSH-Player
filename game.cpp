@@ -43,9 +43,9 @@ void Game::setWeights(int argc, char **argv)
 }
 Game::Game(int id,int n,timing *timer,int argc, char **argv){
 	this->time=time;
-	cerr<<"came into game constructor"<<endl;
+	//cerr<<"came into game constructor"<<endl;
 	this->board = new Board(5);
-	cerr<<"board created and we came back"<<endl;
+	//cerr<<"board created and we came back"<<endl;
 	int i;
 	this->setWeights(argc,argv);
 	this->timer=timer;
@@ -275,7 +275,7 @@ void Game::playmove(vector<Move> move, int player){
 				this->removeRing(me, row, col);
 				break;
 			default:
-				cerr << "Some error in move type " << type << endl;
+				//cerr << "Some error in move type " << type << endl;
 				exit(1);
 		}
 
@@ -377,11 +377,11 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 }
 
 vector<Move> Game::getMove(int playerid){
-
+	cerr<<timer->getRemTime()<<endl;
 	//if only 1 possible move then play that move, don't evaluate or anything just do it!
 	vector<vector<Move>> possiblities = this->allPossibleMoves(playerid);
 	if(possiblities.size() == 0){
-		cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
+		//cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
 		//don't exit instead return some sort of blank as we may have won
 		vector<Move> emp;
 		return emp;
@@ -435,7 +435,7 @@ because we need the number of rings and other things preserverd
 // 	{
 // 		if(this->board->nodes[pos[i][0]][pos[i][1]].color != color)
 // 		{
-// 			cerr<<"some error in marker colouring or finding markers"<<endl;
+// 			//cerr<<"some error in marker colouring or finding markers"<<endl;
 // 			exit(1);
 // 		}
 // 		// code to find removable markers is under process	//need to be generic removal has been fixed
@@ -850,7 +850,7 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
 	// vector<vector<Move>> ringMoves;
 
-	// cerr << "REACHED ring moves stage, for now returning NULL if no other move: " << endl;
+	// //cerr << "REACHED ring moves stage, for now returning NULL if no other move: " << endl;
 	
 	//UNCOMMENT FOLLOWING TO INCLUDING RING MOVE POSSIBILITIES
 	
