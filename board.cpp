@@ -121,17 +121,20 @@ void Board::printBoard()
     cerr  << "********************************************" << endl;
 
     int i,j;
-    cerr<<"rings hand [0] = "<<ringsHand[0]<<endl;
-    cerr<<"rings hand [1] = "<<ringsHand[1]<<endl;
-    cerr<<"rings done [0] = "<<ringsDone[0]<<endl;
-    cerr<<"rings done [0] = "<<ringsDone[0]<<endl;
-    cerr<<"ring positions for 0 : "<<endl;
-    for(i=0;i<5;i++)
-        cerr<<ring_pos[0][i][0]<<" "<<ring_pos[0][i][1]<<endl;
-    cerr<<"ring positions for 1 : "<<endl;
-    for(i=0;i<5;i++)
-        cerr<<ring_pos[1][i][0]<<" "<<ring_pos[1][i][1]<<endl;
-    cerr<<"printing nodes in format \n validity color ring"<<endl;
+    cerr << "rings in hand for P1 , P2 : "<< ringsHand[0] << " , " << ringsHand[1] <<endl;
+    cerr << "rings done for P1 , P2 : "<< ringsDone[0] << " , " << ringsDone[1] <<endl;
+    cerr << "ring positions for P1 : "; //<<endl;
+    for(i=0;i<5;i++){
+        cerr << " ( "<<ring_pos[0][i][0]<<", "<<ring_pos[0][i][1]<<")  ";
+    } 
+    cerr << endl;
+    
+    cerr << "ring positions for P2 : "; //<<endl;
+    for(i=0;i<5;i++){
+        cerr << " ( "<<ring_pos[1][i][0]<<", "<<ring_pos[1][i][1]<<")  ";
+    } 
+    cerr << endl;
+
     for(i=0;i<11;i++)
     {
         for(j=0;j<11;j++)
@@ -163,7 +166,7 @@ void Board::printBoard()
             // cerr<<nodes[i][j].ring<<endl;
             cerr << str << " ";
         }
-        cerr << endl;
+        cerr << endl << endl;
     }
 
 
