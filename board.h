@@ -5,7 +5,9 @@
 
 #ifndef BOARD_H
 #define BOARD_H
+#include <iostream>
 
+using namespace std;
 class Node{			//make seperate file as needed to be included at different places
     public:
         int row, col;
@@ -44,6 +46,7 @@ public:
     Board();
 	Board(int boardSize);
 	void markValidity();
+    void printBoard();
     /*
     Nodes have the following ranges
     Col  ->   Row-range

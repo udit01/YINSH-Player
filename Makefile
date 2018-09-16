@@ -4,6 +4,9 @@
 all: board.cpp utils.cpp game.cpp player.cpp timing.cpp
 	g++ -std=c++11 -pthread -o player  board.cpp utils.cpp game.cpp player.cpp timing.cpp
 
+debug: board.cpp utils.cpp game.cpp player.cpp timing.cpp
+	g++ -g -std=c++11 -pthread -o player  board.cpp utils.cpp game.cpp player.cpp timing.cpp
+
 opt: board.cpp utils.cpp game.cpp player.cpp timing.cpp
 	g++ -std=c++11 -O3 -o player  board.cpp utils.cpp game.cpp player.cpp timing.cpp
 

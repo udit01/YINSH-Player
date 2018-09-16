@@ -43,7 +43,9 @@ void Game::setWeights(int argc, char **argv)
 }
 Game::Game(int id,int n,timing *timer,int argc, char **argv){
 	this->time=time;
+	cerr<<"came into game constructor"<<endl;
 	this->board = new Board(5);
+	cerr<<"board created and we came back"<<endl;
 	int i;
 	this->setWeights(argc,argv);
 	this->timer=timer;
@@ -297,12 +299,15 @@ double Game::evaluate(int playerid,int origplayer){
 			}
 		}
 	}
-	if(this->board->ringsHand[origplayer-1]==2) return weights[0];	//our winning
-	if(this->board->ringsHand[2-origplayer]==2) return -1*(weights[1]*weights[0]);	//worsness of oppnonent's win
+	if(this->board->ringsDone[origplayer-1]==3) return weights[0];	//our winning
+	if(this->board->ringsDone[2-origplayer]==3) return -1*(weights[1]*weights[0]);	//worsness of oppnonent's win
 	//else
-	score=(this->board->ringsHand[2-playerid]-this->board->ringsHand[playerid-1])*weights[2];//differnce in rings
+	score=(this->board->ringsDone[playerid-1]-this->board->ringsDone[2-playerid])*weights[2];//differnce in rings
 	score+=weights[3]*(markers[playerid-1]-markers[2-playerid]);//marker difference;
+	if(playerid==origplayer)
 	return score;
+	else
+	return -1*(weights[1]*score);
 }
 
 double Game::minmax(int playerid,int origplayer,int alpha,int beta){
