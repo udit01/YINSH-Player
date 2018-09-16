@@ -222,7 +222,7 @@ void Game::placeRing(int player, int r, int c){
 void Game::playmove(vector<Move> move, int player){ 
 	/*We get a player's  move and we have to play it*/
 	int me = player;
-	int opp = 3 - me;
+	// int opp = 3 - me;
 	int type = 0, row = 0, col = 0;
 	
 	//ring start row and column
@@ -379,14 +379,16 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 vector<Move> Game::getMove(int playerid){
 
 	//if only 1 possible move then play that move, don't evaluate or anything just do it!
-	vector<vector<Move>> possiblies = this->allPossibleMoves(playerid);
-	if(possiblies.size() == 0){
+	vector<vector<Move>> possiblities = this->allPossibleMoves(playerid);
+	if(possiblities.size() == 0){
 		cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
 		//don't exit instead return some sort of blank as we may have won
-		exit(1);
-	}else if(possiblies.size() == 1){
-		this->playmove(possiblies[0], playerid);
-		return possiblies[0];
+		vector<Move> emp;
+		return emp;
+		// exit(1);
+	}else if(possiblities.size() == 1){
+		this->playmove(possiblities[0], playerid);
+		return possiblities[0];
 	}
 	// else
 	// Do something else
@@ -427,31 +429,31 @@ because we need the number of rings and other things preserverd
 */
 //get set is unrequired 
 
-pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2]){
-	int i,j,k;
-	for(i=0;i<marks;i++)
-	{
-		if(this->board->nodes[pos[i][0]][pos[i][1]].color != color)
-		{
-			cerr<<"some error in marker colouring or finding markers"<<endl;
-			exit(1);
-		}
-		// code to find removable markers is under process	//need to be generic removal has been fixed
-		for(j=1;(this->board->nodes[(pos[i][0])-j][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])-j][pos[i][1]].color==color);j++);
-		for(k=1;(this->board->nodes[(pos[i][0])+k][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])+k][pos[i][1]].color==color);k++);
-		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),pos[i][1]),make_pair(((pos[i][0])-j+5),pos[i][1]));
-		//else
-		for(j=1; (this->board->nodes[pos[i][0]][pos[i][1]-j].valid) && this->board->nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
-		for(k=1; (this->board->nodes[pos[i][0]][pos[i][1]+k].valid) && this->board->nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
-		if(j+k-1 >= 5) return make_pair(make_pair(pos[i][0],((pos[i][1])-j+1)),make_pair(pos[i][0],((pos[i][1])-j+1)));
-		//else
-		for(j=1; (this->board->nodes[pos[i][0]-j][pos[i][1]-j].valid) && this->board->nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
-		for(k=1; (this->board->nodes[pos[i][0]+k][pos[i][1]+k].valid) && this->board->nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
-		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
-		//else
-		return make_pair(make_pair(-1,0),make_pair(0,0));
-	}
-}
+// pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2]){
+// 	int i,j,k;
+// 	for(i=0;i<marks;i++)
+// 	{
+// 		if(this->board->nodes[pos[i][0]][pos[i][1]].color != color)
+// 		{
+// 			cerr<<"some error in marker colouring or finding markers"<<endl;
+// 			exit(1);
+// 		}
+// 		// code to find removable markers is under process	//need to be generic removal has been fixed
+// 		for(j=1;(this->board->nodes[(pos[i][0])-j][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])-j][pos[i][1]].color==color);j++);
+// 		for(k=1;(this->board->nodes[(pos[i][0])+k][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])+k][pos[i][1]].color==color);k++);
+// 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),pos[i][1]),make_pair(((pos[i][0])-j+5),pos[i][1]));
+// 		//else
+// 		for(j=1; (this->board->nodes[pos[i][0]][pos[i][1]-j].valid) && this->board->nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
+// 		for(k=1; (this->board->nodes[pos[i][0]][pos[i][1]+k].valid) && this->board->nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
+// 		if(j+k-1 >= 5) return make_pair(make_pair(pos[i][0],((pos[i][1])-j+1)),make_pair(pos[i][0],((pos[i][1])-j+1)));
+// 		//else
+// 		for(j=1; (this->board->nodes[pos[i][0]-j][pos[i][1]-j].valid) && this->board->nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
+// 		for(k=1; (this->board->nodes[pos[i][0]+k][pos[i][1]+k].valid) && this->board->nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
+// 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
+// 		//else
+// 		return make_pair(make_pair(-1,0),make_pair(0,0));
+// 	}
+// }
 
 vector<Move> Game::placeHandRing(int player){
 	// to place hand ring optimally
@@ -667,7 +669,40 @@ vector<Move> Game::checkContigousMarkers(int player){
 
 }
 
-/*vector<vector<Move>> Game::perturbRing(int player, int r, int c){
+vector<Move> Game::spawnRing(int player, int r1, int c1, int r2, int c2){
+	vector<Move> seq;
+
+	seq.push_back(Move(1, r1, c1));
+	seq.push_back(Move(2, r2, c2));
+	
+	Board* board_ = this->board->deepCopy();
+	
+	//makes deecopy of the vector
+	vector<Move> other(seq);
+
+	while(this->board->ringsDone[player-1]<3){
+
+		//play this move and check for contigous markers afterword
+		this->playmove(other, player);
+		other = this->checkContigousMarkers(player);
+		
+		if(other.size()>0){
+			seq.insert(seq.end(), other.begin(), other.end());
+		}
+		else{
+			break;
+		}
+		
+	}
+	// if(this->board->ringsDone[player-1] >= 3){
+		
+	// }
+	this->board = board_;
+	return seq;
+	
+}
+
+vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 
 	//assert a valid node and RING ?
 	Node n = this->board->nodes[r][c];
@@ -683,26 +718,76 @@ vector<Move> Game::checkContigousMarkers(int player){
 							{1,1}, {-1,-1} };
 
 	int row = r, col = c;
-	
-	for( int k = 0; k < 5 ; k++ ){
+	bool gotMarker = false;
+	int lastMarkerRow, lastMarkerCol;
+
+
+	vector<vector<Move>> perturbations;
+
+	for( int k = 0; k < 6 ; k++ ){
 		//Running variables
+		gotMarker = false;
 		row = r; col = c;
+		lastMarkerRow = row, lastMarkerCol= col; // dummy marker, not actually a marker here
 		//max possible displacement is 11
 		for(int counter = 0; counter <= 11; counter++){
 
-			if((row<0)||(row>10)||(col<0)||(col>11)){
+			row += directions[k][0]; col += directions[k][1];
+
+			if((row<0)||(row>10)||(col<0)||(col>10)){
 				break; 
 				//as new increments mean only disaster, 
 				//break off that direction loop
 			}
 
 			//Do for each valid node , generate possiblities
+			n = this->board->nodes[row][col];
+			if(n.valid){
+				if(n.ring != 0){
+					// just the possibilites till now were possible, not after this ring encounter
+					break;
+				}
+				if(n.color != 0){
+					//Encountered a marker 
+					if(((row-directions[k][0])==lastMarkerRow)&&((col-directions[k][1]) == lastMarkerCol)){
+						// safe, as found next contigous marker
+						lastMarkerRow = row; lastMarkerCol = col;
+						// but we cannot move here, we can only move outside
+						// therefore continue
+					}
+					else if((lastMarkerRow == r)&&(lastMarkerCol == c)){
+						// this is the first true marker encountered after some gap,
+						lastMarkerRow = row; lastMarkerCol = col;
+						// go to just one more unit(if possible) to make possiblites then give up
+						// 
+					}
+					else{
+						//some other marker(discontigous) was encounterd and this is another
+						break;///should have broken at that previous time
+					}
+				}else{
+					//marker not found then check the status of last marker thingy and make it into a possiblility
+					// This will spawn ring, check for contigous rings recursively etc
+					perturbations.push_back(this->spawnRing(player, r, c,row, col));
+					
+					if((lastMarkerRow == r)&&(lastMarkerCol == c)){
+						// continue, keep spawning,  do nothing, 
+					}
+					else if(((row-directions[k][0])==lastMarkerRow)&&((col-directions[k][1]) == lastMarkerCol)){
+						// last point was a marker, therefore end spawning here
+						break;
+					}
+					
+				}
+				
+			}
 
-			row += directions[k][0]; col += directions[k][1];
 		}
 	}
+
+	return perturbations;
 }
-*/
+
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
 	vector<vector<Move>> possibilities;
@@ -763,7 +848,12 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 
 
 	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
-	vector<vector<Move>> ringMoves;
+	// vector<vector<Move>> ringMoves;
+
+	// cerr << "REACHED ring moves stage, for now returning NULL if no other move: " << endl;
+	
+	//UNCOMMENT FOLLOWING TO INCLUDING RING MOVE POSSIBILITIES
+	
 	for(int ringNumber = 0; ringNumber < 5; ringNumber++){
 		int r = this->board->ring_pos[player-1][ringNumber][0];
 		int c = this->board->ring_pos[player-1][ringNumber][1];
@@ -771,9 +861,9 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 			continue; //as this index ring is not on board
 		}
 
-//		vector<vector<Move>> temp = this->perturbRing(player, r, c);
-		//call a function for each ring, returning a vector of vector of moves  possible and append them to the possibilites set 
-	//	possibilities.insert(possibilities.end(), temp.begin(), temp.end());
+		vector<vector<Move>> temp = this->perturbRing(player, r, c);
+		// call a function for each ring, returning a vector of vector of moves  possible and append them to the possibilites set 
+		possibilities.insert(possibilities.end(), temp.begin(), temp.end());
 	}
 
 	return possibilities;
