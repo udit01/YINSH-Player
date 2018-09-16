@@ -256,7 +256,7 @@ void Game::playmove(vector<Move> move, int player){
 				rsr = row; rsc = col;
 				break;
 			case 2: /*Move ring comes after selection*/
-				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
+				assert( !((rsr == 0) && (rsc == 0)) ); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
 				this->changeLine(player, rsr, rsc, row, col, false);
 				break;
@@ -381,7 +381,7 @@ vector<Move> Game::getMove(int playerid){
 	
 	vector<vector<Move>> possiblities = this->allPossibleMoves(playerid);
 	
-	cerr << "Inside Get Move : player P" << playerid + 1 << " is trying to play " << endl;
+	cerr << "Inside Get Move : player P" << playerid << " is trying to play " << endl;
 
 	if(possiblities.size() == 0){
 		//cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
