@@ -175,7 +175,10 @@ string convertToHexagonal( vector<Move> moves){
     string type;
     pair<int, int> p;
     vector<Move>::iterator itr ;
-
+    if(moves.size() == 0){
+        return ("");
+    }
+    
     for(itr = moves.begin(); itr != moves.end(); itr++){
         switch(itr->moveType){
             case 0 : type = "P" ; break;
