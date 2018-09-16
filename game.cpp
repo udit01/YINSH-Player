@@ -266,7 +266,7 @@ void Game::playmove(vector<Move> move, int player){
 				rsr = row; rsc = col;
 				break;
 			case 4: /*RE ring comes after selection*/
-				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
+				assert( !((rsr == 0) && (rsc == 0)) ); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
 				this->changeLine(player, rsr, rsc, row, col, true);
 				break;
