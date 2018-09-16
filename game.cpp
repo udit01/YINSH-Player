@@ -278,7 +278,6 @@ void Game::playmove(vector<Move> move, int player){
 				exit(1);
 		}
 
-	/* std::cout << *it; ... */
 	}
 	
 }
