@@ -256,7 +256,7 @@ void Game::playmove(vector<Move> move, int player){
 				rsr = row; rsc = col;
 				break;
 			case 2: /*Move ring comes after selection*/
-				assert( (rsr!= 0) && (rsc!=0)); //weaker assert condition
+				assert( !((rsr == 0) && (rsc == 0)) ); //weaker assert condition
 				//assert somehow that ringstartpos was evaluated
 				this->changeLine(player, rsr, rsc, row, col, false);
 				break;
@@ -376,19 +376,30 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 }
 
 vector<Move> Game::getMove(int playerid){
-	cerr<<timer->getRemTime()<<endl;
+	// cerr<<timer->getRemTime()<<endl;
 	//if only 1 possible move then play that move, don't evaluate or anything just do it!
+	
 	vector<vector<Move>> possiblities = this->allPossibleMoves(playerid);
+	
+	cerr << "Inside Get Move : player P" << playerid << " is trying to play " << endl;
+	cerr<<"possiblities size="<<possiblities.size()<<endl;
 	if(possiblities.size() == 0){
 		//cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
 		//don't exit instead return some sort of blank as we may have won
+		cerr<<"Inside size==0 of GetMove"<<endl;
 		vector<Move> emp;
 		return emp;
 		// exit(1);
-	}else if(possiblities.size() == 1){
+	}
+	else if(possiblities.size() == 1){
+		cerr<<"Insinde size==1 of Getmove"<<endl;
 		this->playmove(possiblities[0], playerid);
 		return possiblities[0];
 	}
+	
+	cerr << "Inside Get Move : Size of possiblilites is > 1 "  << endl;
+
+	
 	// else
 	// Do something else
 	cerr<<"Inside get move possiblities greater than 1"<<endl;
