@@ -41,16 +41,18 @@ int main( int argc, char **argv){
         timer->stop();
         getline(cin, opp_move);
 	    timer->resume();
+
+        cerr << "Inside CPP file : Opponent played : " <<  opp_move << endl;
+
+
         game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
 
         my_move = convertToHexagonal(game->getMove(player));
         
         cout << my_move;  
 
-        // why is blank output coming twice ?
-        //decompose move according to game.cpp and play move
-        cerr << "Opponent played : " <<  opp_move << endl;
-        // cout << move << endl;
+        game->board->printBoard();
+
     }
     return 0;
 }

@@ -57,13 +57,13 @@ Board::Board(int boardSize){
     // rings from 0...b
     // rows and columns from 0 ... 2*b
     this->boardSize = boardSize;
-    cerr<<"came into board constructor"<<endl;
+    // cerr<<"came into board constructor"<<endl;
     int range = 2*boardSize + 1;
     this->nodes = new Node*[range];
     for(int i = 0; i < range; i++){
         this->nodes[i] = new Node[range];
     }
-    cerr<<"nodes of range created"<<endl;
+    // cerr<<"nodes of range created"<<endl;
     //marking validity of nodes
     this->markValidity(); // currently only for size 5
 
@@ -115,27 +115,62 @@ void Board::markValidity(){
 
 void Board::printBoard()
 {
+
+    cerr  << "********************************************" << endl;
+    cerr  << "         PRINTING BOARD START               " << endl;
+    cerr  << "********************************************" << endl;
+
     int i,j;
-    cerr<<"rings hand [0]="<<ringsHand[0]<<endl;
-    cerr<<"rings hand [1]="<<ringsHand[1]<<endl;
-    cerr<<"rings done [0]="<<ringsDone[0]<<endl;
-    cerr<<"rings done [0]="<<ringsDone[0]<<endl;
-    cerr<<"ring positions for 0"<<endl;
+    cerr<<"rings hand [0] = "<<ringsHand[0]<<endl;
+    cerr<<"rings hand [1] = "<<ringsHand[1]<<endl;
+    cerr<<"rings done [0] = "<<ringsDone[0]<<endl;
+    cerr<<"rings done [0] = "<<ringsDone[0]<<endl;
+    cerr<<"ring positions for 0 : "<<endl;
     for(i=0;i<5;i++)
         cerr<<ring_pos[0][i][0]<<" "<<ring_pos[0][i][1]<<endl;
-    cerr<<"ring positions for 1"<<endl;
+    cerr<<"ring positions for 1 : "<<endl;
     for(i=0;i<5;i++)
         cerr<<ring_pos[1][i][0]<<" "<<ring_pos[1][i][1]<<endl;
-    cerr<<"printing nodes in format\nvalidity color ring"<<endl;
+    cerr<<"printing nodes in format \n validity color ring"<<endl;
     for(i=0;i<11;i++)
     {
         for(j=0;j<11;j++)
         {
-            cerr<<"node"<<i<<" "<<j<<endl;
-            cerr<<nodes[i][j].valid<<" "<<nodes[i][j].color<<" ";
-            cerr<<nodes[i][j].ring<<endl;
+            string str; 
+            if(!nodes[i][j].valid){
+                str = "   ";
+            }
+            else if(nodes[i][j].ring == 0){
+                if(nodes[i][j].color == 0){
+                    str = "_._";
+                }
+                else{
+                    str = (nodes[i][j].color == 1) ? "_1_" : "_2_" ;
+                }
+            } 
+            else {
+                if(nodes[i][j].color == 0){
+                    str = (nodes[i][j].ring == 1) ? "_r1_" : "_r2_" ;
+                }
+                else{
+                    //both ring and marker // they will be of same color ?
+                    str = (nodes[i][j].ring == 1) ? "_R1_" : "_R2_" ;
+                }
+            }
+        
+            // cerr<<"node"<<i<<" "<<j<<endl;
+            // cerr<<nodes[i][j].valid<<" "<<nodes[i][j].color<<" ";
+            // cerr<<nodes[i][j].ring<<endl;
+            cerr << str << " ";
         }
+        cerr << endl;
     }
+
+
+    cerr  << "********************************************" << endl;
+    cerr  << "           PRINTING BOARD END               " << endl;
+    cerr  << "********************************************" << endl;
+
 }
 
 

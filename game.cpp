@@ -414,47 +414,6 @@ vector<Move> Game::getMove(int playerid){
 	return (*best_move);
 }
 
-/*
-From the PossibleMoves class
-*/
-
-// void Game::initPossibleMoves(){
-// 	this->flag = 1;
-// 	this->totalMoves = 0;
-// 	this->currMove = 0;
-// }
-/*
-Instead of nodes copy , we'll work on a board's copy
-because we need the number of rings and other things preserverd
-*/
-//get set is unrequired 
-
-// pair< pair<int,int>, pair<int,int>> Game::removableMarkers(int color,int &marks,int pos[121][2]){
-// 	int i,j,k;
-// 	for(i=0;i<marks;i++)
-// 	{
-// 		if(this->board->nodes[pos[i][0]][pos[i][1]].color != color)
-// 		{
-// 			cerr<<"some error in marker colouring or finding markers"<<endl;
-// 			exit(1);
-// 		}
-// 		// code to find removable markers is under process	//need to be generic removal has been fixed
-// 		for(j=1;(this->board->nodes[(pos[i][0])-j][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])-j][pos[i][1]].color==color);j++);
-// 		for(k=1;(this->board->nodes[(pos[i][0])+k][pos[i][1]].valid)&&(this->board->nodes[(pos[i][0])+k][pos[i][1]].color==color);k++);
-// 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),pos[i][1]),make_pair(((pos[i][0])-j+5),pos[i][1]));
-// 		//else
-// 		for(j=1; (this->board->nodes[pos[i][0]][pos[i][1]-j].valid) && this->board->nodes[pos[i][0]][(pos[i][1])-j].color==color;j++);
-// 		for(k=1; (this->board->nodes[pos[i][0]][pos[i][1]+k].valid) && this->board->nodes[pos[i][0]][(pos[i][1])+k].color==color;k++);
-// 		if(j+k-1 >= 5) return make_pair(make_pair(pos[i][0],((pos[i][1])-j+1)),make_pair(pos[i][0],((pos[i][1])-j+1)));
-// 		//else
-// 		for(j=1; (this->board->nodes[pos[i][0]-j][pos[i][1]-j].valid) && this->board->nodes[(pos[i][0])-j][(pos[i][1])-j].color==color;j++);
-// 		for(k=1; (this->board->nodes[pos[i][0]+k][pos[i][1]+k].valid) && this->board->nodes[(pos[i][0])+k][(pos[i][1])+k].color==color;k++);
-// 		if(j+k-1 >= 5) return make_pair(make_pair(((pos[i][0])-j+1),((pos[i][1])-j+1)),make_pair(((pos[i][0])-j+5),((pos[i][1])-j+1)));
-// 		//else
-// 		return make_pair(make_pair(-1,0),make_pair(0,0));
-// 	}
-// }
-
 vector<Move> Game::placeHandRing(int player){
 	// to place hand ring optimally
 	// attempt to place ring at central positions and then check sourrounding 
@@ -845,7 +804,6 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 	// if multiple contigous markers, then call possible moves again after removing the first set,
 	// as it could or couldn't disturb the 2nd config
 	
-
 
 	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
 	// vector<vector<Move>> ringMoves;
