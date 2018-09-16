@@ -25,30 +25,6 @@ PossMove::PossMove(Node **curr_nodes)
 	flag=0;
 }
 
-Node PossMove:: getNode(int row,int coloumn)
-{
-	if((row<11)&&(coloumn<11))
-		return nodes[row][coloumn];
-	//else
-	cerr<<"getting node out of range"<<endl;
-	exit(1);
-}
-
-void PossMove:: setNode(int row,int coloumn,Node node)
-{
-	if((row<11)&&(coloumn<11))
-	{
-		totalMoves=0;
-		currmove=0;
-		possiblemoves.clear();			
-		nodes[row][coloumn]=node;
-		return;
-	}
-	//else					
-	cerr<<"setting node out of range"<<endl;
-	exit(1);
-}
-
 pair < pair<int,int> , pair<int,int> > PossMove::removableMarkers(int color,int &marks,int pos[121][2])
 {
 	int i,j,k;

@@ -39,9 +39,7 @@ public:
 	// pair<pair<int,int>, pair<int,int>> removableMarkers(int color,int &marks,int pos[121][2]);
 	double evaluate(int playerid,int origplayer);
 	// void initPossibleMoves();
-	Node getNode(int row, int col);
 	double minmax(int playerid,int origplayer,int alpha,int beta);
-	void setNode(int row,int coloumn,Node node);	//sets particular configuration at specified row coloumn node and moves to null
 	vector<vector<Move>> allPossibleMoves(int player);
 	//find possible moves of given color and return no. of moves found
 	//we have three kinds of move - [i][j++],[++][j],[++][++]
