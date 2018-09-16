@@ -16,7 +16,7 @@ timing::timing(int totalTime)
     dur=start-start;
     loc_dur=dur;
     this->totalTime=totalTime;
-    updater=new thread(this->update);
+    updater=new thread(&timing::update,this);
 }
 double timing::getRemTime()
 {
@@ -45,5 +45,5 @@ void timing::resume()
     flag=1;
     start=system_clock::now();
     loc_dur=start-start;
-    updater=new thread(this->update);
+    updater=new thread(&timing::update,this);
 }

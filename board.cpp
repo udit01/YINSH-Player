@@ -57,22 +57,23 @@ Board::Board(int boardSize){
     // rings from 0...b
     // rows and columns from 0 ... 2*b
     this->boardSize = boardSize;
-
+    cerr<<"came into board constructor"<<endl;
     int range = 2*boardSize + 1;
     this->nodes = new Node*[range];
     for(int i = 0; i < range; i++){
         this->nodes[i] = new Node[range];
     }
-    
+    cerr<<"nodes of range created"<<endl;
     //marking validity of nodes
     this->markValidity(); // currently only for size 5
 
     this->ringsHand[0] = 5; this->ringsDone[0] = 0;
     this->ringsHand[1] = 5; this->ringsDone[1] = 0;
 
+
     // initialize to zeros although not zeros, better than random garbage
     for(int i = 0; i < 2; i++){
-        for(int j = 0; i < 5; j++){
+        for(int j = 0; j < 5; j++){
             for(int k = 0; k < 2; k++){
                 this->ring_pos[i][j][k] = 0;
             }
@@ -112,5 +113,29 @@ void Board::markValidity(){
     }
 }
 
+void Board::printBoard()
+{
+    int i,j;
+    cerr<<"rings hand [0]="<<ringsHand[0]<<endl;
+    cerr<<"rings hand [1]="<<ringsHand[1]<<endl;
+    cerr<<"rings done [0]="<<ringsDone[0]<<endl;
+    cerr<<"rings done [0]="<<ringsDone[0]<<endl;
+    cerr<<"ring positions for 0"<<endl;
+    for(i=0;i<5;i++)
+        cerr<<ring_pos[0][i][0]<<" "<<ring_pos[0][i][1]<<endl;
+    cerr<<"ring positions for 1"<<endl;
+    for(i=0;i<5;i++)
+        cerr<<ring_pos[1][i][0]<<" "<<ring_pos[1][i][1]<<endl;
+    cerr<<"printing nodes in format\nvalidity color ring"<<endl;
+    for(i=0;i<11;i++)
+    {
+        for(j=0;j<11;j++)
+        {
+            cerr<<"node"<<i<<" "<<j<<endl;
+            cerr<<nodes[i][j].valid<<" "<<nodes[i][j].color<<" ";
+            cerr<<nodes[i][j].ring<<endl;
+        }
+    }
+}
 
 
