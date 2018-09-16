@@ -662,7 +662,7 @@ vector<Move> Game::checkContigousMarkers(int player){
 
 }
 
-vector<vector<Move>> Game::perturbRing(int player, int r, int c){
+/*vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 
 	//assert a valid node and RING ?
 	Node n = this->board->nodes[r][c];
@@ -697,7 +697,7 @@ vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 		}
 	}
 }
-
+*/
 vector<vector<Move>> Game::allPossibleMoves(int player){
 
 	vector<vector<Move>> possibilities;
@@ -766,9 +766,9 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 			continue; //as this index ring is not on board
 		}
 
-		vector<vector<Move>> temp = this->perturbRing(player, r, c);
+//		vector<vector<Move>> temp = this->perturbRing(player, r, c);
 		//call a function for each ring, returning a vector of vector of moves  possible and append them to the possibilites set 
-		possibilities.insert(possibilities.end(), temp.begin(), temp.end());
+	//	possibilities.insert(possibilities.end(), temp.begin(), temp.end());
 	}
 
 	return possibilities;
