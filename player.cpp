@@ -40,6 +40,7 @@ int main( int argc, char **argv){
         // cin >> move;
         timer->stop();
         getline(cin, opp_move);
+        cerr<<opp_move<<endl;
 	    timer->resume();
 
         cerr << "Inside CPP file : Opponent played : " <<  opp_move << endl ;

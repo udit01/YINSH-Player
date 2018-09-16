@@ -18,27 +18,27 @@ void Game::setWeights(int argc, char **argv)
     }
     else
     {
-         ifstream readfile;
-         readfile.open(argv[1]);
-         if(!readfile)
-         {
-            weights[0]=100; //winning score
-            weights[1]=1;   //worsness of opponents winning over our winning
-            weights[2]=1;   //ring differnce weight
-            weights[3]=0.01;    //marker difference weight
-            weights[4]=0.1; //winning probablity on a side
-         }
-         else
-         {
-             int i;
-             string w;
-             for(i=0;i<5;i++)
-             {
-                 getline(readfile,w);
-                 weights[i]=stod(w);
-             }
-         }
-         readfile.close();
+		ifstream readfile;
+		readfile.open(argv[1]);
+		if(!readfile)
+		{
+		weights[0]=100; //winning score
+		weights[1]=1;   //worsness of opponents winning over our winning
+		weights[2]=1;   //ring differnce weight
+		weights[3]=0.01;    //marker difference weight
+		weights[4]=0.1; //winning probablity on a side
+		}
+		else
+		{
+			int i;
+			string w;
+			for(i=0;i<5;i++)
+			{
+				getline(readfile,w);
+				weights[i]=stod(w);
+			}
+		}
+		readfile.close();
     }
 }
 Game::Game(int n,timing *timer,int argc, char **argv){
@@ -274,7 +274,7 @@ void Game::playmove(vector<Move> move, int player){
 				this->removeRing(player, row, col);
 				break;
 			default:
-				cerr << "Some error in move type " << type << endl;
+				//cerr << "Some error in move type " << type << endl;
 				exit(1);
 		}
 
@@ -376,11 +376,11 @@ double Game::minmax(int playerid,int origplayer,int alpha,int beta){
 }
 
 vector<Move> Game::getMove(int playerid){
-
+	cerr<<timer->getRemTime()<<endl;
 	//if only 1 possible move then play that move, don't evaluate or anything just do it!
 	vector<vector<Move>> possiblities = this->allPossibleMoves(playerid);
 	if(possiblities.size() == 0){
-		cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
+		//cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
 		//don't exit instead return some sort of blank as we may have won
 		vector<Move> emp;
 		return emp;
@@ -808,7 +808,7 @@ vector<vector<Move>> Game::allPossibleMoves(int player){
 	//if upper is NULL then do this --- for each of the ring, check status of possible moves 
 	// vector<vector<Move>> ringMoves;
 
-	// cerr << "REACHED ring moves stage, for now returning NULL if no other move: " << endl;
+	// //cerr << "REACHED ring moves stage, for now returning NULL if no other move: " << endl;
 	
 	//UNCOMMENT FOLLOWING TO INCLUDING RING MOVE POSSIBILITIES
 	
