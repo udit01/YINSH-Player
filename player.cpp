@@ -48,11 +48,11 @@ int main( int argc, char **argv){
 
         game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
 
+        game->board->printBoard();
         my_move = convertToHexagonal(game->getMove(player));
         
         cout << my_move;  
 
-        game->board->printBoard();
 
     }
     return 0;
