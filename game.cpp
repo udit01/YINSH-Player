@@ -58,18 +58,18 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 	assert( !( (r1 == r2) && (c1 == c2) ));
 
 	//assert start and end points valid
-	Node n = this->board->nodes[r1][c1];
+	Node* n = &(this->board->nodes[r1][c1]);
 	
-	assert(n.valid);
+	assert(n->valid);
 	if(remove){
 		//player is being checked in the loops so no need to check again 
-		// assert(n.color == player);
-		assert(n.ring == player); 
+		// assert(n->color == player);
+		assert(n->ring == player); 
 		//also check if ring pos is the appropriate thing ?
 	}
-	n = this->board->nodes[r2][c2];
+	n = &(this->board->nodes[r2][c2]);
 	
-	assert(n.valid);
+	assert(n->valid);
 
 	
 	if(remove){
@@ -89,16 +89,16 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		
 		for(int i = minIdx; i <= maxIdx; i++){
 		
-			n = this->board->nodes[r2][i];
+			n = &(this->board->nodes[r2][i]);
 
-			assert(n.valid); // all should be valid by default
+			assert(n->valid); // all should be valid by default
 			if(remove){
 				// if any one node doesn't satisfy this then this line was not removable
-				assert(n.color == player);
-				n.color = 0;
+				assert(n->color == player);
+				n->color = 0;
 			}
 			else{
-				n.color = (n.color == 0) ? 0 : (3 - n.color); // Flipping the colors in the path
+				n->color = (n->color == 0) ? 0 : (3 - n->color); // Flipping the colors in the path
 			}
 		}
 		
@@ -108,15 +108,15 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		
 		for(int i = minIdx; i <= maxIdx; i++){
 		
-			n = this->board->nodes[i][c2];
+			n = &(this->board->nodes[i][c2]);
 
-			assert(n.valid); // all should be valid by default
+			assert(n->valid); // all should be valid by default
 			if(remove){
-				assert(n.color == player);
-				n.color = 0;
+				assert(n->color == player);
+				n->color = 0;
 			}
 			else{
-				n.color = (n.color == 0) ? 0 : (3 - n.color); // Flipping the colors in the path
+				n->color = (n->color == 0) ? 0 : (3 - n->color); // Flipping the colors in the path
 			}
 
 		}
@@ -130,15 +130,15 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 		int j = c1 ;
 		for(int i = r1; i != r2; i+=dir1){
 			j += dir2;
-			n = this->board->nodes[i][j];
+			n = &(this->board->nodes[i][j]);
 
-			assert(n.valid); // all should be valid by default
+			assert(n->valid); // all should be valid by default
 			if(remove){
-				assert(n.color == player);
-				n.color = 0;
+				assert(n->color == player);
+				n->color = 0;
 			}
 			else{
-				n.color = (n.color == 0) ? 0 : (3 - n.color); // Flipping the colors in the path
+				n->color = (n->color == 0) ? 0 : (3 - n->color); // Flipping the colors in the path
 			}
 
 		}
@@ -146,10 +146,10 @@ void Game::changeLine(int player, int r1, int c1, int r2, int c2, bool remove){
 
 	if(remove){
 		//change the ring position 
-		n = this->board->nodes[r1][c1];
-		n.ring = 0;
-		n = this->board->nodes[r2][c2];
-		n.ring = player;
+		n = &(this->board->nodes[r1][c1]);
+		n->ring = 0;
+		n = &(this->board->nodes[r2][c2]);
+		n->ring = player;
 
 		for(int k = 0 ; k < 5 ; k++ ){
 			if((this->board->ring_pos[player-1][k][0] == r1 ) && (this->board->ring_pos[player-1][k][1] == c1) ){
@@ -170,12 +170,12 @@ void Game::removeRing(int player, int r, int c){
 	
 	//what if >= 3 ?
 	// assert(this->board->ringsDone[player-1]>3);
-	Node n = this->board->nodes[r][c];
-	assert(n.valid);
-	assert(n.ring == player);
+	Node* n = &(this->board->nodes[r][c]);
+	assert(n->valid);
+	assert(n->ring == player);
 
 	//erase ring
-	n.ring = 0;
+	n->ring = 0;
 
 	//erase ring from position base
 	for(int k = 0 ; k < 5 ; k++ ){
@@ -197,12 +197,12 @@ void Game::placeRing(int player, int r, int c){
 	assert(this->board->ringsHand[player-1] > 0);
 	
 	//the position where you want to place must be valid and empty
-	Node n = this->board->nodes[r][c];
-	assert(n.valid);
-	assert(n.ring == 0);
+	Node* n = &(this->board->nodes[r][c]);
+	assert(n->valid);
+	assert(n->ring == 0);
 	
 	//place the ring
-	n.ring = player;
+	n->ring = player;
 	//dec remaining rings
 	this->board->ringsHand[player-1]--;
 	//log coordinates of the ring
@@ -236,8 +236,6 @@ void Game::playmove(vector<Move> move, int player){
 	When is it started from non move ?
 		S 1 2 M 2 4 RS 1 2 RE 4 16 X 3 4
 	*/
-
-	Node n;
 
 	//play the move in the game
 	for(std::vector<Move>::iterator it = move.begin(); it != move.end(); ++it) {
@@ -482,6 +480,7 @@ vector<Move> Game::checkContigousMarkers(int player){
 	int thresh = 4; //as includsive of start and end
 	int save[2][2]; // 0-start, 1-end
 
+	Node *n;
 	// Checking each row 
 	for(int row = 1; row <= 9 ; row++){
 		cont = false; 
@@ -490,10 +489,10 @@ vector<Move> Game::checkContigousMarkers(int player){
 		
 		// row doen't change in here
 		for(int col = 0; col <= 10 ; col++){
-			Node n = this->board->nodes[row][col];
+			n = &(this->board->nodes[row][col]);
 			//there will be a continous stream of valid nodes
-			if(n.valid){
-				if(n.color == player){
+			if(n->valid){
+				if(n->color == player){
 					if(!cont){//first occurence
 						startNodeCol = col;
 					}
@@ -522,10 +521,10 @@ vector<Move> Game::checkContigousMarkers(int player){
 		
 		// col doesn't change in here
 		for(int row = 0; row <= 10 ; row++){
-			Node n = this->board->nodes[row][col];
+			n = &(this->board->nodes[row][col]);
 			//there will be a continous stream of valid nodes
-			if(n.valid){
-				if(n.color == player){
+			if(n->valid){
+				if(n->color == player){
 					if(!cont){//first occurence
 						startNodeRow = row;
 					}
@@ -562,10 +561,10 @@ vector<Move> Game::checkContigousMarkers(int player){
 		
 		for(int k = 0; k <= 10 ; k++){
 			if((row<11)&&(col<11)){
-				Node n = this->board->nodes[row][col];
+				n = &(this->board->nodes[row][col]);
 				//there will be a continous stream of valid nodes
-				if(n.valid){
-					if(n.color == player){
+				if(n->valid){
+					if(n->color == player){
 						if(!cont){//first occurence
 							startNodeRow = row; startNodeCol = col;
 						}
@@ -599,10 +598,10 @@ vector<Move> Game::checkContigousMarkers(int player){
 		
 		for(int k = 0; k <= 10 ; k++){
 			if((row<11)&&(col<11)){
-				Node n = this->board->nodes[row][col];
+				n = &(this->board->nodes[row][col]);
 				//there will be a continous stream of valid nodes
-				if(n.valid){
-					if(n.color == player){
+				if(n->valid){
+					if(n->color == player){
 						if(!cont){//first occurence
 							startNodeRow = row; startNodeCol = col;
 						}
@@ -664,10 +663,10 @@ vector<Move> Game::spawnRing(int player, int r1, int c1, int r2, int c2){
 vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 
 	//assert a valid node and RING ?
-	Node n = this->board->nodes[r][c];
-	assert(n.valid);
-	assert(n.ring == player);
-	assert(n.color == 0);
+	Node *n = &(this->board->nodes[r][c]);
+	assert(n->valid);
+	assert(n->ring == player);
+	assert(n->color == 0);
 	// After every possiblity, you'll have to make a copy of board play the move
 	// and check if RS RE , some row forming or not ?
 
@@ -700,13 +699,13 @@ vector<vector<Move>> Game::perturbRing(int player, int r, int c){
 			}
 
 			//Do for each valid node , generate possiblities
-			n = this->board->nodes[row][col];
-			if(n.valid){
-				if(n.ring != 0){
+			n = &(this->board->nodes[row][col]);
+			if(n->valid){
+				if(n->ring != 0){
 					// just the possibilites till now were possible, not after this ring encounter
 					break;
 				}
-				if(n.color != 0){
+				if(n->color != 0){
 					//Encountered a marker 
 					if(((row-directions[k][0])==lastMarkerRow)&&((col-directions[k][1]) == lastMarkerCol)){
 						// safe, as found next contigous marker

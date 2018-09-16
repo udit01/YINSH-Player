@@ -21,12 +21,12 @@ int main( int argc, char **argv){
     cin >> player;
     cin >> n;
     cin >> time;
-    cerr<<"inputs taken well"<<endl;
+    // cerr<<"inputs taken well"<<endl;
     // cout << "P 5 7"<< endl;
     timing *timer=new timing(time);
-    cerr<<"timer object created"<<endl;
+    // cerr<<"timer object created"<<endl;
 	Game* game= new Game(player,n,timer,argc,argv); //creates an object of game class
-    cerr<<"game object created"<<endl;
+    // cerr<<"game object created"<<endl;
     string opp_move,my_move;
     
     if (player == 1){
@@ -42,7 +42,7 @@ int main( int argc, char **argv){
         getline(cin, opp_move);
 	    timer->resume();
 
-        cerr << "Inside CPP file : Opponent played : " <<  opp_move << endl;
+        cerr << "Inside CPP file : Opponent played : " <<  opp_move << endl ;
 
 
         game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
