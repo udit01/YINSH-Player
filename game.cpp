@@ -391,7 +391,7 @@ vector<Move> Game::getMove(int playerid){
 	}
 	// else
 	// Do something else
-
+	cerr<<"Inside get move possiblities greater than 1"<<endl;
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
 	
