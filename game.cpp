@@ -380,7 +380,7 @@ vector<Move> Game::getMove(int playerid){
 	
 	vector<vector<Move>> possiblities = this->allPossibleMoves(playerid);
 	
-	cerr << "Inside Get Move : player P" << playerid << " is trying to play " << endl;
+	// cerr << "Inside Get Move : player P" << playerid << " is trying to play " << endl;
 
 	if(possiblities.size() == 0){
 		//cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
@@ -394,7 +394,7 @@ vector<Move> Game::getMove(int playerid){
 		return possiblities[0];
 	}
 	
-	cerr << "Inside Get Move : Size of possiblilites is > 1 "  << endl;
+	// cerr << "Inside Get Move : Size of possiblilites is > 1 "  << endl;
 
 	
 	// else

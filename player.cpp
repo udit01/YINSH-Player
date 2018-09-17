@@ -37,21 +37,21 @@ int main( int argc, char **argv){
         timer->stop();
         getline(cin, opp_move);
 	    timer->resume();
-        cerr << "Inside CPP file : Opponent tried to play : " <<  opp_move  << "  : Calling play MOVE"<< endl ;
+        // cerr << "Inside CPP file : Opponent tried to play : " <<  opp_move  << "  : Calling play MOVE"<< endl ;
 
 
 
         game->playmove(convertToStd(opp_move), 3 - player);// a call to a fuction of Game
 
-        cerr << "Inside CPP file : PLAY move finished : Printing board" << endl ;
+        // cerr << "Inside CPP file : PLAY move finished : Printing board" << endl ;
 
-        game->board->printBoard();
+        // game->board->printBoard();
 
-        cerr << "Inside CPP file : Getting MY MOVE " << endl ;
+        // cerr << "Inside CPP file : Getting MY MOVE " << endl ;
 
         my_move = convertToHexagonal(game->getMove(player));
         
-        cerr << "Inside CPP file : I tried to play : " <<  my_move  << "  : COUTING "<< endl ;
+        // cerr << "Inside CPP file : I tried to play : " <<  my_move  << "  : COUTING "<< endl ;
         cout << my_move;  
 
 
