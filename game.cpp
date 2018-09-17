@@ -385,11 +385,13 @@ vector<Move> Game::getMove(int playerid){
 	if(possiblities.size() == 0){
 		//cerr << "NO possible moves for player : "<< playerid <<" DID we win ? Change exit to empty in that case"<< endl;
 		//don't exit instead return some sort of blank as we may have won
+		cerr<<"Inside size==0 of GetMove"<<endl;
 		vector<Move> emp;
 		return emp;
 		// exit(1);
 	}
 	else if(possiblities.size() == 1){
+		cerr<<"Insinde size==1 of Getmove"<<endl;
 		this->playmove(possiblities[0], playerid);
 		return possiblities[0];
 	}
@@ -399,7 +401,7 @@ vector<Move> Game::getMove(int playerid){
 	
 	// else
 	// Do something else
-
+	cerr<<"Inside get move possiblities greater than 1"<<endl;
 	this->origBoard = this->board->deepCopy();
 	//get the next move by min max or something
 	
